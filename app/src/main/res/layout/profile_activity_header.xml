@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/transitionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/blue"
+    android:orientation="vertical">
+
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="@dimen/margin_80dp">
+
+<TextView
+    android:layout_weight="1"
+    android:id="@+id/textname"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_gravity="center"
+    android:gravity="start"
+    android:layout_marginTop="@dimen/margin_10dp"
+    android:layout_marginLeft="20dp"
+    android:text="Side Menu"
+    android:textColor="@color/white"
+    android:textSize="18dp"
+    android:textStyle="bold"
+    android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/nav_drawer_close_icon_image_view"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:gravity="right"
+        android:layout_marginRight="25dp"
+        android:contentDescription="@string/close_icon"
+        app:srcCompat="@drawable/drawer_close_icon" />
+
+</LinearLayout>
+</LinearLayout>

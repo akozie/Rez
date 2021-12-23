@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dashboard_nav_graph"
+    app:startDestination="@id/home2">
+
+    <fragment
+        android:id="@+id/bookingHistory"
+        android:name="com.example.rez.ui.fragment.dashboard.BookingHistory"
+        android:label="fragment_booking_history"
+        tools:layout="@layout/fragment_booking_history" />
+    <fragment
+        android:id="@+id/help2"
+        android:name="com.example.rez.ui.fragment.dashboard.Help"
+        android:label="fragment_help"
+        tools:layout="@layout/fragment_help" />
+    <fragment
+        android:id="@+id/securityAndPrivacy"
+        android:name="com.example.rez.ui.fragment.dashboard.SecurityAndPrivacy"
+        android:label="fragment_security_and_privacy"
+        tools:layout="@layout/fragment_security_and_privacy" />
+    <fragment
+        android:id="@+id/settings2"
+        android:name="com.example.rez.ui.fragment.dashboard.Settings"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settings2_to_changePassword"
+            app:destination="@id/changePassword" />
+    </fragment>
+    <fragment
+        android:id="@+id/favorites"
+        android:name="com.example.rez.ui.fragment.dashboard.Favorites"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" />
+    <fragment
+        android:id="@+id/home2"
+        android:name="com.example.rez.ui.fragment.dashboard.Home"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home2_to_favorites"
+            app:destination="@id/favorites" />
+        <action
+            android:id="@+id/action_home2_to_reservation"
+            app:destination="@id/reservation" />
+        <action
+            android:id="@+id/action_home2_to_myProfile"
+            app:destination="@id/myProfile" />
+    </fragment>
+    <fragment
+        android:id="@+id/myProfile"
+        android:name="com.example.rez.ui.fragment.dashboard.MyProfile"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/reservation"
+        android:name="com.example.rez.ui.fragment.dashboard.Reservation"
+        android:label="fragment_reservation"
+        tools:layout="@layout/fragment_reservation" />
+    <fragment
+        android:id="@+id/changePassword"
+        android:name="com.example.rez.ui.fragment.dashboard.ChangePassword"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" />
+</navigation>

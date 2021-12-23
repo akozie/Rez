@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+        <item
+            android:id="@+id/bookingHistory"
+            android:title="Booking History"
+            android:icon="@drawable/booking_history2" />
+
+
+        <item
+            android:id="@+id/settings2"
+            android:title="Settings"
+            android:icon="@drawable/settings" />
+
+
+        <item
+            android:id="@+id/help2"
+            android:title="Help"
+            android:icon="@drawable/help2" />
+
+
+        <item
+            android:id="@+id/securityAndPrivacy"
+            android:title="Security and Privacy"
+            android:icon="@drawable/security_privacy2" />
+
+        <item
+            android:id="@+id/logout"
+            android:title="Logout"
+            android:icon="@drawable/logout2" />
+        </menu>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="135dp"
+        android:layout_height="90dp"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/hotelImageIv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+
+            <ImageView
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/book_mark3"
+                />
+
+                <LinearLayout
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/hotelNameTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Hiii"
+                        android:layout_gravity="center"
+                        android:gravity="start"
+                        android:textStyle="bold"
+                        android:textSize="10dp"
+                        android:textColor="@color/white"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            android:rating="3"
+                            android:stepSize="1"
+                            android:numStars="5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="?android:ratingBarStyleSmall"
+                            android:gravity="center"
+                            android:layout_gravity="center_vertical"
+                            android:progressTint="@color/yellow"
+                            android:progressBackgroundTint="@color/white"
+                            />
+
+                        //Star Size small ke liye
+                        <!-- style="?android:ratingBarStyleSmall"-->
+
+                        <TextView
+                            android:id="@+id/totalReviewTv"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="1dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="9dp"
+                            android:textColor="@color/blue"
+                            android:text=""
+                            android:gravity="center"
+                            android:layout_gravity="center_vertical"/>
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_marginLeft="1dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="9dp"
+                            android:textColor="@color/white"
+                            android:text="Reviews"
+                            android:gravity="start"
+                            android:layout_gravity="center_vertical"/>
+
+                    </LinearLayout>
+
+
+                    <!-- <RelativeLayout
+                         android:layout_marginTop="2dp"
+                         android:layout_marginBottom="5dp"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content">
+
+                         <TextView
+                             android:id="@+id/descriptionTv"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="start"
+                             android:ellipsize="end"
+                             android:gravity="start"
+                             android:maxLines="3"
+                             android:text=""
+                             android:textColor="@color/white"
+                             android:textSize="11dp" />
+
+                     </RelativeLayout>-->
+
+                </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

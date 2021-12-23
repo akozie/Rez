@@ -1,0 +1,152 @@
+<resources>
+    <string name="app_name">Rez</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nexport_logo">nexport logo</string>
+    <string name="signup_options_fragment_signup_with_google_button_text">Sign up with Google</string>
+    <string name="signup_options_fragment_signup_with_email_button_text">Sign up with email</string>
+    <string name="signup_options_fragment_have_an_account_text">Have an account?</string>
+    <string name="signup_options_fragment_login_text">Login</string>
+    <string name="all_sign_up">SIGNUP</string>
+    <string name="all_login">LOGIN</string>
+    <string name="login_screen_welcome_back_tv">Welcome back</string>
+    <string name="login_screen_login_to_continue_tv">Login to continue</string>
+    <string name="login_screen_fragment_sign_in_with_google">Sign in with Google</string>
+    <string name="login_screen_email_hint_tv">Email Address</string>
+    <string name="login_screen_password_hint_tv">Password</string>
+    <string name="login_screen_fragment_login_button_text_view">Login</string>
+    <string name="login_screen_fragment_asking_if_new_user">New user?</string>
+    <string name="login_screen_fragment_signup_for_free">Signup</string>
+    <string name="login_screen_fragment_forgot_password">Forgot Password?</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="lets_get_to_know_you">Lets get to know you</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="other_name">Other Name</string>
+    <string name="user_name">Username</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="email_address">Email Address</string>
+    <string name="enter_your_phone_number">Enter your email address</string>
+    <string name="address">Address 1</string>
+    <string name="address_2">Address 2</string>
+    <string name="address_city">Address city</string>
+    <string name="password">Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="new_password">New Password</string>
+    <string name="have_an_account">Have an account?</string>
+    <string name="all_forgot_password">Forgot Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="send">SEND</string>
+    <string name="remember_password">Remember password? </string>
+    <string name="reset_password_confirmation_fragment_reset_password_button">Reset Password</string>
+    <string name="hi_john">Hi, John! Your account has been created!</string>
+    <string name="email_has_been_sent">OTP has been sent!</string>
+    <string name="please_check">Please check your inbox</string>
+    <string name="welcome_cha">To activate account, enter the code sent to your email</string>
+    <string name="verify_email">VERIFY EMAIL</string>
+    <string name="email_sent_by_nexport">email sent by Nexport</string>
+    <string name="copyright">copyright 2021, All Rights Reserved</string>
+    <string name="didnt_receive_link">Didn’t receive the link? <b> Resend</b> </string>
+    <string name="enter_your_code">Enter your code </string>
+    <string name="all_please_enter_first_name">Please Enter First Name</string>
+    <string name="all_please_enter_last_name">Please Enter Last Name</string>
+    <string name="all_please_enter_user_name">Please Enter Username</string>
+    <string name="all_please_enter_other_name">Please Enter Other Name</string>
+    <string name="all_email_cant_be_empty">Email Can\'t Be Empty</string>
+    <string name="invalid_phone_number">Invalid Phone number</string>
+    <string name="all_phone_number_is_required">Phone Number is required</string>
+    <string name="all_invalid_email">Invalid Email</string>
+    <string name="all_password_is_required">Password is Required</string>
+    <string name="all_password_mismatch">Password Mismatch</string>
+    <string name="null_all">null</string>
+    <string name="skip">skip</string>
+    <string name="version_1_0">Version 1.0</string>
+    <string name="close_icon">Close icon</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="post_order">Post Order</string>
+    <string name="post_deal">Post Deal</string>
+    <string name="directory_details">Directory Details</string>
+    <string name="product_details">Product Details</string>
+    <string name="john_doe">John Doe</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="drawer_menu_home">Home</string>
+    <string name="drawer_menu_deals">Deals</string>
+    <string name="drawer_menu_offers">Offers</string>
+    <string name="fragment_media_display_menu_share">Share</string>
+    <string name="fragment_media_display_menu_edit">Edit</string>
+    <string name="fragment_menu_display_menu_delete">Delete</string>
+    <string name="menu_live_deals">Live Deals</string>
+    <string name="menu_offers">Offers</string>
+    <string name="menu_orders">Orders</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_directory">Directory</string>
+    <string name="tap_to_change_profile_picture">Tap to change picture</string>
+    <string name="gender">Gender</string>
+    <string name="save_changes">SAVE CHANGES</string>
+    <string name="user_account">User Account</string>
+    <string name="business_account">Business Account</string>
+    <string name="trading_name">Trading name</string>
+    <string name="registration_number">Registration number</string>
+    <string name="directory_model"> DirectoryModel</string>
+    <string name="logout_confirmation_dialog_message">Do you want to logout?.</string>
+    <string name="logout_yes_text">Yes</string>
+    <string name="logout_no_text">No</string>
+    <string name="edit_profile_fragment_first_name_popup_hint">First name</string>
+    <string name="edit_profile_fragment_first_name_text">First Name</string>
+    <string name="edit_profile_fragment_popup_cancel_text">Cancel</string>
+    <string name="edit_profile_fragment_popup_ok_text">Ok</string>
+    <string name="profile_account_fragment_first_name_dialog_fragment_tag">firstNameDialog</string>
+    <string name="profile_account_fragment_last_name_dialog_fragment_tag">lastNameDialog</string>
+    <string name="edit_profile_fragment_last_name_text">Last Name</string>
+    <string name="edit_profile_fragment_last_name_popup_hint">Last name</string>
+    <string name="edit_profile_fragment_field_cannot_be_empty_text">Field cannot be empty!</string>
+    <string name="edit_profile_fragment_other_name_text">Other Name</string>
+
+    <string name="edittext_hint">
+        <font color="grey" size="32">Password</font>
+    </string>
+    <string name="email_hint">
+        <font color="grey" size="32">Email address</font>
+    </string>
+
+    <string-array name="states">
+        <item>Abia</item>
+        <item>Adamawa</item>
+        <item>Akwa Ibom</item>
+        <item>Anambra</item>
+        <item>Bauchi</item>
+        <item>Bayelsa</item>
+        <item>Benue</item>
+        <item>Borno</item>
+        <item>Cross River</item>
+        <item>Delta</item>
+        <item>Ebonyi</item>
+        <item>Edo</item>
+        <item>Ekiti</item>
+        <item>Enugu</item>
+        <item>Gombe</item>
+        <item>Imo</item>
+        <item>Jigawa</item>
+        <item>Kaduna</item>
+        <item>Kano</item>
+        <item>Katsina</item>
+        <item>Kebbi</item>
+        <item>Kogi</item>
+        <item>Kwara</item>
+        <item>Lagos</item>
+        <item>Nassarawa</item>
+        <item>Niger</item>
+        <item>Ogun</item>
+        <item>Ondo</item>
+        <item>Osun</item>
+        <item>Oyo</item>
+        <item>Plateau</item>
+        <item>Rivers</item>
+        <item>Sokoto</item>
+        <item>Taraba</item>
+        <item>Yobe</item>
+        <item>Zamfara</item>
+        <item>FCT</item>
+    </string-array>
+</resources>

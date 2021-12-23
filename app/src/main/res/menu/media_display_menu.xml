@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/fragment_media_display_share" android:title="@string/fragment_media_display_menu_share" />
+    <item android:id="@+id/fragment_media_display_edit" android:title="@string/fragment_media_display_menu_edit" />
+    <item android:id="@+id/fragment_media_display_delete" android:title="@string/fragment_menu_display_menu_delete" />
+</menu>

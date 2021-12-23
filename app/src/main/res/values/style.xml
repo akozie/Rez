@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="android:textColor">@color/purple</item>
+    </style>
+
+    <style name="onBoarding_button">
+        <item name="borderWidth">@dimen/margin_4dp</item>
+        <item name="backgroundTint">@color/purple</item>
+        <item name="android:layout_marginTop">@dimen/margin_80dp</item>
+        <item name="fontFamily">@font/poppins_light</item>
+        <item name="android:layout_marginBottom">@dimen/margin_10dp</item>
+        <item name="cornerRadius">@dimen/margin_10dp</item>
+    </style>
+
+    <style name="RezSignUpButton">
+        <item name="android:text">@string/all_sign_up</item>
+        <item name="android:textSize">@dimen/text_size_16sp</item>
+        <item name="android:padding">@dimen/padding_10dp</item>
+        <item name="backgroundTint">@color/purple</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="RezLoginButton">
+        <item name="android:textSize">@dimen/text_size_16sp</item>
+        <item name="android:text">@string/all_login</item>
+        <item name="android:padding">10dp</item>
+        <item name="backgroundTint">@color/purple</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="strokeWidth">@dimen/margin_2dp</item>
+        <item name="strokeColor">@color/purple</item>
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+
+    <style name="text_in_layout_hint_Style">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="EmailConfirmationTextView">
+        <item name="android:textSize">@dimen/text_size_20sp</item>
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:text">@string/email_has_been_sent</item>
+        <item name="android:gravity">center_horizontal|top</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+        <item name="android:layout_marginTop">@dimen/margin_10dp</item>
+    </style>
+
+
+    <style name="EmailConfirmationVerifyEmailTextView">
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:text">@string/welcome_cha</item>
+        <item name="android:gravity">center_horizontal|top</item>
+        <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:layout_marginTop">@dimen/margin_10dp</item>
+        <item name="android:layout_marginStart">@dimen/margin_80dp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_80dp</item>
+    </style>
+
+
+    <style name="EmailConfirmationVerifyEmailButton">
+        <item name="android:textSize">@dimen/text_size_16sp</item>
+        <item name="android:text">@string/verify_email</item>
+        <item name="android:gravity">center_horizontal|top</item>
+        <item name="android:padding">@dimen/padding_10dp</item>
+        <item name="cornerRadius">@dimen/margin_5dp</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+        <item name="backgroundTint">@color/pink</item>
+        <item name="android:layout_marginTop">@dimen/margin_10dp</item>
+        <item name="android:layout_marginStart">@dimen/margin_10dp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_10dp</item>
+        <item name="android:layout_margin">@dimen/margin_10dp</item>
+    </style>
+<!--    <style name="LoginPasswordFragmentEditText">-->
+<!--        <item name="android:textColor">@color/off_green</item>-->
+<!--        <item name="android:textColorHint">@color/off_green</item>-->
+<!--        <item name="fontFamily">@font/poppins</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_13sp</item>-->
+<!--        <item name="android:ems">10</item>-->
+<!--    </style>-->
+
+<!--    <style name="LoginFragmentButtonStyle" parent="@style/Widget.MaterialComponents.Button.Icon">-->
+<!--        <item name="android:layout_width">match_parent</item>-->
+<!--        <item name="android:layout_height">@dimen/margin_60dp</item>-->
+<!--        <item name="android:gravity">center_horizontal|center_vertical|fill_vertical</item>-->
+<!--        <item name="android:fontFamily">@font/poppins_bold</item>-->
+<!--        <item name="android:textAllCaps">false</item>-->
+<!--        <item name="android:textColor">@color/black</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_15sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="LoginFragmentEditTextStyle">-->
+<!--        <item name="android:background">@android:color/transparent</item>-->
+<!--        <item name="android:fontFamily">@font/poppins_light</item>-->
+<!--        <item name="strokeColor">@color/green</item>-->
+<!--        <item name="strokeWidth">@dimen/margin_5dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="LoginFragmentDividerViewStyle">-->
+<!--        <item name="android:layout_width">match_parent</item>-->
+<!--        <item name="android:layout_height">@dimen/login_fragment_horizontal_divider_view_height</item>-->
+<!--        <item name="android:background">@color/green</item>-->
+<!--        <item name="strokeColor">@color/green</item>-->
+<!--        <item name="strokeWidth">@dimen/margin_5dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="SignUpScreenCreateAccount">-->
+<!--        <item name="android:layout_marginStart">@dimen/margin_18dp</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/margin_50dp</item>-->
+<!--        <item name="fontFamily">@font/poppins_bold</item>-->
+<!--        <item name="android:text">@string/create_an_account</item>-->
+<!--        <item name="android:textColor">@color/green</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_18sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="SignUpScreenGetToKnowYouText">-->
+<!--        <item name="android:layout_marginStart">@dimen/margin_18dp</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/margin_9dp</item>-->
+<!--        <item name="fontFamily">@font/poppins</item>-->
+<!--        <item name="android:text">@string/lets_get_to_know_you</item>-->
+<!--        <item name="android:textColor">@color/green</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_14sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="NexportEditTextLayoutStyle">-->
+<!--        <item name="android:layout_marginStart">@dimen/margin_18dp</item>-->
+<!--        <item name="android:layout_marginEnd">@dimen/margin_18dp</item>-->
+<!--        <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Small</item>-->
+<!--        <item name="android:textColorHint">@color/off_green</item>-->
+<!--        <item name="boxBackgroundColor">@color/white</item>-->
+<!--        <item name="boxBackgroundMode">none</item>-->
+<!--        <item name="hintTextColor">@color/off_green</item>-->
+<!--        <item name="errorEnabled">true</item>-->
+<!--        <item name="errorTextColor">@color/red</item>-->
+<!--    </style>-->
+
+<!--    <style name="SignUpScreenEditTextField">-->
+<!--        <item name="fontFamily">@font/poppins</item>-->
+<!--        <item name="android:inputType">textPersonName</item>-->
+<!--        <item name="android:textColor">@color/off_green</item>-->
+<!--        <item name="android:textColorHint">@color/off_green</item>-->
+<!--        <item name="strokeColor">@color/off_green</item>-->
+<!--        <item name="android:textCursorDrawable">@drawable/cursor_appearance</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_16sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="EditTextLayoutStyle">-->
+<!--        <item name="android:layout_marginStart">@dimen/margin_18dp</item>-->
+<!--        <item name="android:layout_marginEnd">@dimen/margin_18dp</item>-->
+<!--        <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Small</item>-->
+<!--        <item name="android:textColorHint">@color/off_green</item>-->
+<!--        <item name="boxBackgroundColor">@color/white</item>-->
+<!--        <item name="boxBackgroundMode">none</item>-->
+<!--        <item name="boxStrokeColor">@color/off_green</item>-->
+<!--        <item name="hintTextColor">@color/off_green</item>-->
+<!--        <item name="errorEnabled">true</item>-->
+<!--        <item name="errorTextColor">@color/red</item>-->
+<!--    </style>-->
+
+<!--    <style name="SignUpScreenSignUpButton">-->
+<!--        <item name="android:layout_marginTop">@dimen/margin_20dp</item>-->
+<!--        <item name="android:layout_marginEnd">@dimen/margin_18dp</item>-->
+<!--        <item name="android:layout_marginStart">@dimen/margin_18dp</item>-->
+<!--        <item name="backgroundTint">@color/green</item>-->
+<!--        <item name="fontFamily">@font/poppins_bold</item>-->
+<!--        <item name="android:padding">@dimen/padding_10dp</item>-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--        <item name="cornerRadius">@dimen/corner_radius_5dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="SignUpScreenPhoneTextField">-->
+<!--        <item name="fontFamily">@font/poppins</item>-->
+<!--        <item name="android:inputType">phone</item>-->
+<!--        <item name="android:textColor">@color/off_green</item>-->
+<!--        <item name="android:textColorHint">@color/off_green</item>-->
+<!--        <item name="strokeColor">@color/off_green</item>-->
+<!--        <item name="android:textCursorDrawable">@drawable/cursor_appearance</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_16sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="SignUpScreenHaveAccountText">-->
+<!--        <item name="fontFamily">@font/poppins</item>-->
+<!--        <item name="android:text">@string/have_an_account</item>-->
+<!--        <item name="android:textColor">@color/off_green</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_14sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="SignUpScreenHaveAccountTextView">-->
+<!--        <item name="fontFamily">@font/poppins_medium</item>-->
+<!--        <item name="android:text">@string/login_screen_fragment_login_button_text_view</item>-->
+<!--        <item name="android:textColor">@color/off_green</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_14sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="ResetPasswordFragmentTitle">-->
+<!--        <item name="android:textColor">@color/green</item>-->
+<!--        <item name="fontStyle">normal</item>-->
+<!--        <item name="fontFamily">@font/poppins_bold</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_20sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="ResetPasswordFragmentButton">-->
+<!--        <item name="android:backgroundTint">@color/green</item>-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--        <item name="fontStyle">normal</item>-->
+<!--        <item name="android:padding">@dimen/padding_10dp</item>-->
+<!--        <item name="android:layout_marginStart">@dimen/margin_20dp</item>-->
+<!--        <item name="android:layout_marginEnd">@dimen/margin_20dp</item>-->
+<!--        <item name="android:textAllCaps">false</item>-->
+<!--        <item name="fontFamily">@font/poppins_bold</item>-->
+<!--    </style>-->
+
+<!--    <style name="ResetPasswordFragmentEditText">-->
+<!--        <item name="android:textColor">@color/off_green</item>-->
+<!--        <item name="fontFamily">@font/poppins</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_13sp</item>-->
+<!--        <item name="android:layout_marginStart">@dimen/margin_20dp</item>-->
+<!--        <item name="android:layout_marginEnd">@dimen/margin_20dp</item>-->
+<!--        <item name="android:ems">10</item>-->
+<!--    </style>-->
+
+<!--    <style name="ResetPasswordPrimaryText">-->
+<!--        <item name="fontFamily">@font/poppins</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_15sp</item>-->
+<!--        <item name="android:textColor">@color/off_green</item>-->
+<!--    </style>-->
+
+<!--    <style name="ResetPasswordText">-->
+<!--        <item name="fontFamily">@font/poppins_bold</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_15sp</item>-->
+<!--        <item name="android:textColor">@color/off_green</item>-->
+<!--    </style>-->
+
+<!--    <style name="welcome_cha">-->
+<!--        <item name="android:textSize">@dimen/text_size_12sp</item>-->
+<!--        <item name="android:textColor">@color/text_green</item>-->
+<!--        <item name="android:gravity">center_horizontal|bottom</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/margin_10dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="EmailConfirmationTextView">-->
+<!--        <item name="android:textSize">@dimen/text_size_20sp</item>-->
+<!--        <item name="android:textColor">@color/green</item>-->
+<!--        <item name="android:text">@string/email_has_been_sent</item>-->
+<!--        <item name="android:gravity">center_horizontal|top</item>-->
+<!--        <item name="fontFamily">@font/poppins_bold</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/margin_10dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="PasswordResetConfirmationTextView">-->
+<!--        <item name="android:textSize">@dimen/text_size_14sp</item>-->
+<!--        <item name="android:textColor">@color/off_green</item>-->
+<!--        <item name="android:text">@string/please_check</item>-->
+<!--        <item name="android:gravity">center_horizontal|top</item>-->
+<!--        <item name="fontFamily">@font/poppins</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/margin_10dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="EmailConfirmationVerifyEmailTextView">-->
+<!--        <item name="android:textSize">@dimen/text_size_14sp</item>-->
+<!--        <item name="android:textColor">@color/black</item>-->
+<!--        <item name="android:text">@string/welcome_cha</item>-->
+<!--        <item name="android:gravity">center_horizontal|top</item>-->
+<!--        <item name="fontFamily">@font/poppins</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/margin_10dp</item>-->
+<!--        <item name="android:layout_marginStart">@dimen/margin_80dp</item>-->
+<!--        <item name="android:layout_marginEnd">@dimen/margin_80dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="EmailConfirmationVerifyEmailButton">-->
+<!--        <item name="android:textSize">@dimen/text_size_16sp</item>-->
+<!--        <item name="android:text">@string/verify_email</item>-->
+<!--        <item name="android:gravity">center_horizontal|top</item>-->
+<!--        <item name="android:padding">@dimen/padding_10dp</item>-->
+<!--        <item name="cornerRadius">@dimen/margin_5dp</item>-->
+<!--        <item name="fontFamily">@font/poppins_bold</item>-->
+<!--        <item name="backgroundTint">@color/green</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/margin_10dp</item>-->
+<!--        <item name="android:layout_marginStart">@dimen/margin_10dp</item>-->
+<!--        <item name="android:layout_marginEnd">@dimen/margin_10dp</item>-->
+<!--        <item name="android:layout_margin">@dimen/margin_10dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="search">-->
+<!--        <item name="android:layout_width">match_parent</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/margin_10dp</item>-->
+<!--        <item name="android:layout_weight">1</item>-->
+<!--    </style>-->
+
+<!--    <style name="ClientAccountFragmentButton">-->
+<!--        <item name="android:layout_marginStart">@dimen/margin_27dp</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/margin_20dp</item>-->
+<!--        <item name="android:layout_marginEnd">@dimen/margin_24dp</item>-->
+<!--        <item name="android:letterSpacing">0.1</item>-->
+<!--        <item name="android:textColorHint">@color/white</item>-->
+<!--        <item name="android:backgroundTint">@color/green</item>-->
+<!--        <item name="android:fontFamily">@font/poppins_bold</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_15sp</item>-->
+<!--        <item name="android:textAllCaps">false</item>-->
+<!--    </style>-->
+
+
+<!--    <style name="ProfileAccountTextView">-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_14sp</item>-->
+<!--        <item name="android:fontFamily">@font/poppins_medium</item>-->
+<!--        <item name="android:textColor">@color/text_green</item>-->
+<!--        <item name="android:letterSpacing">0.05</item>-->
+<!--    </style>-->
+</resources>
