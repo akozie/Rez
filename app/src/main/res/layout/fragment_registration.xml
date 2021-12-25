@@ -226,6 +226,15 @@ android:orientation="vertical">
                 android:layout_height="1dp"
                 android:background="@color/pink" />
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:visibility="invisible" />
+
             <LinearLayout
                 android:id="@+id/signUpLayout"
                 android:layout_width="match_parent"
@@ -234,6 +243,7 @@ android:orientation="vertical">
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:orientation="horizontal">
+
 
 
                 <TextView
