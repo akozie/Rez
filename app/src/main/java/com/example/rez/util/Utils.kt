@@ -24,24 +24,12 @@ fun View.enable(enabled: Boolean) {
     alpha = if (enabled) 1f else 0.5f
 }
 
-fun View.snackbar(
-        message: String,
-        action: (() -> Unit)? = null
-        ){
-    val snackbar = Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
-    action?.let {
-        snackbar.setAction("Retry"){
-            it()
-        }
-    }
-    snackbar.show()
-}
 
-fun Fragment.snackbar(
-        message: String,
-        action: (() -> Unit)? = null
-        ){
-    val snackbar = Snackbar.make(View(this.requireActivity()), message, Snackbar.LENGTH_SHORT)
+fun View.snackbar(
+    message: String,
+    action: (() -> Unit)? = null
+){
+    val snackbar = Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
     action?.let {
         snackbar.setAction("Retry"){
             it()
@@ -66,7 +54,7 @@ fun Fragment.handleApiError(
 //            }
         }
         else -> {
-            requireView().snackbar("Bad Request")
+            requireView().snackbar("Bad request")
         }
     }
 

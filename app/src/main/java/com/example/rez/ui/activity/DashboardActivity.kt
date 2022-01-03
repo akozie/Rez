@@ -2,17 +2,15 @@ package com.example.rez.ui.activity
 
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.text.Html
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.SearchView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -32,17 +30,14 @@ class DashboardActivity : AppCompatActivity() {
     private val binding get() = _binding
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
-    // private lateinit var listener: NavController.OnDestinationChangedListener
-    // private lateinit var editProfile: TextView
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var toolbarUserName: SearchView
+    private lateinit var searchview: SearchView
     private lateinit var toolbarFragmentName: TextView
     private lateinit var drawerCloseIcon: ImageView
-    //private lateinit var profileImage: ImageView
     private lateinit var profilePicture: CircleImageView
     private lateinit var navigationView: NavigationView
-    //private lateinit var profileName: TextView
     private lateinit var navView: NavigationView
+
 
 
 
@@ -87,12 +82,16 @@ class DashboardActivity : AppCompatActivity() {
         //profileImage = navViewHeader.findViewById(R.id.nav_drawer_profile_avatar_image_view)
 
 
+        //var mDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, , R.string.drawer_open, R.string.drawer_close)
+
         /*Initialize Toolbar Views*/
-        toolbarUserName = binding.appBarDashboard.dashboardActivityToolbarSearchView
+        searchview = binding.appBarDashboard.dashboardActivityToolbarSearchView
         toolbarFragmentName = binding.appBarDashboard.dashboardActivityToolbarFragmentNameTextView
         bottomNavigationView = binding.appBarDashboard.contentDashboard.dashboardActivityBottomNavigationView
         profilePicture = binding.appBarDashboard.dashboardActivityToolbarProfileImageView
         navigationView = binding.navView
+
+        searchview.queryHint = Html.fromHtml("<font color = #BDBABA>" + getResources().getString(R.string.hintSearchMess) + "</font>")
 
         //profileName = navViewHeader.findViewById(R.id.nav_drawer_user_full_name_text_view)
         navController = findNavController(R.id.nav_host_fragment_content_dashboard)
@@ -195,30 +194,30 @@ class DashboardActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.home2 -> {
                     bottomNavigationView.visibility = View.VISIBLE
-                    toolbarUserName.visibility = View.VISIBLE
+                    searchview.visibility = View.VISIBLE
                     toolbarFragmentName.visibility = View.GONE
                 }
                 R.id.favorites -> {
                     bottomNavigationView.visibility = View.VISIBLE
-                    toolbarUserName.visibility = View.INVISIBLE
+                    searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
                     profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.reservation -> {
                     bottomNavigationView.visibility = View.VISIBLE
-                    toolbarUserName.visibility = View.INVISIBLE
+                    searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
                     profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.myProfile -> {
                     bottomNavigationView.visibility = View.VISIBLE
-                    toolbarUserName.visibility = View.INVISIBLE
+                    searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
                     profilePicture.visibility = View.INVISIBLE
                 }
                 else -> {
                     bottomNavigationView.visibility = View.VISIBLE
-                    toolbarUserName.visibility = View.INVISIBLE
+                    searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
                 }
             }

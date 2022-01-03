@@ -6,12 +6,16 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1962962962962963" />
         <entry key="app/src/main/res/drawable-v24/splash_screen.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/drawable/arrow_next.xml" value="0.17395833333333333" />
+        <entry key="app/src/main/res/drawable/cursor_appearance.xml" value="0.17447916666666666" />
         <entry key="app/src/main/res/drawable/drawer_close_icon.xml" value="0.1962962962962963" />
         <entry key="app/src/main/res/drawable/google_icon.xml" value="0.30666666666666664" />
         <entry key="app/src/main/res/drawable/ic_baseline_call_24.xml" value="0.17395833333333333" />
+        <entry key="app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.31145833333333334" />
         <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.17395833333333333" />
+        <entry key="app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.31145833333333334" />
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/drawable/ic_baseline_search_pink.xml" value="0.30666666666666664" />
+        <entry key="app/src/main/res/drawable/ic_icons8_facebook.xml" value="0.31145833333333334" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1962962962962963" />
         <entry key="app/src/main/res/drawable/ic_next_pink.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/drawable/ic_otp_image.xml" value="0.17395833333333333" />
@@ -42,8 +46,9 @@
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_o_t_p.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_reservation.xml" value="0.14361702127659576" />
+        <entry key="app/src/main/res/layout/fragment_reset_password.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_security_and_privacy.xml" value="0.14361702127659576" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_signup_login.xml" value="0.165" />
@@ -67,5 +72,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.15833333333333333" />
+      </ProjectState>
+    </option>
   </component>
 </project>

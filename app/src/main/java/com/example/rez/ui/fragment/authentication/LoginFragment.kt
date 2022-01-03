@@ -6,11 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,11 +18,10 @@ import com.example.rez.databinding.FragmentLoginBinding
 import com.example.rez.model.authentication.request.LoginRequest
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
+import com.example.rez.ui.activity.MainActivity
+import com.example.rez.util.*
 import com.example.rez.util.ValidationObject.validateEmail
-import com.example.rez.util.enable
-import com.example.rez.util.handleApiError
-import com.example.rez.util.snackbar
-import com.example.rez.util.visible
+import com.example.rez.util.ValidationObject.validatePhoneNumber
 import kotlinx.coroutines.launch
 
 /**
@@ -36,7 +33,7 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val rezViewModel: RezViewModel by activityViewModels()
+    private lateinit var rezViewModel: RezViewModel
 
 
     override fun onCreateView(
@@ -50,6 +47,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        rezViewModel = (activity as MainActivity).rezViewModel
 
 
         binding.register.setOnClickListener {
@@ -62,8 +60,8 @@ class LoginFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        binding.progressBar.visible(false)
-        binding.loginTv.enable(true)
+//        binding.progressBar.visible(false)
+//        binding.loginTv.enable(false)
 
         rezViewModel.loginResponse.observe(viewLifecycleOwner, Observer {
             binding.progressBar.visible(it is Resource.Loading)
@@ -90,7 +88,8 @@ class LoginFragment : Fragment() {
                             requireActivity().finish()
                         }
                     } else {
-                        it.value.message?.let { it1 -> snackbar(it1) }
+                        it.value.message?.let { it1 ->
+                            Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
 
                 }
@@ -100,11 +99,11 @@ class LoginFragment : Fragment() {
 
         binding.edtUserEmail.addTextChangedListener {
             val email = binding.edtUserEmail.text.toString().trim()
-            binding.edtUserEmail.enable(email.isNotEmpty() && it.toString().isNotEmpty())
+            binding.loginTv.enable(email.isNotEmpty() && it.toString().isNotEmpty())
         }
 
         binding.loginTv.setOnClickListener {
-            if (binding.edtUserEmail.text?.isEmpty() == true || binding.edtPass.text?.isEmpty() == true) {
+            if (binding.edtUserEmail.text!!.isEmpty() || binding.edtPass.text!!.isEmpty()) {
                 val message = "All inputs are required"
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             } else {
@@ -112,19 +111,20 @@ class LoginFragment : Fragment() {
                 login()
             }
         }
+
     }
 
     private fun login() {
-        val emailAddress = binding.edtUserEmail.text.toString().trim()
+        val email = binding.edtUserEmail.text.toString().trim()
         val password = binding.edtPass.text.toString().trim()
 
         when {
-            emailAddress.isEmpty() -> {
-                binding.TILedtPass.error =
+            email.isEmpty() -> {
+                binding.TILedtUserEmail.error =
                     getString(R.string.all_email_cant_be_empty)
-            }
 
-            !validateEmail(emailAddress) -> {
+            }
+            !validateEmail(email) -> {
                 binding.TILedtUserEmail.error =
                     getString(R.string.all_invalid_email)
 
@@ -133,12 +133,11 @@ class LoginFragment : Fragment() {
                 binding.TILedtPass.error =
                     getString(R.string.all_password_is_required)
                 binding.TILedtPass.errorIconDrawable = null
-
             }
             else -> {
                 if (validateSignUpFieldsOnTextChange()) {
                     val newUser = LoginRequest(
-                        email = emailAddress,
+                        email = email,
                         password = password)
                     rezViewModel.login(newUser)
                 }
@@ -148,6 +147,7 @@ class LoginFragment : Fragment() {
 
     private fun validateSignUpFieldsOnTextChange(): Boolean {
         var isValidated = true
+
 
         binding.edtUserEmail.doOnTextChanged { _, _, _, _ ->
             when {
@@ -167,6 +167,7 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+
 
         binding.edtPass.doOnTextChanged { _, _, _, _ ->
             when {

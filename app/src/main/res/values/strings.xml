@@ -18,7 +18,7 @@
     <string name="login_screen_fragment_asking_if_new_user">New user?</string>
     <string name="login_screen_fragment_signup_for_free">Signup</string>
     <string name="login_screen_fragment_forgot_password">Forgot Password?</string>
-    <string name="create_an_account">Create an account</string>
+    <string name="create_an_account">SIGN-IN</string>
     <string name="lets_get_to_know_you">Lets get to know you</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
@@ -43,7 +43,7 @@
     <string name="hi_john">Hi, John! Your account has been created!</string>
     <string name="email_has_been_sent">OTP has been sent!</string>
     <string name="please_check">Please check your inbox</string>
-    <string name="welcome_cha">To activate account, enter the code sent to your email</string>
+    <string name="welcome_cha">To activate account, follow the link sent to your email</string>
     <string name="verify_email">VERIFY EMAIL</string>
     <string name="email_sent_by_nexport">email sent by Nexport</string>
     <string name="copyright">copyright 2021, All Rights Reserved</string>
@@ -58,6 +58,7 @@
     <string name="all_phone_number_is_required">Phone Number is required</string>
     <string name="all_invalid_email">Invalid Email</string>
     <string name="all_password_is_required">Password is Required</string>
+    <string name="valid_password_is_required">Password should be six characters</string>
     <string name="all_password_mismatch">Password Mismatch</string>
     <string name="null_all">null</string>
     <string name="skip">skip</string>
@@ -102,6 +103,7 @@
     <string name="edit_profile_fragment_last_name_popup_hint">Last name</string>
     <string name="edit_profile_fragment_field_cannot_be_empty_text">Field cannot be empty!</string>
     <string name="edit_profile_fragment_other_name_text">Other Name</string>
+    <string name="hintSearchMess">Search here ...</string>
 
     <string name="edittext_hint">
         <font color="grey" size="32">Password</font>
@@ -109,6 +111,8 @@
     <string name="email_hint">
         <font color="grey" size="32">Email address</font>
     </string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 
     <string-array name="states">
         <item>Abia</item>

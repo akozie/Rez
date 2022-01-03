@@ -16,7 +16,9 @@
         android:id="@+id/dashboard_activity_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        app:titleTextColor="#FFFFFF"
+        android:minHeight="?actionBarSize"
+        android:theme="?attr/actionBarTheme">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/dashboard_activity_toolbar_CL"
@@ -28,8 +30,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:iconifiedByDefault="false"
-                android:background="@color/white"
-                android:queryHint="Search here..."
+                android:queryBackground="@android:color/transparent"
+                android:backgroundTint="@color/blue"
                 android:searchIcon="@drawable/ic_baseline_search_pink"
                 app:layout_anchorGravity="center"
                 app:layout_constraintEnd_toStartOf="@+id/dashboard_activity_toolbar_profile_image_view"
@@ -43,7 +45,7 @@
                 android:layout_height="@dimen/margin_25dp"
                 android:layout_marginEnd="@dimen/margin_10dp"
                 android:foregroundGravity="center"
-                android:src="@drawable/ic_launcher_background"
+                android:src="@drawable/bell3x"
                 app:layout_constraintBottom_toBottomOf="@+id/dashboard_activity_toolbar_search_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

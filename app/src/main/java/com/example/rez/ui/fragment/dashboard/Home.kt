@@ -74,33 +74,34 @@ class Home : Fragment() {
     private fun topList() {
         topList = arrayListOf(
             TopRecommendedData("1", "Hustle and Bustle", R.drawable.restaurant_img,
-                "", "A good hotel", "", "", "", ""),
-            TopRecommendedData("2", "Hustle and Bustle", R.drawable.restaurant_img,
-                "", "A good hotel", "", "", "", ""),
-            TopRecommendedData("3", "Hustle and Bustle", R.drawable.restaurant_img,
-                "", "A good hotel", "", "", "", "")
+                "4", "3", "", "", "", ""),
+            TopRecommendedData("1", "Hustle and Bustle", R.drawable.restaurant_img,
+                "4", "3", "", "", "", ""),
+            TopRecommendedData("1", "Hustle and Bustle", R.drawable.restaurant_img,
+                "4", "3", "", "", "", "")
         )
     }
 
     private fun nearList() {
         nearList = arrayListOf(
-            NearRestaurantData("1", R.drawable.restaurant_img,
-                "", "Hustle and Bustle", "5", "", "", "", ""),
-            NearRestaurantData("1", R.drawable.restaurant_img,
-                "", "Hustle and Bustle", "5", "", "", "", ""),
-            NearRestaurantData("1", R.drawable.restaurant_img,
-                "", "Hustle and Bustle", "5", "", "", "", ""),
+            NearRestaurantData("Hustle and bustle", R.drawable.hustle,
+                "4.0", "Cafe", "5 Tables", "7771.32km", "80, Amino Kano Crescent, Wuse 2, Abuja", "", ""),
+            NearRestaurantData("Hustle and bustle", R.drawable.hustle,
+                "4.0", "Cafe", "5 Tables", "7771.32km", "80, Amino Kano Crescent, Wuse 2, Abuja", "", ""),
+            NearRestaurantData("Hustle and bustle", R.drawable.hustle,
+                "4.0", "Cafe", "5 Tables", "7771.32km", "80, Amino Kano Crescent, Wuse 2, Abuja", "", ""),
+
         )
     }
 
     private fun suggestionList() {
         suggestionList = arrayListOf(
-            SuggestionRestaurantData("1", R.drawable.restaurant_img,
-                "", "Hustle and Bustle", "5", "", "", "", ""),
-            SuggestionRestaurantData("1", R.drawable.restaurant_img,
-                "", "Hustle and Bustle", "5", "", "", "", ""),
-            SuggestionRestaurantData("1", R.drawable.restaurant_img,
-                "", "Hustle and Bustle", "5", "", "", "", ""),
+            SuggestionRestaurantData("Tarragon", R.drawable.restaurant,
+                "3.5", "Restaurant", "21 Tables", "777.13km", "1c Ozumba Mbadiwe Ave, Victoria Island 106104, Lagos", "", ""),
+           SuggestionRestaurantData("Tarragon", R.drawable.restaurant,
+                "3.5", "Restaurant", "21 Tables", "777.13km", "1c Ozumba Mbadiwe Ave, Victoria Island 106104, Lagos", "", ""),
+           SuggestionRestaurantData("Tarragon", R.drawable.restaurant,
+                "3.5", "Restaurant", "21 Tables", "777.13km", "1c Ozumba Mbadiwe Ave, Victoria Island 106104, Lagos", "", ""),
         )
     }
 }

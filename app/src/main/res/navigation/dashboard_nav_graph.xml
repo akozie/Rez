@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/bookingHistory"
         android:name="com.example.rez.ui.fragment.dashboard.BookingHistory"
-        android:label="fragment_booking_history"
+        android:label="Booking History"
         tools:layout="@layout/fragment_booking_history" />
     <fragment
         android:id="@+id/help2"
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/favorites"
         android:name="com.example.rez.ui.fragment.dashboard.Favorites"
-        android:label="fragment_favorites"
+        android:label="Favorites"
         tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/home2"

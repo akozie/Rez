@@ -56,7 +56,7 @@ class RegistrationFragment : Fragment() {
         }
 
         binding.progressBar.visible(false)
-        binding.signUpTv.enable(true)
+        binding.signUpTv.enable(false)
 
         rezViewModel.registerResponse.observe(viewLifecycleOwner, Observer {
             binding.progressBar.visible(it is Resource.Loading)
@@ -64,7 +64,6 @@ class RegistrationFragment : Fragment() {
                 is Resource.Success -> {
                     lifecycleScope.launch {
                         val message = it.value.message
-                        // email = emailEditText.text.toString()
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                         val action =
                             RegistrationFragmentDirections.actionRegistrationFragmentToOTPFragment()
@@ -98,7 +97,7 @@ class RegistrationFragment : Fragment() {
         val firstName = binding.edtFirstName.text.toString().trim()
         val lastName = binding.edtLastName.text.toString().trim()
         val email = binding.edtUserEmail.text.toString().trim()
-        val phoneNumber = binding.edtUserMobile.text.toString().trim()
+        val phoneNumber = binding.initPhoneNumber.text.toString().trim() + binding.edtUserMobile.text.toString().trim()
         val password = binding.edtPass.text.toString().trim()
         val confirmPassword = binding.edtConfirmPass.text.toString().trim()
 
@@ -123,11 +122,6 @@ class RegistrationFragment : Fragment() {
                     getString(R.string.all_phone_number_is_required)
 
             }
-            !binding.edtUserMobile.validatePhoneNumber(phoneNumber) -> {
-                binding.TILedtMobile.error =
-                    getString(R.string.invalid_phone_number)
-
-            }
             !validateEmail(email) -> {
                 binding.TILedtMobile.error =
                     getString(R.string.all_invalid_email)
@@ -136,6 +130,12 @@ class RegistrationFragment : Fragment() {
             password.isEmpty() -> {
                 binding.TILedtPass.error =
                     getString(R.string.all_password_is_required)
+                binding.TILedtPass.errorIconDrawable = null
+
+            }
+            password.length <= 6 -> {
+                binding.TILedtPass.error =
+                    getString(R.string.valid_password_is_required)
                 binding.TILedtPass.errorIconDrawable = null
 
             }
