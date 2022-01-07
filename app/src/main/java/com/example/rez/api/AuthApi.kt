@@ -1,16 +1,37 @@
 package com.example.rez.api
 
+import android.net.Uri
 import com.example.rez.model.authentication.genresponse.ForPasswordResponse
-import com.example.rez.model.authentication.genresponse.LogResponse
 import com.example.rez.model.authentication.genresponse.RegResponse
 import com.example.rez.model.authentication.genresponse.ResPasswordResponse
+import com.example.rez.model.authentication.genresponse.UpdateProResponse
 import com.example.rez.model.authentication.request.*
 import com.example.rez.model.authentication.response.ChangePasswordResponse
-import retrofit2.http.Body
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import com.example.rez.model.authentication.response.LoginResponse
+import com.example.rez.model.authentication.response.UploadImageResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.*
 
 interface AuthApi {
+
+    @PUT("user/avatar")
+    suspend fun uploadImage(
+        @Body image: MultipartBody.Part,
+        @Header("Authorization") token: String
+    ): UploadImageResponse
+
+
+    @GET("user")
+    suspend fun getProfile(
+        @Header("Authorization") token: String
+    ): LoginResponse
+
+    @PUT("user")
+    suspend fun updateProfile(
+        @Body user: UpdateProfileRequest,
+        @Header("Authorization") token: String
+    ): UpdateProResponse
 
     @PUT("auth/password/reset")
     suspend fun resetPassword(
@@ -30,11 +51,12 @@ interface AuthApi {
     @POST("user/auth/login")
     suspend fun login(
         @Body user: LoginRequest
-    ): LogResponse
+    ): LoginResponse
 
-    @PUT("user/auth/password/change")
+    @PUT("auth/password/change")
     suspend fun changePassword(
-        @Body user: ChangePasswordRequest
+        @Body user: ChangePasswordRequest,
+        @Header("Authorization") token: String
     ): ChangePasswordResponse
 
 

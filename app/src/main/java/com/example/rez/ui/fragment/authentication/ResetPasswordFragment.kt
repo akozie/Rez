@@ -59,9 +59,7 @@ class ResetPasswordFragment : Fragment() {
                             ResetPasswordFragmentDirections.actionResetPasswordFragmentToLoginFragment()
                         findNavController().navigate(action)
                     }}
-                is Resource.Failure -> handleApiError(it) {
-                    resetPassword()
-                }
+                is Resource.Failure -> handleApiError(it)
             }
         })
 
@@ -77,9 +75,10 @@ class ResetPasswordFragment : Fragment() {
 
     private fun resetPassword() {
         /*Initialize User Inputs*/
+        val code =  binding.edtCode.text.toString().trim()
         val password = binding.edtPass.text.toString().trim()
         val confirmPassword = binding.edtConfirmPass.text.toString().trim()
-        val ref = args.reference
+        val ref = args.reference!!
 
         when {
             password.isEmpty() -> {
@@ -109,6 +108,7 @@ class ResetPasswordFragment : Fragment() {
             else -> {
                 if (validateSignUpFieldsOnTextChange()) {
                     val newRegisterUser = ResPasswordRequest(
+                        code = code,
                         password = password,
                         password_confirmation = confirmPassword,
                         reference = ref

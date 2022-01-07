@@ -1,5 +1,6 @@
 package com.example.rez.model.authentication.response
 
 data class ForgotPasswordResponse(
-    val email: String
+    val verified: Boolean,
+    val reference: String
 )

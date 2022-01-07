@@ -71,20 +71,21 @@
 
 
             <TextView
+                android:id="@+id/first_name_tv"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="User Name"
+                android:text="First Name"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_16sp"
                 android:textStyle="bold"/>
 
-            <EditText
-                android:id="@+id/userNameEt"
+            <TextView
+                android:id="@+id/firstNameEt"
                 android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="User Name"
+                android:hint="Update First Name"
                 android:padding="7dp"
                 android:inputType="text"
                 android:textColor="@color/black"
@@ -93,6 +94,30 @@
                 android:background="@drawable/rectangle_box_button_grey"/>
 
             <TextView
+                android:id="@+id/last_name_tv"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Last Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/lastNameEt"
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="Update Last Name"
+                android:padding="7dp"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16sp"
+                android:layout_gravity="center"
+                android:background="@drawable/rectangle_box_button_grey"/>
+
+            <TextView
+                android:id="@+id/email_tv"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,12 +126,12 @@
                 android:textSize="@dimen/text_size_16sp"
                 android:textStyle="bold"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/userEmailEt"
                 android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Email"
+                android:hint="Update Email"
                 android:inputType="textEmailAddress"
                 android:padding="7dp"
                 android:textColor="@color/black"
@@ -115,6 +140,7 @@
                 android:background="@drawable/rectangle_box_button_grey"/>
 
             <TextView
+                android:id="@+id/phone_tv"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,23 +159,24 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/phone_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="+234"
+                    android:text="+234"
                     android:padding="7dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/ash"
                     android:textSize="@dimen/text_size_16sp"
                     android:gravity="center_vertical"
                     android:background="@drawable/rectangle_box_button_grey" />
 
-                <EditText
+                <TextView
                     android:id="@+id/mobileNoEt"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint=""
+                    android:hint="Update Phone Number"
                     android:padding="7dp"
-                    android:maxLength="10"
+                    android:maxLength="11"
                     android:inputType="number"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_16sp"
@@ -159,7 +186,13 @@
             </LinearLayout>
 
 
-
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_gravity="center"/>
 
             <Button
                 android:layout_marginTop="20dp"

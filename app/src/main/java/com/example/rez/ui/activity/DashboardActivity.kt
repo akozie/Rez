@@ -10,15 +10,18 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.example.rez.R
 import com.example.rez.databinding.ActivityDashboardBinding
+import com.example.rez.repository.AuthRepository
+import com.example.rez.ui.RezViewModel
+import com.example.rez.ui.RezViewModelProviderFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
@@ -37,6 +40,7 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var profilePicture: CircleImageView
     private lateinit var navigationView: NavigationView
     private lateinit var navView: NavigationView
+    lateinit var rezViewModel: RezViewModel
 
 
 
@@ -52,19 +56,10 @@ class DashboardActivity : AppCompatActivity() {
         _binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val intent = getIntent()
-//        if (intent.extras != null){
-//
-//            sharedPreferences.edit().putInt("USER_ID", intent.getIntExtra("USER_ID",0))
-//        }
-//        val email = intent.getStringExtra("USER_EMAIL")
-//        Toast.makeText(this, email, Toast.LENGTH_SHORT).show()
-//        Log.i("USER_EMAIL", email!!)
+        val rezRepository = AuthRepository()
+        val viewModelProviderFactory = RezViewModelProviderFactory(application, rezRepository)
+        rezViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RezViewModel::class.java)
 
-//        val bundle = Bundle();
-//        bundle.putString("USER_EMAIL_ID", email)
-//        val fragobj = PasswordResetConfirmationFragment()
-//        fragobj.arguments = bundle
 
         setSupportActionBar(binding.appBarDashboard.dashboardActivityToolbar)
 
@@ -191,6 +186,7 @@ class DashboardActivity : AppCompatActivity() {
     private fun onDestinationChangedListener() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             toolbarFragmentName.text = destination.label ?: getString(R.string.app_name)
+            toolbarFragmentName.setTextColor(Color.WHITE)
             when (destination.id) {
                 R.id.home2 -> {
                     bottomNavigationView.visibility = View.VISIBLE

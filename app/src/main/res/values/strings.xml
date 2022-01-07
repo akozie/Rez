@@ -24,12 +24,9 @@
     <string name="last_name">Last Name</string>
     <string name="other_name">Other Name</string>
     <string name="user_name">Username</string>
-    <string name="phone_number">Phone Number</string>
+    <string name="phone_number">Phone number</string>
     <string name="email_address">Email Address</string>
     <string name="enter_your_phone_number">Enter your email address</string>
-    <string name="address">Address 1</string>
-    <string name="address_2">Address 2</string>
-    <string name="address_city">Address city</string>
     <string name="password">Password</string>
     <string name="old_password">Old Password</string>
     <string name="confirm_password">Confirm Password</string>
@@ -41,7 +38,7 @@
     <string name="remember_password">Remember password? </string>
     <string name="reset_password_confirmation_fragment_reset_password_button">Reset Password</string>
     <string name="hi_john">Hi, John! Your account has been created!</string>
-    <string name="email_has_been_sent">OTP has been sent!</string>
+    <string name="email_has_been_sent">Email has been sent!</string>
     <string name="please_check">Please check your inbox</string>
     <string name="welcome_cha">To activate account, follow the link sent to your email</string>
     <string name="verify_email">VERIFY EMAIL</string>
@@ -104,6 +101,10 @@
     <string name="edit_profile_fragment_field_cannot_be_empty_text">Field cannot be empty!</string>
     <string name="edit_profile_fragment_other_name_text">Other Name</string>
     <string name="hintSearchMess">Search here ...</string>
+    <string name="frstname_dialog_fragment">FirstName Dialog Fragment</string>
+    <string name="cancel">CANCEL</string>
+    <string name="ok">OK</string>
+    <string name="required">Required</string>
 
     <string name="edittext_hint">
         <font color="grey" size="32">Password</font>
@@ -114,43 +115,7 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
-    <string-array name="states">
-        <item>Abia</item>
-        <item>Adamawa</item>
-        <item>Akwa Ibom</item>
-        <item>Anambra</item>
-        <item>Bauchi</item>
-        <item>Bayelsa</item>
-        <item>Benue</item>
-        <item>Borno</item>
-        <item>Cross River</item>
-        <item>Delta</item>
-        <item>Ebonyi</item>
-        <item>Edo</item>
-        <item>Ekiti</item>
-        <item>Enugu</item>
-        <item>Gombe</item>
-        <item>Imo</item>
-        <item>Jigawa</item>
-        <item>Kaduna</item>
-        <item>Kano</item>
-        <item>Katsina</item>
-        <item>Kebbi</item>
-        <item>Kogi</item>
-        <item>Kwara</item>
-        <item>Lagos</item>
-        <item>Nassarawa</item>
-        <item>Niger</item>
-        <item>Ogun</item>
-        <item>Ondo</item>
-        <item>Osun</item>
-        <item>Oyo</item>
-        <item>Plateau</item>
-        <item>Rivers</item>
-        <item>Sokoto</item>
-        <item>Taraba</item>
-        <item>Yobe</item>
-        <item>Zamfara</item>
-        <item>FCT</item>
-    </string-array>
+    <string name="permision_to_access">\Permission to access your \</string>
+    <string name="is_required_to_use_this_app">\ is required to use this app\</string>
+
 </resources>

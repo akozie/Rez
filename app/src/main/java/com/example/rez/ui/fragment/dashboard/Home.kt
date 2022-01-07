@@ -1,5 +1,6 @@
 package com.example.rez.ui.fragment.dashboard
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,9 @@ import com.example.rez.databinding.FragmentHomeBinding
 import com.example.rez.model.dashboard.NearRestaurantData
 import com.example.rez.model.dashboard.SuggestionRestaurantData
 import com.example.rez.model.dashboard.TopRecommendedData
+import com.example.rez.ui.RezViewModel
+import com.example.rez.ui.activity.DashboardActivity
+import javax.inject.Inject
 
 
 class Home : Fragment() {
@@ -45,6 +49,7 @@ class Home : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         topRestaurants()
         nearRestaurants()
         suggestionRestaurants()

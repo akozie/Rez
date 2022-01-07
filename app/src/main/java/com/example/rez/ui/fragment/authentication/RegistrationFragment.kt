@@ -19,7 +19,6 @@ import com.example.rez.model.authentication.request.RegisterRequest
 import com.example.rez.ui.RezViewModel
 import com.example.rez.util.ValidationObject.validateEmail
 import com.example.rez.util.ValidationObject.validatePasswordMismatch
-import com.example.rez.util.ValidationObject.validatePhoneNumber
 import com.example.rez.util.enable
 import com.example.rez.util.handleApiError
 import com.example.rez.util.visible
@@ -66,10 +65,10 @@ class RegistrationFragment : Fragment() {
                         val message = it.value.message
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                         val action =
-                            RegistrationFragmentDirections.actionRegistrationFragmentToOTPFragment()
+                            RegistrationFragmentDirections.actionRegistrationFragmentToLoginFragment()
                         findNavController().navigate(action)
                     }}
-                is Resource.Failure -> handleApiError(it) { register() }
+                is Resource.Failure -> handleApiError(it)
             }
         })
 
@@ -91,7 +90,6 @@ class RegistrationFragment : Fragment() {
     }
 
     private fun register() {
-
 
         /*Initialize User Inputs*/
         val firstName = binding.edtFirstName.text.toString().trim()
@@ -133,7 +131,7 @@ class RegistrationFragment : Fragment() {
                 binding.TILedtPass.errorIconDrawable = null
 
             }
-            password.length <= 6 -> {
+            password.length <= 5 -> {
                 binding.TILedtPass.error =
                     getString(R.string.valid_password_is_required)
                 binding.TILedtPass.errorIconDrawable = null

@@ -68,7 +68,7 @@
         <item name="android:padding">@dimen/padding_10dp</item>
         <item name="cornerRadius">@dimen/margin_5dp</item>
         <item name="fontFamily">@font/poppins_bold</item>
-        <item name="backgroundTint">@color/pink</item>
+        <item name="backgroundTint">@color/blue</item>
         <item name="android:layout_marginTop">@dimen/margin_10dp</item>
         <item name="android:layout_marginStart">@dimen/margin_10dp</item>
         <item name="android:layout_marginEnd">@dimen/margin_10dp</item>
@@ -122,14 +122,22 @@
     </style>
 
     <style name="SignUpScreenEditTextField">
-        <item name="fontFamily">@font/poppins_light</item>
-        <item name="android:inputType">textPersonName</item>
-        <item name="android:textColor">@color/blue</item>
-        <item name="android:textColorHint">@color/blue</item>
-        <item name="strokeColor">@color/blue</item>
-        <item name="android:textCursorDrawable">@drawable/cursor_appearance</item>
-        <item name="android:textSize">@dimen/text_size_16sp</item>
+            <item name="android:textColor">@color/blue</item>
+            <item name="android:textColorHint">@color/blue</item>
+            <item name="fontFamily">@font/poppins_light</item>
+            <item name="android:textSize">@dimen/text_size_13sp</item>
+            <item name="android:ems">10</item>
     </style>
+
+<!--    <style name="SignUpScreenEditTextField">-->
+<!--        <item name="fontFamily">@font/poppins_light</item>-->
+<!--        <item name="android:inputType">textPersonName</item>-->
+<!--        <item name="android:textColor">@color/blue</item>-->
+<!--        <item name="android:textColorHint">@color/blue</item>-->
+<!--        <item name="strokeColor">@color/blue</item>-->
+<!--        <item name="android:textCursorDrawable">@drawable/cursor_appearance</item>-->
+<!--        <item name="android:textSize">@dimen/text_size_16sp</item>-->
+<!--    </style>-->
 
     <style name="NexportEditTextLayoutStyle">
         <item name="android:layout_marginStart">@dimen/margin_18dp</item>
@@ -176,6 +184,7 @@
         <item name="android:textCursorDrawable">@drawable/cursor_appearance</item>
         <item name="android:textSize">@dimen/text_size_16sp</item>
     </style>
+
 
 <!--    <style name="LoginPasswordFragmentEditText">-->
 <!--        <item name="android:textColor">@color/off_green</item>-->

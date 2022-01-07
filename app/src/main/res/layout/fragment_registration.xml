@@ -48,13 +48,14 @@ android:orientation="vertical">
                 style="@style/NexportEditTextLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_40dp">
+                android:layout_marginTop="@dimen/margin_10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_first_name"
                     style="@style/SignUpScreenEditTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:hint="@string/first_name"
                     android:layout_gravity="center"
                     android:paddingStart="@dimen/padding_5dp"
@@ -63,7 +64,7 @@ android:orientation="vertical">
                 <View
                     style="@style/LoginFragmentDividerViewStyle"
                     android:id="@+id/login_screen_fragment_email_address_bottom_divider_view"
-                    android:layout_marginTop="@dimen/margin_5dp" />
+                     />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,6 +80,7 @@ android:orientation="vertical">
                     style="@style/SignUpScreenEditTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:hint="@string/last_name"
                     android:paddingStart="@dimen/padding_5dp"
                     android:paddingEnd="@dimen/padding_0dp" />
@@ -86,39 +88,47 @@ android:orientation="vertical">
                 <View
                     style="@style/LoginFragmentDividerViewStyle"
                     android:id="@+id/login_screen_email_address_bottom_divider_view"
-                    android:layout_marginTop="@dimen/margin_5dp" />
+                   />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/init_phone_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_20dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:gravity="center"
+                    android:text="+234"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_size_13sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/TILedt_mobile"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/TILedt_mobile" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TILedt_mobile"
                     style="@style/EditTextLayoutStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    tools:ignore="MissingConstraints">
 
-                        <TextView
-                            android:id="@+id/init_phone_number"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+234"
-                            android:fontFamily="@font/poppins_light"
-                            android:textColor="@color/blue"
-                            android:textSize="@dimen/text_size_16sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edt_user_mobile"
-                            style="@style/SignUpScreenPhoneTextField"
-                            android:layout_width="0dp"
+                            style="@style/SignUpScreenEditTextField"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/phone_number"
                             android:inputType="phone"
-                            android:layout_marginBottom="@dimen/margin_10dp"
+                            android:maxLength="11"
+                            android:layout_marginStart="@dimen/margin_45dp"
                             android:paddingStart="@dimen/padding_5dp"
                             android:paddingEnd="@dimen/padding_0dp"
                             app:layout_constraintBottom_toBottomOf="@+id/init_phone_number"
@@ -126,14 +136,13 @@ android:orientation="vertical">
                             app:layout_constraintStart_toEndOf="@+id/init_phone_number"
                             app:layout_constraintTop_toTopOf="@+id/init_phone_number" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <View
                         style="@style/LoginFragmentDividerViewStyle"
-                        android:id="@+id/login_screen_fragment_email_address_divider_view"
-                        android:layout_marginTop="@dimen/margin_5dp" />
+                        android:id="@+id/login_screen_fragment_email_address_divider_view" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
@@ -158,8 +167,7 @@ android:orientation="vertical">
 
                 <View
                     style="@style/LoginFragmentDividerViewStyle"
-                    android:id="@+id/login_screen_fragment_email_bottom_divider_view"
-                    android:layout_marginTop="@dimen/margin_5dp" />
+                    android:id="@+id/login_screen_fragment_email_bottom_divider_view" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -184,8 +192,7 @@ android:orientation="vertical">
 
                 <View
                     style="@style/LoginFragmentDividerViewStyle"
-                    android:id="@+id/login_fragment_email_address_bottom_divider_view"
-                    android:layout_marginTop="@dimen/margin_5dp" />
+                    android:id="@+id/login_fragment_email_address_bottom_divider_view" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -210,8 +217,7 @@ android:orientation="vertical">
 
                 <View
                     style="@style/LoginFragmentDividerViewStyle"
-                    android:id="@+id/login_email_address_bottom_divider_view"
-                    android:layout_marginTop="@dimen/margin_5dp" />
+                    android:id="@+id/login_email_address_bottom_divider_view" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

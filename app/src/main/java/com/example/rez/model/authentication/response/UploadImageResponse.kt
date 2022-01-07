@@ -1,7 +1,6 @@
 package com.example.rez.model.authentication.response
 
-data class LoginResponse(
-    val data: Data,
+data class UploadImageResponse(
     val message: String,
     val status: Boolean
 )

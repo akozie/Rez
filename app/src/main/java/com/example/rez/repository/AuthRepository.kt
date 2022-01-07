@@ -1,13 +1,25 @@
 package com.example.rez.repository
 
 
+import android.net.Uri
 import com.example.rez.api.RemoteDataSource.Companion.api
-import com.example.rez.model.authentication.request.ForgotPasswordRequest
-import com.example.rez.model.authentication.request.LoginRequest
-import com.example.rez.model.authentication.request.RegisterRequest
-import com.example.rez.model.authentication.request.ResPasswordRequest
+import com.example.rez.model.authentication.request.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class AuthRepository: BaseRepository() {
+
+    suspend fun uploadImage(image: MultipartBody.Part, token: String) = safeApiCall{
+        api.uploadImage(image,token)
+    }
+
+    suspend fun getProfile( token: String) = safeApiCall{
+        api.getProfile(token)
+    }
+
+    suspend fun updateProfile(user:UpdateProfileRequest, token: String) = safeApiCall{
+        api.updateProfile(user, token)
+    }
 
     suspend fun resetPassword( user: ResPasswordRequest) = safeApiCall{
         api.resetPassword(user)
@@ -23,5 +35,9 @@ class AuthRepository: BaseRepository() {
 
     suspend fun login( user: LoginRequest) = safeApiCall{
         api.login(user)
+    }
+
+    suspend fun changePassword(user: ChangePasswordRequest, token: String) = safeApiCall{
+        api.changePassword(user, token)
     }
 }

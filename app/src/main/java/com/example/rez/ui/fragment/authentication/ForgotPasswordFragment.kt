@@ -52,7 +52,7 @@ class ForgotPasswordFragment : Fragment() {
                             ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToResetPasswordFragment(ref)
                         findNavController().navigate(action)
                     }}
-                is Resource.Failure -> handleApiError(it) { forgotPassword() }
+                is Resource.Failure -> handleApiError(it)
             }
         })
 

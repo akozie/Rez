@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -45,10 +47,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //Dagger 2
-//    implementation 'com.google.dagger:dagger-android:2.39.1'
-//    implementation 'com.google.dagger:dagger-android-support:2.39.1'
-//    kapt 'com.google.dagger:dagger-android-processor:2.38.1'
-//    kapt 'com.google.dagger:dagger-compiler:2.38.1'
+    implementation 'com.google.dagger:dagger-android:2.39.1'
+    implementation 'com.google.dagger:dagger-android-support:2.39.1'
+    kapt 'com.google.dagger:dagger-android-processor:2.38.1'
+    kapt 'com.google.dagger:dagger-compiler:2.38.1'
+    kapt 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.2.0'
 
 
     //androidx.test
@@ -94,6 +97,7 @@ dependencies {
 
     // Image crop
     api "com.theartofdev.edmodo:android-image-cropper:2.8.0"
+    implementation 'androidx.activity:activity-ktx:1.2.0-alpha'
 
     //Picasso
     implementation "com.squareup.picasso:picasso:2.8"
@@ -113,4 +117,16 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-service:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1'
 //    kapt 'androidx.lifecycle:lifecycle-compiler:2.3.1'
+
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    /* Image Compressor */
+    implementation "id.zelory:compressor:$versions.image_compressor"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$versions.glide_version"
+    kapt "com.github.bumptech.glide:compiler:$versions.glide_version"
+    implementation "com.github.bumptech.glide:glide:$versions.glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$versions.glide_version"
+
 }

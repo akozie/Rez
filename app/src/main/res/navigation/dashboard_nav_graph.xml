@@ -13,17 +13,17 @@
     <fragment
         android:id="@+id/help2"
         android:name="com.example.rez.ui.fragment.dashboard.Help"
-        android:label="fragment_help"
+        android:label="Help"
         tools:layout="@layout/fragment_help" />
     <fragment
         android:id="@+id/securityAndPrivacy"
         android:name="com.example.rez.ui.fragment.dashboard.SecurityAndPrivacy"
-        android:label="fragment_security_and_privacy"
+        android:label="Security and privacy"
         tools:layout="@layout/fragment_security_and_privacy" />
     <fragment
         android:id="@+id/settings2"
         android:name="com.example.rez.ui.fragment.dashboard.Settings"
-        android:label="fragment_settings"
+        android:label="Settings"
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_settings2_to_changePassword"
@@ -37,7 +37,7 @@
     <fragment
         android:id="@+id/home2"
         android:name="com.example.rez.ui.fragment.dashboard.Home"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_home2_to_favorites"
@@ -52,16 +52,16 @@
     <fragment
         android:id="@+id/myProfile"
         android:name="com.example.rez.ui.fragment.dashboard.MyProfile"
-        android:label="fragment_my_profile"
+        android:label="My profile"
         tools:layout="@layout/fragment_my_profile" />
     <fragment
         android:id="@+id/reservation"
         android:name="com.example.rez.ui.fragment.dashboard.Reservation"
-        android:label="fragment_reservation"
+        android:label="Reservations"
         tools:layout="@layout/fragment_reservation" />
     <fragment
         android:id="@+id/changePassword"
         android:name="com.example.rez.ui.fragment.dashboard.ChangePassword"
-        android:label="fragment_change_password"
+        android:label="Change password"
         tools:layout="@layout/fragment_change_password" />
 </navigation>

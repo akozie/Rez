@@ -64,7 +64,8 @@
             android:id="@+id/action_resetPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <argument
-            android:name="Reference"
-            app:argType="string" />
+            android:name="reference"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>
