@@ -58,7 +58,7 @@ class RezViewModel(
 
 
 
-    fun uploadImage(image: MultipartBody.Part,
+    fun uploadImage(image: String,
                     token: String
     ) = viewModelScope.launch {
         _uploadImageResponse.value = Resource.Loading

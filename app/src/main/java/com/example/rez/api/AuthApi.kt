@@ -12,12 +12,12 @@ import com.example.rez.model.authentication.response.UploadImageResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
-
 interface AuthApi {
 
+    @FormUrlEncoded
     @PUT("user/avatar")
     suspend fun uploadImage(
-        @Body image: MultipartBody.Part,
+        @Field("avatar") avatar: String,
         @Header("Authorization") token: String
     ): UploadImageResponse
 

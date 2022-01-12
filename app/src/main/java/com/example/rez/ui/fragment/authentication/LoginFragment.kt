@@ -107,8 +107,8 @@ class LoginFragment : Fragment() {
                             requireActivity().finish()
                         }
                     } else {
-                        val message = it.value.message
-                        showToast(message)
+                        it.value.message?.let { it1 -> showToast(it1) }
+
                     }
 
                 }

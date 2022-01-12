@@ -9,7 +9,7 @@ import okhttp3.RequestBody
 
 class AuthRepository: BaseRepository() {
 
-    suspend fun uploadImage(image: MultipartBody.Part, token: String) = safeApiCall{
+    suspend fun uploadImage(image: String, token: String) = safeApiCall{
         api.uploadImage(image,token)
     }
 

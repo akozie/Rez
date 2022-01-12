@@ -57,10 +57,12 @@
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_signup_login.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_top_recommended.xml" value="0.12590579710144928" />
-        <entry key="app/src/main/res/layout/near_restaurant_adapter.xml" value="0.12590579710144928" />
+        <entry key="app/src/main/res/layout/fragment_top_recommended_details.xml" value="0.32087461406173184" />
+        <entry key="app/src/main/res/layout/near_restaurant_adapter.xml" value="0.375" />
         <entry key="app/src/main/res/layout/onboarding_layout.xml" value="0.14361702127659576" />
         <entry key="app/src/main/res/layout/profile_activity_header.xml" value="0.14361702127659576" />
-        <entry key="app/src/main/res/layout/suggestion_adapter.xml" value="0.13903985507246377" />
+        <entry key="app/src/main/res/layout/suggestion_adapter.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/table_layout.xml" value="0.17255434782608695" />
         <entry key="app/src/main/res/layout/top_recommended_adapter.xml" value="0.375" />
         <entry key="app/src/main/res/layout/welcome_slide1.xml" value="0.14361702127659576" />
         <entry key="app/src/main/res/layout/welcome_slide2.xml" value="0.14361702127659576" />
