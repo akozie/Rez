@@ -9,6 +9,14 @@ import okhttp3.RequestBody
 
 class AuthRepository: BaseRepository() {
 
+    suspend fun getFavorites(token: String) = safeApiCall{
+        api.getFavorites(token)
+    }
+
+    suspend fun addOrRemoveFavorites(id: String, token: String) = safeApiCall{
+        api.addOrRemoveFavorites(id, token)
+    }
+
     suspend fun uploadImage(image: String, token: String) = safeApiCall{
         api.uploadImage(image,token)
     }

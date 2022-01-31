@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <size android:width="2dp" />
-
+    <corners android:radius="@dimen/margin_5dp" />
     <span style="font-family: Arial, Helvetica, sans-serif;"><!-- Cursor width can be defined by itself --></span>
 
     <solid android:color="@color/pink"/><!--Cursor color can be defined by itself-->

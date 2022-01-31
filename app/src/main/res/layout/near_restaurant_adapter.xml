@@ -29,10 +29,10 @@
 
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/unLikeIv"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:visibility="visible"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="10dp"
@@ -40,7 +40,7 @@
                 android:src="@drawable/fav2x" />
 
             <ImageView
-                android:visibility="gone"
+                android:visibility="invisible"
                 android:id="@+id/likeIv"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -144,7 +144,7 @@
                     android:drawablePadding="5dp"
                     android:text=""
                     android:gravity="center_vertical"
-                    android:drawableLeft="@drawable/star2"/>
+                    android:drawableLeft="@drawable/ic_star_24"/>
 
                 <TextView
                     android:id="@+id/distanceTv"

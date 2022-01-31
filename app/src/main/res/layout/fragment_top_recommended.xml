@@ -7,5 +7,11 @@ android:layout_height="match_parent"
 tools:context=".ui.fragment.dashboard.TopRecommended"
 android:orientation="vertical">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/topRecomendRecycler"/>
 
 </LinearLayout>

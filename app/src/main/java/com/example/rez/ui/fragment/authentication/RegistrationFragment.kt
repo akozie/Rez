@@ -1,6 +1,9 @@
 package com.example.rez.ui.fragment.authentication
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,16 +16,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.rez.R
+import com.example.rez.RezApp
 import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentRegistrationBinding
 import com.example.rez.model.authentication.request.RegisterRequest
 import com.example.rez.ui.RezViewModel
+import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.util.ValidationObject.validateEmail
 import com.example.rez.util.ValidationObject.validatePasswordMismatch
 import com.example.rez.util.enable
 import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
@@ -33,6 +40,14 @@ class RegistrationFragment : Fragment() {
     private var _binding: FragmentRegistrationBinding? = null
     private val binding get() = _binding!!
     private val rezViewModel: RezViewModel by activityViewModels()
+
+//    @Inject
+//    lateinit var sharedPreferences: SharedPreferences
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        (requireActivity().application as RezApp).localComponent?.inject(this)
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,13 +76,31 @@ class RegistrationFragment : Fragment() {
             binding.progressBar.visible(it is Resource.Loading)
             when(it) {
                 is Resource.Success -> {
+//                    lifecycleScope.launch {
+//                        val uEmail = binding.edtUserEmail.text.toString().trim()
+//                        val token: String? = it.value.data.token
+//                        val user = sharedPreferences.edit().putString("token", token).commit()
+//                        sharedPreferences.edit().putString("email", uEmail).commit()
+//                        Log.i("TOK", user.toString())
+//
+//                        val message = it.value.message
+//                        showToast(message)
+//                        startActivity(
+//                            Intent(
+//                                requireContext(),
+//                                DashboardActivity::class.java
+//                            )
+//                        )
+//                        requireActivity().finish()
+//                    }
                     lifecycleScope.launch {
                         val message = it.value.message
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                         val action =
                             RegistrationFragmentDirections.actionRegistrationFragmentToLoginFragment()
                         findNavController().navigate(action)
-                    }}
+                    }
+                }
                 is Resource.Failure -> handleApiError(it)
             }
         })
@@ -80,7 +113,6 @@ class RegistrationFragment : Fragment() {
         binding.signUpTv.setOnClickListener {
             register()
         }
-
     }
 
     override fun onResume() {
@@ -181,6 +213,7 @@ class RegistrationFragment : Fragment() {
                 }
             }
         }
+
         binding.edtLastName.doOnTextChanged { _, _, _, _ ->
             when {
                 binding.edtLastName.text.toString().trim().isEmpty() -> {
@@ -213,7 +246,6 @@ class RegistrationFragment : Fragment() {
                 }
             }
         }
-
 
         binding.edtUserMobile.doOnTextChanged { _, _, _, _ ->
             when {
@@ -270,10 +302,6 @@ class RegistrationFragment : Fragment() {
                 }
             }
         }
-
-
         return isValidated
     }
-
-
 }

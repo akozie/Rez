@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rez.databinding.TopRecommendedAdapterBinding
+import com.example.rez.model.dashboard.NearRestaurantData
 import com.example.rez.model.dashboard.TopRecommendedData
 import com.squareup.picasso.Picasso
 
-class TopRecommendedAdapter( private var topRecommendedList:ArrayList<TopRecommendedData> ): RecyclerView.Adapter<TopRecommendedAdapter.MyViewHolder>() {
+class TopRecommendedAdapter( private var topRecommendedList:ArrayList<TopRecommendedData>, var clickListener: OnTopItemClickListener ): RecyclerView.Adapter<TopRecommendedAdapter.MyViewHolder>() {
 
 
     inner class MyViewHolder(private val binding: TopRecommendedAdapterBinding): RecyclerView.ViewHolder(binding.root) {
@@ -36,9 +37,17 @@ class TopRecommendedAdapter( private var topRecommendedList:ArrayList<TopRecomme
                 }
             }
         }
+        holder.itemView.setOnClickListener {
+            clickListener.onTopItemClick(topRecommendedList[position])
+        }
     }
 
     override fun getItemCount(): Int {
         return topRecommendedList.size
     }
 }
+
+interface OnTopItemClickListener {
+    fun onTopItemClick(topModel: TopRecommendedData)
+}
+

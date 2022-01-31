@@ -1,33 +1,54 @@
 package com.example.rez.ui.fragment.dashboard
 
+import android.content.Intent
+import android.content.SharedPreferences
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.rez.R
+import com.example.rez.RezApp
+import com.example.rez.adapter.FavoritesAdapter
+import com.example.rez.adapter.SuggestionAndNearAdapter
+import com.example.rez.api.Resource
+import com.example.rez.databinding.FragmentFavoritesBinding
+import com.example.rez.model.authentication.response.Favourite
+import com.example.rez.model.authentication.response.GetFavoritesResponse
+import com.example.rez.model.dashboard.NearRestaurantData
+import com.example.rez.model.dashboard.SuggestionAndNearData
+import com.example.rez.ui.RezViewModel
+import com.example.rez.ui.activity.DashboardActivity
+import com.example.rez.ui.activity.MainActivity
+import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
+import com.example.rez.util.visible
+import com.google.gson.Gson
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Favorites.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Favorites : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var _binding : FragmentFavoritesBinding
+    private val binding get() = _binding
+    private lateinit var nearRestaurantAdapter: FavoritesAdapter
+    private lateinit var nearList: List<Favourite>
+    private lateinit var nearRecyclerView: RecyclerView
+    private lateinit var rezViewModel: RezViewModel
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        (requireActivity().application as RezApp).localComponent?.inject(this)
     }
 
     override fun onCreateView(
@@ -35,26 +56,36 @@ class Favorites : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        rezViewModel = (activity as DashboardActivity).rezViewModel
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Favorites.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Favorites().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        rezViewModel.getFavorites("Bearer ${sharedPreferences.getString("token", "token")}")
+        rezViewModel.getFavoritesResponse.observe(viewLifecycleOwner, Observer {
+          //  binding.progressBar.visible(it is Resource.Loading)
+            when(it) {
+                is Resource.Success -> {
+                    if (it.value.status){
+                        lifecycleScope.launch {
+                            nearList = it.value.data.favourites
+                            nearRecyclerView = binding.favoritesRecycler
+                            nearRestaurantAdapter = FavoritesAdapter(nearList)
+                            nearRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+                            nearRecyclerView.adapter = nearRestaurantAdapter
+                        }
+                    } else {
+                        it.value.message?.let { it1 -> showToast(it1) }
+
+                    }
+
                 }
+                is Resource.Failure -> handleApiError(it)
             }
+        })
+
     }
 }

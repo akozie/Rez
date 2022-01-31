@@ -102,9 +102,12 @@
     <string name="edit_profile_fragment_other_name_text">Other Name</string>
     <string name="hintSearchMess">Search here ...</string>
     <string name="frstname_dialog_fragment">FirstName Dialog Fragment</string>
+    <string name="filter_dialog_fragment">Filter Dialog Fragment</string>
     <string name="cancel">CANCEL</string>
     <string name="ok">OK</string>
     <string name="required">Required</string>
+    <string name="about">About</string>
+    <string name="review">Review</string>
 
     <string name="edittext_hint">
         <font color="grey" size="32">Password</font>

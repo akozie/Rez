@@ -1,5 +1,9 @@
 package com.example.rez.model.dashboard
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class SuggestionRestaurantData(
     val restaurantName: String? = null,
     val restaurantImage: Int? = null,
@@ -11,4 +15,4 @@ data class SuggestionRestaurantData(
     val restaurantId: String? = null,
     val liked: String? = null
 
-)
+) : Parcelable

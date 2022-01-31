@@ -45,9 +45,9 @@ class ForgotPasswordFragment : Fragment() {
             when(it) {
                 is Resource.Success -> {
                     lifecycleScope.launch {
-                        val message = it.value.message
+                        //val message = it.value.message
                         val ref = it.value.data.reference
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                         val action =
                             ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToResetPasswordFragment(ref)
                         findNavController().navigate(action)

@@ -5,15 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.example.rez.R
-import com.example.rez.databinding.AccountEmailDialogFragmentBinding
-import com.example.rez.databinding.AccountFirstNameDialogFragmentBinding
-import com.example.rez.databinding.AccountLastNameDialogFragmentBinding
-import com.example.rez.databinding.AccountPhoneNumberDialogFragmentBinding
+import com.example.rez.databinding.*
 import com.example.rez.ui.fragment.dashboard.MyProfile.Companion.ACCOUNT_EMAIL_BUNDLE_KEY
 import com.example.rez.ui.fragment.dashboard.MyProfile.Companion.ACCOUNT_EMAIL_REQUEST_KEY
 import com.example.rez.ui.fragment.dashboard.MyProfile.Companion.ACCOUNT_FIRST_NAME_BUNDLE_KEY
@@ -26,6 +25,10 @@ import com.example.rez.ui.fragment.dashboard.MyProfile.Companion.CURRENT_ACCOUNT
 import com.example.rez.ui.fragment.dashboard.MyProfile.Companion.CURRENT_ACCOUNT_LAST_NAME_BUNDLE_KEY
 import com.example.rez.ui.fragment.dashboard.MyProfile.Companion.CURRENT_ACCOUNT_OTHER_NAME_BUNDLE_KEY
 import com.example.rez.ui.fragment.dashboard.MyProfile.Companion.CURRENT_EMAIL_BUNDLE_KEY
+import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.ACCOUNT_FILTER_BUNDLE_KEY
+import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.CURRENT_FILTER_NAME_BUNDLE_KEY
+import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.FILTER_NAME_REQUEST_KEY
+import com.example.rez.util.showToast
 
 class ProfileManagementDialogFragments(
     private var dialogLayoutId: Int,
@@ -294,6 +297,86 @@ class ProfileManagementDialogFragments(
                                 null
                         }
                     }
+                }
+            }
+
+            R.layout.account_filter_dialog_fragment -> {
+                /*Initialise binding*/
+                val binding = AccountFilterDialogFragmentBinding.bind(view)
+                val showText =
+                    binding.showText
+                val showPrice = binding.showTextPrice
+                val okButton = binding.applyTv
+                val cancelButton = binding.cancelTv
+                val removeBtn = binding.cancelDialog
+
+                val retrievedArgs =
+                    bundle?.getString(CURRENT_FILTER_NAME_BUNDLE_KEY)
+
+                /*Attaching the data*/
+               // showText.setText(retrievedArgs)
+
+                binding.guestSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                        showText.text = p1.toString()
+                    }
+
+                    override fun onStartTrackingTouch(p0: SeekBar?) {
+
+                    }
+
+                    override fun onStopTrackingTouch(p0: SeekBar?) {
+
+                    }
+
+                })
+
+                binding.priceSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                        showPrice.text = p1.toString()
+                    }
+
+                    override fun onStartTrackingTouch(p0: SeekBar?) {
+
+                    }
+
+                    override fun onStopTrackingTouch(p0: SeekBar?) {
+
+                    }
+
+                })
+                /*when the dialog ok button is clicked*/
+                okButton.setOnClickListener {
+                    val inputValue =
+                        showText.text.toString()
+
+                    when {
+                        inputValue.isEmpty() -> {
+                            setFragmentResult(
+                                FILTER_NAME_REQUEST_KEY,
+                                bundleOf(
+                                    ACCOUNT_FILTER_BUNDLE_KEY to null
+                                )
+                            )
+                            dismiss()
+                        }
+                        else -> {
+                            setFragmentResult(
+                                FILTER_NAME_REQUEST_KEY,
+                                bundleOf(
+                                    ACCOUNT_FILTER_BUNDLE_KEY to inputValue
+                                )
+                            )
+                            dismiss()
+                        }
+                    }
+                }
+                /*when the dialog cancel button is clicked*/
+                cancelButton.setOnClickListener {
+                    dismiss()
+                }
+                removeBtn.setOnClickListener {
+                    dismiss()
                 }
             }
 

@@ -9,11 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.rez.R
 import com.example.rez.databinding.FragmentSettingsBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Settings.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class Settings : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null

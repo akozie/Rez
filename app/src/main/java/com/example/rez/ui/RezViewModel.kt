@@ -6,15 +6,14 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.rez.api.AuthApi
 import com.example.rez.api.Resource
 import com.example.rez.model.authentication.genresponse.ForPasswordResponse
 import com.example.rez.model.authentication.genresponse.RegResponse
 import com.example.rez.model.authentication.genresponse.ResPasswordResponse
 import com.example.rez.model.authentication.genresponse.UpdateProResponse
 import com.example.rez.model.authentication.request.*
-import com.example.rez.model.authentication.response.ChangePasswordResponse
-import com.example.rez.model.authentication.response.LoginResponse
-import com.example.rez.model.authentication.response.UploadImageResponse
+import com.example.rez.model.authentication.response.*
 import com.example.rez.repository.AuthRepository
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -23,6 +22,14 @@ class RezViewModel(
     app: Application,
     var rezRepository: AuthRepository
 ): AndroidViewModel(app) {
+
+    private val _getFavoritesResponse: MutableLiveData<Resource<GetFavoritesResponse>> = MutableLiveData()
+    val getFavoritesResponse: LiveData<Resource<GetFavoritesResponse>>
+        get() = _getFavoritesResponse
+
+    private val _addOrRemoveFavoritesResponse: MutableLiveData<Resource<GeneralResponse>> = MutableLiveData()
+    val addOrRemoveFavoritesResponse: LiveData<Resource<GeneralResponse>>
+        get() = _addOrRemoveFavoritesResponse
 
     private val _uploadImageResponse: MutableLiveData<Resource<UploadImageResponse>> = MutableLiveData()
     val uploadImageResponse: LiveData<Resource<UploadImageResponse>>
@@ -56,7 +63,21 @@ class RezViewModel(
     val changePasswordResponse: LiveData<Resource<ChangePasswordResponse>>
         get() = _changePasswordResponse
 
+    val title = MutableLiveData<String>()
 
+    fun getFavorites( token: String
+    ) = viewModelScope.launch {
+        _getFavoritesResponse.value = Resource.Loading
+        _getFavoritesResponse.value = rezRepository.getFavorites(token)
+    }
+
+    fun addOrRemoveFavorites(
+        id: String,
+        token: String
+    ) = viewModelScope.launch {
+      //  _addOrRemoveFavoritesResponse.value = Resource.Loading
+        _addOrRemoveFavoritesResponse.value = rezRepository.addOrRemoveFavorites(id, token)
+    }
 
     fun uploadImage(image: String,
                     token: String

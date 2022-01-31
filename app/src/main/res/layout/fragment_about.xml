@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.dashboard.AboutFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginStart="@dimen/margin_10dp"
+        android:layout_marginEnd="@dimen/margin_10dp"
+        android:text="One of the most popular table designs, the two to four sets, is generally sold
+    as two separate components, the base and the tabletop. The tablet..One of the most popular table designs, the two to four sets, is generally sold
+    as two separate components, the base and the tabletop. The tablet.."
+        android:textSize="@dimen/text_size_18sp"
+        app:layout_constraintBottom_toTopOf="@+id/proceedTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/proceedTv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_55dp"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/blue"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:text="Proceed to booking"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_marginStart="@dimen/margin_10dp"
+            android:layout_marginEnd="@dimen/margin_10dp"
+            android:layout_marginBottom="@dimen/margin_20dp"
+            android:textSize="@dimen/text_size_16sp"
+            app:cornerRadius="@dimen/margin_5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

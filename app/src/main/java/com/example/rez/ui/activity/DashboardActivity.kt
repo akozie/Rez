@@ -3,6 +3,7 @@ package com.example.rez.ui.activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -43,8 +44,6 @@ class DashboardActivity : AppCompatActivity() {
     lateinit var rezViewModel: RezViewModel
 
 
-
-
 //    @Inject
 //    lateinit var sharedPreferences: SharedPreferences
 
@@ -64,10 +63,12 @@ class DashboardActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarDashboard.dashboardActivityToolbar)
 
         /*Set Status bar Color*/
-        window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window?.statusBarColor = resources?.getColor(R.color.purple)!!
-        window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+//            window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+//            window?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+//            window?.statusBarColor = resources?.getColor(R.color.blue)!!
+//            window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//        }
 
         drawerLayout = binding.drawerLayout
         navView = binding.navView
@@ -177,7 +178,6 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         return  navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
@@ -209,6 +209,48 @@ class DashboardActivity : AppCompatActivity() {
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.topRecommended -> {
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.nearRestaurant -> {
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.suggestionForYou -> {
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.topFragment -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.nearRestFragment -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.suggestFragment -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.tableDetails -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
                     profilePicture.visibility = View.INVISIBLE
                 }
                 else -> {

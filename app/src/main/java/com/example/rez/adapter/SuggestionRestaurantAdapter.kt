@@ -9,7 +9,7 @@ import com.example.rez.model.dashboard.NearRestaurantData
 import com.example.rez.model.dashboard.SuggestionRestaurantData
 
 
-class SuggestionRestaurantAdapter(private var suggestionRestaurantList: ArrayList<SuggestionRestaurantData>): RecyclerView.Adapter<SuggestionRestaurantAdapter.MyViewHolder>() {
+class SuggestionRestaurantAdapter(private var suggestionRestaurantList: ArrayList<SuggestionRestaurantData>, var clickListener: OnSuggestionClickListener): RecyclerView.Adapter<SuggestionRestaurantAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(private val binding: SuggestionAdapterBinding): RecyclerView.ViewHolder(binding.root) {
         val hotelImageIv = binding.hotelImageIv
@@ -43,10 +43,16 @@ class SuggestionRestaurantAdapter(private var suggestionRestaurantList: ArrayLis
                 }
             }
         }
+        holder.itemView.setOnClickListener {
+            clickListener.onSuggestionItemClick(suggestionRestaurantList[position])
+        }
     }
 
     override fun getItemCount(): Int {
         return suggestionRestaurantList.size
     }
+}
 
+interface OnSuggestionClickListener {
+    fun onSuggestionItemClick(suggestionModel: SuggestionRestaurantData)
 }

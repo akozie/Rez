@@ -59,7 +59,6 @@ class MyProfile : Fragment() {
     private val binding get() = _binding!!
     private lateinit var rezViewModel: RezViewModel
     private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
-   // lateinit var profileImageDataStoreManager: ProfileImageDataStoreManager
 
 
     @Inject
@@ -78,17 +77,16 @@ class MyProfile : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentMyProfileBinding.inflate(inflater, container, false)
         rezViewModel = (activity as DashboardActivity).rezViewModel
+          binding.progressBar.visibility = View.VISIBLE
 
         //GET USER PROFILE
         rezViewModel.getProfile(token = "Bearer ${sharedPreferences.getString("token", "token")}")
         rezViewModel.getProfileResponse.observe(viewLifecycleOwner, Observer {
-            //  binding.progressBar.visible(it is Resource.Loading)
+              binding.progressBar.visible(it is Resource.Loading)
             when(it) {
                 is Resource.Success -> {
                     if (it.value.status){
                         lifecycleScope.launch {
-                            val message = it.value.message
-                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                             binding.firstNameEt.text = it.value.data.first_name
                             binding.lastNameEt.text = it.value.data.last_name
                             binding.userEmailEt.text = sharedPreferences.getString("email", "email")
@@ -121,7 +119,6 @@ class MyProfile : Fragment() {
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract) {
             it?.let { uri ->
                 binding.customerImageIv.imageAlpha = 140
-               // binding.customerImageIv.setImageURI(uri)
                 uploadImageToServer(uri)
             }
         }
@@ -160,15 +157,7 @@ class MyProfile : Fragment() {
                 updateProfile()
             }
         }
-
-
     }
-
-  //  private fun uploadImage(user: UploadImageRequest, token: String) {
-       // rezViewModel.uploadImage(user, token )
-   // }
-
-
 
     private fun updateProfile() {
         val firstName = binding.firstNameEt.text.toString().trim()
@@ -195,8 +184,6 @@ class MyProfile : Fragment() {
                         last_name = lastName,
                         phone = phoneNumber
                     )
-              //  val tok = sharedPreferences.getString("token", "token").toString()
-
                 rezViewModel.updateProfile(newUser, token = "Bearer ${sharedPreferences.getString("token", "token")}")
             }
         }
@@ -222,14 +209,6 @@ class MyProfile : Fragment() {
                 }
                 shouldShowRequestPermissionRationale(this) -> showDialog(this, name, requestCode);
 
-//                if (cameraPermission == PackageManager.PERMISSION_DENIED) -> {
-//                    ActivityCompat.requestPermissions(
-//                        requireActivity(),
-//                        arrayOf(Manifest.permission.CAMERA),
-//                        requestCode
-//                    )
-//                }
-
                 else -> ActivityCompat.requestPermissions(
                     requireActivity(),
                     arrayOf(this),
@@ -238,41 +217,6 @@ class MyProfile : Fragment() {
             }
         }
     }
-
-
-
-//    // check for permission and make call
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//
-//        when (requestCode) {
-//
-//            READ_IMAGE_STORAGE -> {
-//                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-//                    showToast("permission refused")
-//                } else {
-//                    showToast("Permission granted")
-//                    cropActivityResultLauncher.launch(null)
-//                }
-//            }
-//            CAMERA -> {
-//                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_DENIED) {
-//                    showToast("permission refused")
-//                } else {
-//                    showToast("Permission granted")
-//                    ActivityCompat.requestPermissions(
-//                        requireActivity(),
-//                        arrayOf(Manifest.permission.CAMERA),
-//                        requestCode
-//                    )
-//                    cropActivityResultLauncher.launch(null)
-//                }
-//            }
-//        }
-//    }
 
     // Show dialog for permission dialog
     private fun showDialog(permission: String, name: String, requestCode: Int) {
@@ -317,58 +261,18 @@ class MyProfile : Fragment() {
 
     /*Upload Profile Picture*/
     private fun uploadImageToServer(uri: Uri) {
-
-        // create RequestBody instance from file
- //       val convertedImageUriToBitmap = uriToBitmap(uri)
- //       val bitmapToFile = saveBitmap(convertedImageUriToBitmap)
-       // val requestBody = bitmapToFile!!.asRequestBody("image/jpg".toMediaTypeOrNull())
-//        val requestMultiBody: RequestBody = MultipartBody.Builder()
-//            .setType(MultipartBody.FORM)
-//            .addFormDataPart("file", bitmapToFile.name, requestBody)
-//            .build()
-      //  val Uri imageUri = data.getData();
-
-
-//        val imageStream = requireActivity().contentResolver.openInputStream(uri);
-//        val selectedImage = BitmapFactory.decodeStream(imageStream);
-//        val encodedImage = encodeImage(selectedImage)
-
-
         val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
         val outputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         val bbb = outputStream.toByteArray()
         val b = Base64.encodeToString(bbb, Base64.DEFAULT).replace("\n", "")
 
-//        val convertedImageUriToBitmap = uriToBitmap(uri)
-//        val bitmapToFile = saveBitmap(convertedImageUriToBitmap)
-//
-//        val requestBody = bitmapToFile!!.asRequestBody("image/jpg".toMediaTypeOrNull())
-//        val requestMultiBody: RequestBody = MultipartBody.Builder()
-//            .setType(MultipartBody.FORM)
-//            .addFormDataPart("file", bitmapToFile.name, requestBody)
-//            .build()
-
-        Log.d("IMAGE", b)
-
-            rezViewModel.uploadImage(b, token = "Bearer ${sharedPreferences.getString("token", "token")}")
-            Log.d("CHECKHERE", "OOOHHH")
-
-
-
-      //  val file = FileUtils.r(File(filePath)
-        /*Compress Image then Upload Image*/
- //  lifecycleScope.launch {
-           // val compressedImage = Compressor.compress(requireContext(), bitmapToFile!!)
-                // bitmapToFile.compressFormat()
-        //    val imageBody = compressedImage.asRequestBody("image/jpg".toMediaTypeOrNull())
-        //    val image = MultipartBody.Part.createFormData("file", bitmapToFile?.name, imageBody)
-
-
+        rezViewModel.uploadImage(b, token = "Bearer ${sharedPreferences.getString("token", "token")}")
 
         /*Handling the response from the retrofit*/
         rezViewModel.uploadImageResponse.observe(
             viewLifecycleOwner, Observer {
+                binding.progressBar.visible(it is Resource.Loading)
                 when(it) {
                     is Resource.Success -> {
                         if (it.value.status){
@@ -377,14 +281,6 @@ class MyProfile : Fragment() {
                                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                                 GlideApp.with(requireContext()).load(uri).into(binding.customerImageIv)
                             }
-//                            profileImageDataStoreManager.profileImageFlow.asLiveData()
-//                                .observe(viewLifecycleOwner) { downloadUrl ->
-//                                    downloadUrl.let {
-//                                        Glide.with(this)
-//                                            .load(downloadUrl)
-//                                            .into(binding.customerImageIv)
-//                                    }
-//                                }
                         } else {
                             it.value.message?.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
@@ -513,15 +409,7 @@ class MyProfile : Fragment() {
         const val CURRENT_ACCOUNT_OTHER_NAME_BUNDLE_KEY = "CURRENT ACCOUNT OTHER NAME BUNDLE KEY"
 
         const val READ_IMAGE_STORAGE = 102
-       // const val CAMERA = 20
         const val NAME = "Rez"
-    }
-
-    private fun encodeImage(bm: Bitmap): String? {
-        val baos = ByteArrayOutputStream()
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val b = baos.toByteArray()
-        return Base64.encodeToString(b, Base64.DEFAULT)
     }
 }
 

@@ -128,7 +128,6 @@ class LoginFragment : Fragment() {
             } else {
                 binding.loginTv.enable(true)
                 login()
-                //startActivity(Intent(requireContext(), DashboardActivity::class.java))
             }
         }
 

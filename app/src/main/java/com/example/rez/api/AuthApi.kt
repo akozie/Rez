@@ -6,13 +6,22 @@ import com.example.rez.model.authentication.genresponse.RegResponse
 import com.example.rez.model.authentication.genresponse.ResPasswordResponse
 import com.example.rez.model.authentication.genresponse.UpdateProResponse
 import com.example.rez.model.authentication.request.*
-import com.example.rez.model.authentication.response.ChangePasswordResponse
-import com.example.rez.model.authentication.response.LoginResponse
-import com.example.rez.model.authentication.response.UploadImageResponse
+import com.example.rez.model.authentication.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
 interface AuthApi {
+
+    @GET("user/favourites")
+    suspend fun getFavorites(
+        @Header("Authorization") token: String
+    ): GetFavoritesResponse
+
+    @PUT("user/favourites/{vendorID}")
+    suspend fun addOrRemoveFavorites(
+        @Path("vendorID") vendorID:String,
+        @Header("Authorization") token: String
+    ): GeneralResponse
 
     @FormUrlEncoded
     @PUT("user/avatar")

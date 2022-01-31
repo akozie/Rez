@@ -33,7 +33,11 @@
         android:id="@+id/favorites"
         android:name="com.example.rez.ui.fragment.dashboard.Favorites"
         android:label="Favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <argument
+            android:name="NEARDATA"
+            app:argType="com.example.rez.model.dashboard.SuggestionAndNearData" />
+    </fragment>
     <fragment
         android:id="@+id/home2"
         android:name="com.example.rez.ui.fragment.dashboard.Home"
@@ -48,6 +52,24 @@
         <action
             android:id="@+id/action_home2_to_myProfile"
             app:destination="@id/myProfile" />
+        <action
+            android:id="@+id/action_home2_to_topRecommended"
+            app:destination="@id/topRecommended" />
+        <action
+            android:id="@+id/action_home2_to_nearRestaurant"
+            app:destination="@id/nearRestaurant" />
+        <action
+            android:id="@+id/action_home2_to_suggestionForYou"
+            app:destination="@id/suggestionForYou" />
+        <action
+            android:id="@+id/action_home2_to_tableList"
+            app:destination="@id/topFragment" />
+        <action
+            android:id="@+id/action_home2_to_nearRestFragment"
+            app:destination="@id/nearRestFragment" />
+        <action
+            android:id="@+id/action_home2_to_suggestFragment"
+            app:destination="@id/suggestFragment" />
     </fragment>
     <fragment
         android:id="@+id/myProfile"
@@ -64,4 +86,81 @@
         android:name="com.example.rez.ui.fragment.dashboard.ChangePassword"
         android:label="Change password"
         tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/topRecommended"
+        android:name="com.example.rez.ui.fragment.dashboard.TopRecommended"
+        android:label="Top Recommended"
+        tools:layout="@layout/fragment_top_recommended" />
+    <fragment
+        android:id="@+id/nearRestaurant"
+        android:name="com.example.rez.ui.fragment.dashboard.NearRestaurant"
+        android:label="Near Restaurant"
+        tools:layout="@layout/fragment_near_restaurant" />
+    <fragment
+        android:id="@+id/suggestionForYou"
+        android:name="com.example.rez.ui.fragment.dashboard.SuggestionForYou"
+        android:label="Suggestion For You"
+        tools:layout="@layout/fragment_suggestion_for_you" />
+    <fragment
+        android:id="@+id/topFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.TopFragment"
+        android:label="Top Recommended"
+        tools:layout="@layout/fragment_table_list" >
+        <argument
+            android:name="TOPDATA"
+            app:argType="com.example.rez.model.dashboard.TopRecommendedData"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_topFragment_to_tableDetails"
+            app:destination="@id/tableDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/suggestFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.SuggestFragment"
+        android:label="Suggestion For You"
+        tools:layout="@layout/fragment_suggest" >
+        <argument
+            android:name="SUGGESTIONDATA"
+            app:argType="com.example.rez.model.dashboard.SuggestionRestaurantData" />
+        <action
+            android:id="@+id/action_suggestFragment_to_tableDetails"
+            app:destination="@id/tableDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/nearRestFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.NearRestFragment"
+        android:label="Near Restaurant"
+        tools:layout="@layout/fragment_near_rest" >
+        <argument
+            android:name="NEARDATA"
+            app:argType="com.example.rez.model.dashboard.SuggestionAndNearData" />
+        <action
+            android:id="@+id/action_nearRestFragment_to_tableDetails"
+            app:destination="@id/tableDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/tableDetails"
+        android:name="com.example.rez.ui.fragment.dashboard.TableDetails"
+        android:label="Table Details"
+        tools:layout="@layout/fragment_table_details" >
+        <argument
+            android:name="TOPDETAILS"
+            app:argType="com.example.rez.model.dashboard.TableData" />
+        <action
+            android:id="@+id/action_tableDetails_to_proceedToPayment"
+            app:destination="@id/proceedToPayment" />
+    </fragment>
+    <fragment
+        android:id="@+id/proceedToPayment"
+        android:name="com.example.rez.ui.fragment.dashboard.ProceedToPayment"
+        android:label="Proceed To Payment"
+        tools:layout="@layout/fragment_proceed_to_payment" >
+        <action
+            android:id="@+id/action_proceedToPayment_to_successFragment"
+            app:destination="@id/successFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/successFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.SuccessFragment"
+        tools:layout="@layout/fragment_success" />
 </navigation>
