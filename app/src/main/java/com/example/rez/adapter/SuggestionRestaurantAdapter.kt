@@ -2,25 +2,25 @@ package com.example.rez.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rez.databinding.NearRestaurantAdapterBinding
+import com.bumptech.glide.Glide
 import com.example.rez.databinding.SuggestionAdapterBinding
-import com.example.rez.model.dashboard.NearRestaurantData
-import com.example.rez.model.dashboard.SuggestionRestaurantData
+import com.example.rez.model.dashboard.SuggestedVendor
+import com.example.rez.util.visible
 
 
-class SuggestionRestaurantAdapter(private var suggestionRestaurantList: ArrayList<SuggestionRestaurantData>, var clickListener: OnSuggestionClickListener): RecyclerView.Adapter<SuggestionRestaurantAdapter.MyViewHolder>() {
+class SuggestionRestaurantAdapter(private var suggestionRestaurantList: List<SuggestedVendor>, val clickListener: OnSuggestionClickListener): RecyclerView.Adapter<SuggestionRestaurantAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(private val binding: SuggestionAdapterBinding): RecyclerView.ViewHolder(binding.root) {
         val hotelImageIv = binding.hotelImageIv
-        val unLikeIv = binding.unLikeIv
-        val likeIv = binding.likeIv
-        val tableQtyTv = binding.tableQtyTv
-        val categoryTv = binding.categoryTv
-        val hotelNameTv = binding.hotelNameTv
-        val addressTv = binding.addressTv
-        val ratingTv = binding.ratingTv
-        val distanceTv = binding.distanceTv
+        val unLike = binding.unLikeIv
+        val like = binding.likeIv
+        val tableQty = binding.tableQtyTv
+        val category = binding.categoryTv
+        val hotelName = binding.hotelNameTv
+        val topRating = binding.ratingBar
+        val suggestedDistance = binding.distanceTv
         // val cardView = binding.cardView
 
     }
@@ -34,14 +34,35 @@ class SuggestionRestaurantAdapter(private var suggestionRestaurantList: ArrayLis
         holder.itemView.apply {
             with(holder){
                 with(suggestionRestaurantList[position]){
-                    hotelImageIv.setImageResource(restaurantImage!!)
-                    tableQtyTv.text = tables
-                    categoryTv.text = categoryName
-                    hotelNameTv.text = restaurantName
-                    addressTv.text = address
-                    distanceTv.text = distance
+                    Glide.with(context).load(avatar).into(hotelImageIv)
+                    hotelName.text = company_name
+                    category.text = category_name
+                    if (average_rating.toInt() == 0){
+                        topRating.rating = "1".toFloat()
+                    }else {
+                        topRating.rating = average_rating
+                    }
+                    if (total_tables == 1){
+                        tableQty.text = total_tables.toString() + " table"
+                    }else{
+                        tableQty.text = total_tables.toString() + " tables"
+                    }
+                    if (liked_by_user){
+                        like.visible(true)
+                        unLike.visible(false)
+                    }else{
+                        like.visible(false)
+                        unLike.visible(true)
+                    }
                 }
             }
+        }
+        holder.unLike.setOnClickListener {
+            clickListener.likeUnlike(suggestionRestaurantList[position].id.toString(), holder.like, holder.unLike)
+        }
+
+        holder.like.setOnClickListener {
+            clickListener.likeUnlike(suggestionRestaurantList[position].id.toString(), holder.like, holder.unLike)
         }
         holder.itemView.setOnClickListener {
             clickListener.onSuggestionItemClick(suggestionRestaurantList[position])
@@ -54,5 +75,7 @@ class SuggestionRestaurantAdapter(private var suggestionRestaurantList: ArrayLis
 }
 
 interface OnSuggestionClickListener {
-    fun onSuggestionItemClick(suggestionModel: SuggestionRestaurantData)
+    fun onSuggestionItemClick(suggestionModel: SuggestedVendor)
+    fun likeUnlike(id: String, like: ImageView, unLike: ImageView)
+
 }

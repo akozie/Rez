@@ -46,6 +46,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
+    // google map dependencies
+    implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'com.google.maps.android:android-maps-utils:2.2.3'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.maps:google-maps-services:0.2.9'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
+
     //Dagger 2
     implementation 'com.google.dagger:dagger-android:2.39.1'
     implementation 'com.google.dagger:dagger-android-support:2.39.1'
@@ -77,12 +84,13 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit_version"
     implementation "com.squareup.okhttp3:okhttp:$versions.okhttp3_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp3_version"
+    implementation "com.squareup.retrofit2:converter-moshi:2.6.0"
 
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
 
-    //    Circle Image View
+    //Circle Image View
     implementation "de.hdodenhof:circleimageview:$versions.circle_iv_version"
 
     //Life cycles
@@ -116,17 +124,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-process:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-service:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1'
-//    kapt 'androidx.lifecycle:lifecycle-compiler:2.3.1'
 
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
     /* Image Compressor */
     implementation "id.zelory:compressor:$versions.image_compressor"
-
-    // Glide
-//    implementation "com.github.bumptech.glide:glide:$versions.glide_version"
-//    kapt "com.github.bumptech.glide:compiler:$versions.glide_version"
-//    annotationProcessor "com.github.bumptech.glide:compiler:$versions.glide_version"
 
     implementation "com.github.bumptech.glide:glide:4.12.0"
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
@@ -137,5 +139,14 @@ dependencies {
 
   //  implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+
+    //Location sdk
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    //Paystack sdk
+    implementation 'co.paystack.android:paystack:3.1.2'
+
+
+    implementation "androidx.paging:paging-runtime-ktx:3.1.0"
 
 }

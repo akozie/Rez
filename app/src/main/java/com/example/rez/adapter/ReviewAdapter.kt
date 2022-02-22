@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rez.databinding.ReviewShowAdapterLayoutBinding
-import com.example.rez.model.dashboard.ReviewData
+import com.example.rez.model.dashboard.ReviewX
+import com.example.rez.ui.GlideApp
 
-class ReviewAdapter(private var reviewList: ArrayList<ReviewData>): RecyclerView.Adapter<ReviewAdapter.MyViewHolder>() {
+class ReviewAdapter(private var reviewList: List<ReviewX>): RecyclerView.Adapter<ReviewAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(private val binding: ReviewShowAdapterLayoutBinding): RecyclerView.ViewHolder(binding.root) {
 
@@ -26,10 +27,11 @@ class ReviewAdapter(private var reviewList: ArrayList<ReviewData>): RecyclerView
         holder.itemView.apply {
             with(holder){
                 with(reviewList[position]){
-                    userImage.setImageResource(banner_image)
-                    userName.text = name
+                    GlideApp.with(context).load(user.avatar).into(userImage)
+                    userName.text = user.first_name + " " + user.last_name
                     reviewMessageTv.text = review
-                    dateTv.text = entrydt
+                   // binding.timeTv.text = args?.booked_for?.substring(10)
+                    dateTv.text = created_at.substring(0, 10)
                 }
             }
         }

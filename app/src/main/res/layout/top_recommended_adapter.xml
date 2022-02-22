@@ -2,14 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
-        android:layout_width="170dp"
+        android:layout_width="180dp"
         android:layout_height="90dp"
-        android:layout_margin="5dp"
+        android:layout_marginEnd="@dimen/margin_10dp"
+        android:layout_marginStart="@dimen/margin_10dp"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_gravity="center"
         app:cardCornerRadius="10dp">
 
         <RelativeLayout
@@ -57,7 +61,7 @@
                         android:orientation="horizontal">
                         <RatingBar
                             android:id="@+id/ratingBar"
-                            android:rating="3"
+                            android:rating="1"
                             android:stepSize="1"
                             android:numStars="5"
                             android:layout_width="wrap_content"
@@ -69,10 +73,10 @@
                             android:progressBackgroundTint="@color/white"
                             />
 
-                        //Star Size small ke liye
                         <!-- style="?android:ratingBarStyleSmall"-->
 
                         <TextView
+                            android:visibility="gone"
                             android:id="@+id/totalReviewTv"
                             android:layout_weight="1"
                             android:layout_marginLeft="1dp"
@@ -85,6 +89,7 @@
                             android:layout_gravity="center_vertical"/>
 
                         <TextView
+                            android:visibility="gone"
                             android:layout_weight="1"
                             android:layout_marginLeft="1dp"
                             android:layout_width="wrap_content"

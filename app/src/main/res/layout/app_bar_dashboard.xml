@@ -25,14 +25,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <SearchView
+            <TextView
                 android:id="@+id/dashboard_activity_toolbar_search_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:iconifiedByDefault="false"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:hint="Search"
+                android:textColorHint="@color/grey1"
                 android:queryBackground="@android:color/transparent"
                 android:backgroundTint="@color/blue"
-                android:searchIcon="@drawable/ic_baseline_search_pink"
+                android:drawablePadding="10dp"
+                android:textSize="18sp"
+                android:drawableStart="@drawable/ic_baseline_search_pink"
                 app:layout_anchorGravity="center"
                 app:layout_constraintEnd_toStartOf="@+id/dashboard_activity_toolbar_profile_image_view"
                 app:layout_constraintStart_toStartOf="parent"

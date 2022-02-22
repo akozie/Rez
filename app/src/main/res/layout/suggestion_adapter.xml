@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="200dp"
-        android:layout_height="220dp"
+        android:layout_height="200dp"
         android:layout_margin="5dp"
         app:cardCornerRadius="10dp">
 
@@ -55,13 +55,15 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="center"
-                android:padding="4dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/rectangle_box_button_orange"
                 android:gravity="start"
+                android:padding="5dp"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
 
                 android:text=""
                 android:textColor="@color/white"
@@ -81,8 +83,9 @@
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/rectangle_box_button_pinc"
                 android:gravity="start"
-                android:padding="4dp"
-                android:text=""
+                android:padding="5dp"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"                android:text=""
                 android:textColor="@color/white"
                 android:textSize="10dp"
                 android:textStyle="bold" />
@@ -109,18 +112,18 @@
                 android:textSize="10dp"
                 android:textColor="@color/black"/>
 
-                <TextView
-                    android:id="@+id/addressTv"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="2"
-                    android:textSize="9dp"
-                    android:drawablePadding="5dp"
-                    android:text="manish patiadr"
-                    android:textColor="@color/black"
-                    android:gravity="center_vertical"
-                    android:drawableLeft="@drawable/ic_baseline_location_on_24"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/addressTv"-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:maxLines="2"-->
+<!--                    android:textSize="9dp"-->
+<!--                    android:drawablePadding="5dp"-->
+<!--                    android:text="manish patiadr"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:drawableLeft="@drawable/ic_baseline_location_on_24"/>-->
 
 
         </LinearLayout>
@@ -138,18 +141,31 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_marginLeft="10dp"
-                    android:id="@+id/ratingTv"
-                    android:layout_weight="0.8"
-                    android:layout_width="match_parent"
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:rating="1"
+                    android:stepSize="1"
+                    android:numStars="5"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="9dp"
-                    android:drawablePadding="5dp"
-                    android:text=""
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center"
-                    android:drawableLeft="@drawable/ic_star_24"/>
+                    style="?android:ratingBarStyleSmall"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:progressTint="@color/yellow"
+                    android:progressBackgroundTint="@color/white"
+                    />
+<!--                <TextView-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:id="@+id/ratingTv"-->
+<!--                    android:layout_weight="0.8"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textSize="9dp"-->
+<!--                    android:drawablePadding="5dp"-->
+<!--                    android:text=""-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:drawableLeft="@drawable/ic_star_24"/>-->
 
                 <TextView
                     android:id="@+id/distanceTv"

@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
@@ -26,13 +24,15 @@ import com.example.rez.ui.fragment.dashboard.MyProfile.Companion.CURRENT_ACCOUNT
 import com.example.rez.ui.fragment.dashboard.MyProfile.Companion.CURRENT_ACCOUNT_OTHER_NAME_BUNDLE_KEY
 import com.example.rez.ui.fragment.dashboard.MyProfile.Companion.CURRENT_EMAIL_BUNDLE_KEY
 import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.ACCOUNT_FILTER_BUNDLE_KEY
+import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.ACCOUNT_SECOND_FILTER_BUNDLE_KEY
 import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.CURRENT_FILTER_NAME_BUNDLE_KEY
 import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.FILTER_NAME_REQUEST_KEY
-import com.example.rez.util.showToast
+import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.FILTER_SECOND_NAME_REQUEST_KEY
 
 class ProfileManagementDialogFragments(
     private var dialogLayoutId: Int,
-    private var bundle: Bundle? = null
+    private var bundle: Bundle? = null,
+    bundleSecond: Bundle?
 ) : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -331,6 +331,14 @@ class ProfileManagementDialogFragments(
 
                 })
 
+                binding.increase.setOnClickListener {
+                    showPrice.text = (showPrice.text.toString().toInt()+1).toString()
+                }
+                binding.decrease.setOnClickListener {
+                    showPrice.text = (showPrice.text.toString().toInt()-1).toString()
+                }
+
+
                 binding.priceSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                         showPrice.text = p1.toString()
@@ -343,12 +351,17 @@ class ProfileManagementDialogFragments(
                     override fun onStopTrackingTouch(p0: SeekBar?) {
 
                     }
-
                 })
+
+
+
                 /*when the dialog ok button is clicked*/
                 okButton.setOnClickListener {
                     val inputValue =
                         showText.text.toString()
+
+                    val inputSecondValue =
+                        showPrice.text.toString()
 
                     when {
                         inputValue.isEmpty() -> {
@@ -360,11 +373,26 @@ class ProfileManagementDialogFragments(
                             )
                             dismiss()
                         }
+                        inputSecondValue.isEmpty() -> {
+                            setFragmentResult(
+                                FILTER_SECOND_NAME_REQUEST_KEY,
+                                bundleOf(
+                                    ACCOUNT_SECOND_FILTER_BUNDLE_KEY to null
+                                )
+                            )
+                            dismiss()
+                        }
                         else -> {
                             setFragmentResult(
                                 FILTER_NAME_REQUEST_KEY,
                                 bundleOf(
                                     ACCOUNT_FILTER_BUNDLE_KEY to inputValue
+                                )
+                            )
+                            setFragmentResult(
+                                FILTER_SECOND_NAME_REQUEST_KEY,
+                                bundleOf(
+                                    ACCOUNT_SECOND_FILTER_BUNDLE_KEY to inputSecondValue
                                 )
                             )
                             dismiss()
@@ -386,9 +414,10 @@ class ProfileManagementDialogFragments(
     companion object {
         fun createProfileDialogFragment(
             layoutId: Int,
-            bundle: Bundle? = null
+            bundle: Bundle? = null,
+            bundleSecond: Bundle? = null
         ): ProfileManagementDialogFragments {
-            return ProfileManagementDialogFragments(layoutId, bundle)
+            return ProfileManagementDialogFragments(layoutId, bundle, bundleSecond)
         }
     }
 }

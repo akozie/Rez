@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ui.fragment.dashboard.FavoriteDetailsFragment"
+android:orientation="vertical">
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="210dp">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/hotelImageIv"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="210dp"-->
+        <!--            android:scaleType="fitXY" />-->
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/unLikeIv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/fav2x" />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/likeIv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/like3" />
+
+        <TextView
+            android:id="@+id/tableQtyTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle_box_button_orange"
+            android:padding="6dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/hotelNameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/categoryTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/rectangle_box_button_pinc"
+                    android:gravity="start"
+                    android:padding="6dp"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="10dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/addressTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textSize="10dp"
+                    android:drawablePadding="5dp"
+                    android:text="manish patiadr"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/ic_baseline_location_on_24"/>
+
+                <TextView
+                    android:id="@+id/distanceTv"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:rating="3"
+                    android:stepSize="1"
+                    android:numStars="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:ratingBarStyleSmall"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:progressTint="@color/yellow"
+                    android:progressBackgroundTint="@color/white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <com.viewpagerindicator.CirclePageIndicator
+            android:layout_marginBottom="10dp"
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="1dip"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            app:centered="true"
+            app:fillColor="@color/pink"
+            app:pageColor="@color/white"
+            app:strokeColor="@color/pink"
+            app:snap="false"
+            app:radius="5dp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tables Details"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="15dp" />
+        <TextView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/saveText"
+            android:text="22" />
+
+        <TextView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/priceText"
+            android:text="22" />
+        <ImageView
+            android:id="@+id/filterImageIv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/filter11" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tableListRecycler" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
+
+</LinearLayout>
+
+
+
+</LinearLayout>

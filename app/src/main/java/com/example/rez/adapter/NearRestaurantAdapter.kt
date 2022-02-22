@@ -1,44 +1,30 @@
 package com.example.rez.adapter
 
 
-import android.app.Application
-import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rez.api.AuthApi
+import com.bumptech.glide.Glide
 import com.example.rez.databinding.NearRestaurantAdapterBinding
-import com.example.rez.model.dashboard.NearRestaurantData
-import com.example.rez.model.dashboard.SuggestionAndNearData
+import com.example.rez.model.dashboard.NearbyVendor
 import com.example.rez.repository.AuthRepository
-import com.example.rez.ui.RezViewModel
-import com.example.rez.ui.RezViewModelProviderFactory
+import com.example.rez.util.visible
 
 
-class NearRestaurantAdapter(private var nearRestaurantList: ArrayList<SuggestionAndNearData>, var clickListener: OnItemClickListener): RecyclerView.Adapter<NearRestaurantAdapter.MyViewHolder>() {
+class NearRestaurantAdapter(private var nearRestaurantList: List<NearbyVendor>, val clickListener:OnItemClickListener ): RecyclerView.Adapter<NearRestaurantAdapter.MyViewHolder>() {
 
-//    private lateinit var rezViewModel: RezViewModel
-//    private lateinit var application: Application
-//    val rezRepository = AuthRepository()
-//    val viewModelProviderFactory = RezViewModelProviderFactory(application, rezRepository)
-//    rezViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RezViewModel::class.java)
-
-//     lateinit var rezRepository: AuthRepository
         private lateinit var binding: NearRestaurantAdapterBinding
 
-
     inner class MyViewHolder(binding:NearRestaurantAdapterBinding): RecyclerView.ViewHolder(binding.root) {
-        val hotelImageIv = binding.hotelImageIv
-        val unLikeIv = binding.unLikeIv
-        val likeIv = binding.likeIv
-        val tableQtyTv = binding.tableQtyTv
-        val categoryTv = binding.categoryTv
-        val hotelNameTv = binding.hotelNameTv
-        val addressTv = binding.addressTv
-        val ratingTv = binding.ratingTv
-        val distanceTv = binding.distanceTv
+        val hotelImage = binding.hotelImageIv
+        val unLike = binding.unLikeIv
+        val like = binding.likeIv
+        val tableQty = binding.tableQtyTv
+        val category = binding.categoryTv
+        val hotelName = binding.hotelNameTv
+        val ratingTv = binding.ratingBar
+        val nearDistance = binding.distanceTv
        // val cardView = binding.cardView
 
     }
@@ -53,33 +39,44 @@ class NearRestaurantAdapter(private var nearRestaurantList: ArrayList<Suggestion
         holder.itemView.apply {
             with(holder){
                 with(nearRestaurantList[position]){
-                    hotelImageIv.setImageResource(restaurantImage!!)
-                    tableQtyTv.text = tables
-                    categoryTv.text = categoryName
-                    hotelNameTv.text = restaurantName
-                    addressTv.text = address
-                    distanceTv.text = distance
+                    Glide.with(context).load(avatar).into(hotelImage)
+                    hotelName.text = company_name
+                    if (average_rating.toInt() == 0){
+                        ratingTv.rating = "2".toFloat()
+                    }else {
+                        ratingTv.rating = average_rating
+                    }
+                    category.text = category_name
+                    nearDistance.text = distance.toString()+"km"
+                    if (total_tables == 1){
+                        tableQty.text = total_tables.toString() + " table"
+                    }else{
+                        tableQty.text = total_tables.toString() + " tables"
+                    }
+                    if (liked_by_user){
+                        like.visible(true)
+                        unLike.visible(false)
+                    }else{
+                        like.visible(false)
+                        unLike.visible(true)
+                    }
                 }
             }
         }
 
-        holder.unLikeIv.setOnClickListener {
-//            holder.likeIv.visibility = View.VISIBLE
-//            holder.unLikeIv.visibility = View.GONE
-//            clickListener.likeUnlike(nearRestaurantList[position].restaurantId!!)
-            //rezRepository.addOrRemoveFavorites(nearRestaurantList[position].restaurantId!!)
-            clickListener.likeUnlike(nearRestaurantList[position].restaurantId!!, holder.likeIv, holder.unLikeIv)
+        holder.unLike.setOnClickListener {
+            clickListener.likeUnlike(nearRestaurantList[position].id.toString(), holder.like, holder.unLike)
         }
 
-        holder.likeIv.setOnClickListener {
-//            holder.unLikeIv.visibility = View.VISIBLE
-//            holder.likeIv.visibility = View.GONE
-            clickListener.likeUnlike(nearRestaurantList[position].restaurantId!!, holder.likeIv, holder.unLikeIv)
-           // api.addOrRemoveFavorites(nearRestaurantList[position].restaurantId!!)
+        holder.like.setOnClickListener {
+            clickListener.likeUnlike(nearRestaurantList[position].id.toString(), holder.like, holder.unLike)
         }
 
         holder.itemView.setOnClickListener {
             clickListener.onItemClick(nearRestaurantList[position])
+        }
+        holder.nearDistance.setOnClickListener {
+            clickListener.onIconClick(nearRestaurantList[position])
         }
     }
 
@@ -90,7 +87,8 @@ class NearRestaurantAdapter(private var nearRestaurantList: ArrayList<Suggestion
 }
 
 interface OnItemClickListener {
-    fun onItemClick(nearModel: SuggestionAndNearData)
+    fun onItemClick(nearModel: NearbyVendor)
+    fun onIconClick(nearModel: NearbyVendor)
     fun likeUnlike(id: String, like: ImageView, unLike: ImageView)
 }
 

@@ -3,18 +3,17 @@ package com.example.rez.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.rez.databinding.TopRecommendedAdapterBinding
-import com.example.rez.model.dashboard.NearRestaurantData
-import com.example.rez.model.dashboard.TopRecommendedData
-import com.squareup.picasso.Picasso
+import com.example.rez.model.dashboard.RecommendedVendor
 
-class TopRecommendedAdapter( private var topRecommendedList:ArrayList<TopRecommendedData>, var clickListener: OnTopItemClickListener ): RecyclerView.Adapter<TopRecommendedAdapter.MyViewHolder>() {
+class TopRecommendedAdapter( private var topRecommendedList:List<RecommendedVendor>, var onTopItemClickListener: OnTopItemClickListener ): RecyclerView.Adapter<TopRecommendedAdapter.MyViewHolder>() {
 
 
     inner class MyViewHolder(private val binding: TopRecommendedAdapterBinding): RecyclerView.ViewHolder(binding.root) {
         var hotelImage = binding.hotelImageIv
         var hotelName = binding.hotelNameTv
-        //var hotelRatingBar = binding.ratingBar
+        var hotelRatingBar = binding.ratingBar
         var hotelReviews = binding.totalReviewTv
 
     }
@@ -28,17 +27,18 @@ class TopRecommendedAdapter( private var topRecommendedList:ArrayList<TopRecomme
         holder.itemView.apply {
             with(holder){
                 with(topRecommendedList[position]){
-                    hotelName.text = restaurantName
-                    //hotelRatingBar.rating = java.lang.Float.parseFloat(rating)
-                    hotelReviews.text = totalReviews
-                   // Picasso.get().load(restaurantImage!!)
-                   //      .into(hotelImage)
-                    hotelImage.setImageResource(restaurantImage!!)
+                    hotelName.text = company_name
+                    Glide.with(context).load(avatar).into(hotelImage)
+                    if (average_rating.toInt() == 0){
+                        hotelRatingBar.rating = "3".toFloat()
+                    }else {
+                        hotelRatingBar.rating = average_rating
+                    }
                 }
             }
         }
         holder.itemView.setOnClickListener {
-            clickListener.onTopItemClick(topRecommendedList[position])
+            onTopItemClickListener.onTopItemClick(topRecommendedList[position])
         }
     }
 
@@ -48,6 +48,6 @@ class TopRecommendedAdapter( private var topRecommendedList:ArrayList<TopRecomme
 }
 
 interface OnTopItemClickListener {
-    fun onTopItemClick(topModel: TopRecommendedData)
+    fun onTopItemClick(topModel: RecommendedVendor)
 }
 

@@ -1,17 +1,10 @@
 package com.example.rez.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rez.databinding.BannerListAdapterBinding
-import com.example.rez.databinding.NearRestaurantAdapterBinding
 import com.example.rez.model.dashboard.BannerData
-import com.example.rez.model.dashboard.NearRestaurantData
-import com.squareup.picasso.Picasso
 
 class BannerAdapter(private var bannerList: ArrayList<BannerData>): RecyclerView.Adapter<BannerAdapter.MyViewHolder>() {
 

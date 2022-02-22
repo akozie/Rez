@@ -9,7 +9,11 @@
         android:id="@+id/bookingHistory"
         android:name="com.example.rez.ui.fragment.dashboard.BookingHistory"
         android:label="Booking History"
-        tools:layout="@layout/fragment_booking_history" />
+        tools:layout="@layout/fragment_booking_history" >
+        <action
+            android:id="@+id/action_bookingHistory_to_bookingDetailsFragment"
+            app:destination="@id/bookingDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/help2"
         android:name="com.example.rez.ui.fragment.dashboard.Help"
@@ -37,6 +41,9 @@
         <argument
             android:name="NEARDATA"
             app:argType="com.example.rez.model.dashboard.SuggestionAndNearData" />
+        <action
+            android:id="@+id/action_favorites_to_favoriteDetailsFragment"
+            app:destination="@id/favoriteDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/home2"
@@ -70,6 +77,12 @@
         <action
             android:id="@+id/action_home2_to_suggestFragment"
             app:destination="@id/suggestFragment" />
+        <action
+            android:id="@+id/action_home2_to_search"
+            app:destination="@id/search" />
+        <action
+            android:id="@+id/action_home2_to_googleDirectionsFragment"
+            app:destination="@id/googleDirectionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/myProfile"
@@ -90,17 +103,29 @@
         android:id="@+id/topRecommended"
         android:name="com.example.rez.ui.fragment.dashboard.TopRecommended"
         android:label="Top Recommended"
-        tools:layout="@layout/fragment_top_recommended" />
+        tools:layout="@layout/fragment_top_recommended" >
+        <action
+            android:id="@+id/action_topRecommended_to_topFragment"
+            app:destination="@id/topFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nearRestaurant"
         android:name="com.example.rez.ui.fragment.dashboard.NearRestaurant"
         android:label="Near Restaurant"
-        tools:layout="@layout/fragment_near_restaurant" />
+        tools:layout="@layout/fragment_near_restaurant" >
+        <action
+            android:id="@+id/action_nearRestaurant_to_nearRestFragment"
+            app:destination="@id/nearRestFragment" />
+    </fragment>
     <fragment
         android:id="@+id/suggestionForYou"
         android:name="com.example.rez.ui.fragment.dashboard.SuggestionForYou"
         android:label="Suggestion For You"
-        tools:layout="@layout/fragment_suggestion_for_you" />
+        tools:layout="@layout/fragment_suggestion_for_you" >
+        <action
+            android:id="@+id/action_suggestionForYou_to_suggestFragment"
+            app:destination="@id/suggestFragment" />
+    </fragment>
     <fragment
         android:id="@+id/topFragment"
         android:name="com.example.rez.ui.fragment.dashboard.TopFragment"
@@ -108,7 +133,7 @@
         tools:layout="@layout/fragment_table_list" >
         <argument
             android:name="TOPDATA"
-            app:argType="com.example.rez.model.dashboard.TopRecommendedData"
+            app:argType="com.example.rez.model.dashboard.RecommendedVendor"
             app:nullable="true" />
         <action
             android:id="@+id/action_topFragment_to_tableDetails"
@@ -121,7 +146,7 @@
         tools:layout="@layout/fragment_suggest" >
         <argument
             android:name="SUGGESTIONDATA"
-            app:argType="com.example.rez.model.dashboard.SuggestionRestaurantData" />
+            app:argType="com.example.rez.model.dashboard.SuggestedVendor" />
         <action
             android:id="@+id/action_suggestFragment_to_tableDetails"
             app:destination="@id/tableDetails" />
@@ -133,7 +158,7 @@
         tools:layout="@layout/fragment_near_rest" >
         <argument
             android:name="NEARDATA"
-            app:argType="com.example.rez.model.dashboard.SuggestionAndNearData" />
+            app:argType="com.example.rez.model.dashboard.NearbyVendor" />
         <action
             android:id="@+id/action_nearRestFragment_to_tableDetails"
             app:destination="@id/tableDetails" />
@@ -144,8 +169,8 @@
         android:label="Table Details"
         tools:layout="@layout/fragment_table_details" >
         <argument
-            android:name="TOPDETAILS"
-            app:argType="com.example.rez.model.dashboard.TableData" />
+            android:name="TABLE"
+            app:argType="com.example.rez.model.dashboard.Table" />
         <action
             android:id="@+id/action_tableDetails_to_proceedToPayment"
             app:destination="@id/proceedToPayment" />
@@ -158,9 +183,82 @@
         <action
             android:id="@+id/action_proceedToPayment_to_successFragment"
             app:destination="@id/successFragment" />
+        <argument
+            android:name="INTVAL"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="INTVALUE"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <dialog
         android:id="@+id/successFragment"
         android:name="com.example.rez.ui.fragment.dashboard.SuccessFragment"
         tools:layout="@layout/fragment_success" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" >
+        <argument
+            android:name="TABLE"
+            app:argType="com.example.rez.model.dashboard.Table" />
+    </fragment>
+    <fragment
+        android:id="@+id/search"
+        android:name="com.example.rez.ui.fragment.dashboard.Search"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_search_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search2" >
+        <action
+            android:id="@+id/action_searchFragment_to_tableDetails"
+            app:destination="@id/tableDetails" />
+        <argument
+            android:name="RESULT"
+            app:argType="com.example.rez.model.authentication.response.ResultX" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.NotificationFragment"
+        android:label="fragment_notification"
+        tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/favoriteDetailsFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.FavoriteDetailsFragment"
+        android:label="Favorite Details"
+        tools:layout="@layout/fragment_favorite_details" >
+        <action
+            android:id="@+id/action_favoriteDetailsFragment_to_tableDetails"
+            app:destination="@id/tableDetails" />
+        <argument
+            android:name="FAVORITEDATA"
+            app:argType="com.example.rez.model.authentication.response.Favourite" />
+    </fragment>
+    <fragment
+        android:id="@+id/googleDirectionsFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.GoogleDirectionsFragment"
+        android:label="fragment_google_directions"
+        tools:layout="@layout/fragment_google_directions" >
+        <argument
+            android:name="DISTANCE"
+            app:argType="com.example.rez.model.dashboard.NearbyVendor" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookingDetailsFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.BookingDetailsFragment"
+        android:label="fragment_booking_details"
+        tools:layout="@layout/fragment_booking_details" >
+        <argument
+            android:name="BOOKINGS"
+            app:argType="com.example.rez.model.authentication.response.Booking" />
+    </fragment>
 </navigation>

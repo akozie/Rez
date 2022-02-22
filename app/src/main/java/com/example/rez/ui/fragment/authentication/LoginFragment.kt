@@ -86,9 +86,9 @@ class LoginFragment : Fragment() {
 
         rezViewModel.loginResponse.observe(viewLifecycleOwner, Observer {
             binding.progressBar.visible(it is Resource.Loading)
-            when(it) {
+            when (it) {
                 is Resource.Success -> {
-                    if (it.value.status){
+                    if (it.value.status) {
                         lifecycleScope.launch {
                             val uEmail = binding.edtUserEmail.text.toString().trim()
                             val token: String? = it.value.data.token
@@ -103,7 +103,7 @@ class LoginFragment : Fragment() {
                                     requireContext(),
                                     DashboardActivity::class.java
                                 )
-                        )
+                            )
                             requireActivity().finish()
                         }
                     } else {
@@ -161,7 +161,8 @@ class LoginFragment : Fragment() {
                 if (validateSignUpFieldsOnTextChange()) {
                     val newUser = LoginRequest(
                         email = email,
-                        password = password)
+                        password = password
+                    )
                     rezViewModel.login(newUser)
                 }
             }
@@ -214,7 +215,7 @@ class LoginFragment : Fragment() {
     /*create the googleSignIn client*/
     private fun googleSignInClient() {
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-           // .requestIdToken(getString(R.string.default_web_client_id))
+            //.requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
@@ -223,7 +224,7 @@ class LoginFragment : Fragment() {
 
     /*launch the signIn with google dialog*/
     private fun signIn() {
-        rezSignInClient.signOut()
+        //rezSignInClient.signOut()
         val signInIntent = rezSignInClient.signInIntent
         startActivityForResult(signInIntent, GOOGLE_SIGNIN_RQ_CODE)
     }
@@ -241,54 +242,57 @@ class LoginFragment : Fragment() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            loadDashBoardFragment(account)
+            startDashboard(account)
         } catch (e: ApiException) {
+            Log.d("GGGGGG", e.message!!)
             showToast(e.localizedMessage)
         }
     }
 
     /*open the dashboard fragment if account was selected*/
-    private fun loadDashBoardFragment(account: GoogleSignInAccount?) {
+    private fun startDashboard(account: GoogleSignInAccount?) {
         if (account != null) {
 
             account.idToken.let {
                 if (it != null) {
-                    sharedPreferences.edit().putString("googletoken", it).commit()                }
+                    rezViewModel.loginWithGoogle(it)
+                }
+
+                rezViewModel.loginWithGoogleResponse.observe(viewLifecycleOwner, Observer {
+                    binding.progressBar.visible(it is Resource.Loading)
+                    when (it) {
+                        is Resource.Success -> {
+                            if (it.value.status) {
+                                lifecycleScope.launch {
+                                    val uEmail = account.email
+                                    val token: String = it.value.data
+                                    val user =
+                                        sharedPreferences.edit().putString("token", token).commit()
+                                    sharedPreferences.edit().putString("email", uEmail).commit()
+                                    Log.i("GOOGLETOK", user.toString())
+                                    val message = it.value.message
+                                    showToast(message)
+                                    startActivity(
+                                        Intent(
+                                            requireContext(),
+                                            DashboardActivity::class.java
+                                        )
+                                    )
+                                    requireActivity().finish()
+                                }
+                            } else {
+                                it.value.message?.let { it1 -> showToast(it1) }
+
+                            }
+
+                        }
+                        is Resource.Failure -> handleApiError(it)
+                    }
+                })
+
             }
-
-           // authenticationViewModel.loginUserWithGoogle(null)
-
-            binding.progressBar.visibility = View.VISIBLE
-
-            /*Handling the response from the retrofit*/
-//            authenticationViewModel.loginUserWithGoogle.observe(
-//                viewLifecycleOwner,
-//                Observer {
-//                    when (it) {
-//                        is Resource.Success -> {
-//                            val successResponse = it.data?.payload
-//                            if (successResponse != null) {
-//                                sessionManager.saveToSharedPref(TOKEN, successResponse)
-//                            }
-//
-//                            progressDialog.hideProgressDialog()
-//                            val intent = Intent(requireContext(), DashboardActivity::class.java)
-//                            startActivity(intent)
-//                            activity?.finish()
-//                        }
-//
-//                        is Resource.Error -> {
-//                            progressDialog.hideProgressDialog()
-//                            handleApiError(it, mainRetrofit, requireView(), sessionManager, database)
-//                        }
-//                        is Resource.Loading -> {
-//                            progressDialog.showDialogFragment("Logging In...")
-//                        }
-//                    }
-//                }
-//            )
         }
+
+
     }
-
-
 }

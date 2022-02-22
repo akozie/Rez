@@ -1,6 +1,7 @@
 package com.example.rez.repository
 
 
+import android.util.Log
 import com.example.rez.api.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -17,9 +18,10 @@ abstract class BaseRepository {
             } catch (throwable: Throwable){
                 when(throwable){
                     is HttpException -> {
-                        Resource.Failure(false, throwable.code(), throwable.response()?.errorBody())
+                        Resource.Failure(false, throwable.code())
                     }else -> {
-                    Resource.Failure(true, null, null)
+                   // Log.d("FAILURE", throwable.localizedMessage)
+                    Resource.Failure(true, null)
                 }
                 }
             }

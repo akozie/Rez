@@ -18,29 +18,138 @@ android:orientation="vertical">
         android:layout_height="250dp"
         android:orientation="vertical">
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
+        <ImageView
+            android:id="@+id/hotelImageIv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center" />
-
-        <com.viewpagerindicator.CirclePageIndicator
-            android:layout_marginBottom="10dp"
-            android:id="@+id/indicator"
+            android:scaleType="fitXY" />
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="1dip"
+            android:layout_gravity="start"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tabNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@drawable/test_cursor_white"
+                android:gravity="start"
+                android:padding="@dimen/padding_10dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="@dimen/padding_10dp"
+                android:background="@drawable/test_cursor_white"
+                android:layout_gravity="start">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/people2"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="For"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tabCapacityTv"
+                    android:layout_marginLeft="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="start"
+                    android:text="People"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tabPriceTv"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            app:centered="true"
-            app:fillColor="@color/pink"
-            app:pageColor="@color/white"
-            app:strokeColor="@color/pink"
-            app:snap="false"
-            app:radius="5dp"/>
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/test_cursor_pink"
+            android:drawableStart="@drawable/ic_naira"
+            android:drawablePadding="0.5dp"
+            android:gravity="center"
+            android:paddingStart="@dimen/margin_7dp"
+            android:paddingEnd="@dimen/margin_7dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+<!--        <androidx.viewpager.widget.ViewPager-->
+<!--            android:id="@+id/viewPager"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="center" />-->
+
+<!--        <com.viewpagerindicator.CirclePageIndicator-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:id="@+id/indicator"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="1dip"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:centered="true"-->
+<!--            app:fillColor="@color/pink"-->
+<!--            app:pageColor="@color/white"-->
+<!--            app:strokeColor="@color/pink"-->
+<!--            app:snap="false"-->
+<!--            app:radius="5dp"/>-->
 
 
     </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"

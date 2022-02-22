@@ -138,13 +138,17 @@
 
             <TextView
                 android:id="@+id/tablePriceTv"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/rectangle_box_pinc_half"
                 android:gravity="center"
                 android:text=""
+                android:drawablePadding="0.5dp"
+                android:drawableStart="@drawable/ic_naira"
+                android:paddingStart="@dimen/margin_7dp"
+                android:paddingEnd="@dimen/margin_7dp"
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 android:textStyle="bold" />

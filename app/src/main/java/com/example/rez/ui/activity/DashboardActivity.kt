@@ -2,6 +2,7 @@ package com.example.rez.ui.activity
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.example.rez.R
+import com.example.rez.RezApp
 import com.example.rez.databinding.ActivityDashboardBinding
 import com.example.rez.repository.AuthRepository
 import com.example.rez.ui.RezViewModel
@@ -26,6 +28,7 @@ import com.example.rez.ui.RezViewModelProviderFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
+import javax.inject.Inject
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -35,7 +38,7 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var searchview: SearchView
+    private lateinit var searchview: TextView
     private lateinit var toolbarFragmentName: TextView
     private lateinit var drawerCloseIcon: ImageView
     private lateinit var profilePicture: CircleImageView
@@ -44,12 +47,12 @@ class DashboardActivity : AppCompatActivity() {
     lateinit var rezViewModel: RezViewModel
 
 
-//    @Inject
-//    lateinit var sharedPreferences: SharedPreferences
-
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ( application as RezApp).localComponent?.inject(this)
 
     //    ( application as NexPortApp).localComponent?.inject(this)
         _binding = ActivityDashboardBinding.inflate(layoutInflater)
@@ -87,7 +90,7 @@ class DashboardActivity : AppCompatActivity() {
         profilePicture = binding.appBarDashboard.dashboardActivityToolbarProfileImageView
         navigationView = binding.navView
 
-        searchview.queryHint = Html.fromHtml("<font color = #BDBABA>" + getResources().getString(R.string.hintSearchMess) + "</font>")
+       // searchview.queryHint = Html.fromHtml("<font color = #BDBABA>" + getResources().getString(R.string.hintSearchMess) + "</font>")
 
         //profileName = navViewHeader.findViewById(R.id.nav_drawer_user_full_name_text_view)
         navController = findNavController(R.id.nav_host_fragment_content_dashboard)
@@ -97,6 +100,9 @@ class DashboardActivity : AppCompatActivity() {
             navController.graph, drawerLayout
         )
 
+        searchview.setOnClickListener {
+            navController.navigate(R.id.search)
+        }
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         bottomNavigationView.setupWithNavController(navController)
@@ -113,6 +119,15 @@ class DashboardActivity : AppCompatActivity() {
         /*Close Drawer Icon*/
         drawerCloseIcon.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        /*Open Messages onClick*/
+        profilePicture.setOnClickListener {
+            navController.navigate(R.id.notificationFragment)
+            bottomNavigationView.visibility = View.GONE
+            searchview.visibility = View.INVISIBLE
+            toolbarFragmentName.visibility = View.VISIBLE
+            profilePicture.visibility = View.INVISIBLE
         }
 
         navigationView.setNavigationItemSelectedListener { it ->
@@ -148,6 +163,8 @@ class DashboardActivity : AppCompatActivity() {
                     confirmationDialog.setPositiveButton("YES") { _: DialogInterface, _: Int ->
                         // First clear the Shared preference, so that the authentication token stored in it will be deleted
                         //sharedPreferences.edit().clear().apply()
+                        val token = ""
+                        sharedPreferences.edit().putString("token", token).apply()
                         // After clearing the shared preference, navigate the user back to the landing screen which is the MainActivity
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
@@ -192,6 +209,7 @@ class DashboardActivity : AppCompatActivity() {
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.VISIBLE
                     toolbarFragmentName.visibility = View.GONE
+                    profilePicture.visibility = View.VISIBLE
                 }
                 R.id.favorites -> {
                     bottomNavigationView.visibility = View.VISIBLE
@@ -253,10 +271,29 @@ class DashboardActivity : AppCompatActivity() {
                     searchview.visibility = View.INVISIBLE
                     profilePicture.visibility = View.INVISIBLE
                 }
+                R.id.proceedToPayment -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.favoriteDetailsFragment -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.search -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
                 else -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
+                    profilePicture.visibility = View.VISIBLE
                 }
             }
         }
@@ -264,6 +301,4 @@ class DashboardActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-
-
 }

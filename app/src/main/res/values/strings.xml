@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Rez</string>
+    <string name="api_Key">AIzaSyDcTHaA-KVLmTKrP1ZfAY-ZwcsPsVjWoc0</string>
+    <string name="PSTK_PUBLIC_KEY">pk_test_0dcba27d2f50f334455e337c93351b9f1310cd38</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nexport_logo">nexport logo</string>
@@ -121,4 +124,16 @@
     <string name="permision_to_access">\Permission to access your \</string>
     <string name="is_required_to_use_this_app">\ is required to use this app\</string>
 
+    <string name="card_number">Card Number</string>
+    <string name="card_expiry">Card Expiry</string>
+    <string name="card_cvv">CVV</string>
+    <string name="title_activity_google">GoogleActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>
