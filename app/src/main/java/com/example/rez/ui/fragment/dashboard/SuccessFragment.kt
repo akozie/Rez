@@ -5,14 +5,19 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import com.example.rez.databinding.FragmentSuccessBinding
 
 class SuccessFragment : DialogFragment() {
 
 
-    private lateinit var _binding: FragmentSuccessBinding
-    private val binding get() = _binding
+    private var _binding: FragmentSuccessBinding? = null
+    private val binding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, android.R.style.Theme_DeviceDefault_Light_Dialog_MinWidth)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,6 +36,16 @@ class SuccessFragment : DialogFragment() {
             window.setGravity(Gravity.CENTER)
 
             dialog!!.show()
+
+            binding.okTv.setOnClickListener {
+                val action = SuccessFragmentDirections.actionSuccessFragmentToHome2()
+                findNavController().navigate(action)
+            }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

@@ -17,6 +17,7 @@ import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentBookingDetailsBinding
 import com.example.rez.databinding.FragmentTopRecommendedBinding
 import com.example.rez.model.authentication.request.LoginRequest
+import com.example.rez.model.authentication.request.RateVendorRequest
 import com.example.rez.model.authentication.request.TableReviewRequest
 import com.example.rez.model.authentication.response.Booking
 import com.example.rez.model.dashboard.RecommendedVendor
@@ -59,15 +60,10 @@ class BookingDetailsFragment : Fragment() {
         args = arguments?.getParcelable("BOOKINGS")
         setTopData()
         addTableReview()
+        addVendorReview()
 
         binding.vendorRatingBtn.setOnClickListener {
-            if (binding.vendorRating.equals(0)) {
-                val message = "Rate vendor"
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-            } else {
-                binding.vendorRatingBtn.enable(true)
                 addVendorReviewCheck()
-            }
         }
 
         binding.tableReviewBtn.setOnClickListener {
@@ -104,7 +100,7 @@ class BookingDetailsFragment : Fragment() {
     }
 
     private fun addVendorReviewCheck() {
-        val vendorReviewRating = binding.tableReviewRating.rating.toDouble()
+        val vendorReviewRating = binding.vendorRating.rating.toDouble()
         val vendorFormattedReviewRating = Integer.valueOf(vendorReviewRating.toInt())
 
         when {
@@ -112,14 +108,28 @@ class BookingDetailsFragment : Fragment() {
                 showToast("Rate the vendor")
             }
             else -> {
-                rezViewModel.addVendorRating(token = "Bearer ${sharedPreferences.getString("token", "token")}", vendorFormattedReviewRating, args!!.vendor.id)
+                if (vendorFormattedReviewRating > 0) {
+                    val newRating = RateVendorRequest(rating = vendorFormattedReviewRating)
+                    rezViewModel.addVendorRating(
+                        token = "Bearer ${
+                            sharedPreferences.getString(
+                                "token",
+                                "token"
+                            )
+                        }", newRating, args!!.vendor.id
+                    )
+                }
             }
         }
     }
 
 
     private fun setTopData() {
-        GlideApp.with(requireContext()).load(args?.table?.table_image_url).into(binding.tableImageIv)
+        if (args?.table?.table_image_url != null){
+            GlideApp.with(requireContext()).load(args?.table?.table_image_url).into(binding.tableImageIv)
+        } else {
+            GlideApp.with(requireContext()).load(R.drawable.restaurant).into(binding.tableImageIv)
+        }
         binding.tableNameTv.text = args?.table?.name
         binding.restaurentNameTv.text = args?.vendor?.name
         binding.dateTv.text = args?.booked_for?.substring(0, 10)
@@ -144,14 +154,36 @@ class BookingDetailsFragment : Fragment() {
             when(it) {
                 is Resource.Success -> {
                     if (it.value.status){
+                        showToast("Successful, thank you for submitting review")
+                    } else {
+                        it.value.message?.let { it1 ->
+                            Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
+                    }
+                }
+                is Resource.Failure -> handleApiError(it) { addTableReview() }
+            }
+        })
+    }
+
+    private fun addVendorReview(){
+        rezViewModel.addVendorReviewResponse.observe(viewLifecycleOwner, Observer {
+            binding.progressBar.visible(it is Resource.Loading)
+            when(it) {
+                is Resource.Success -> {
+                    if (it.value.status){
                         showToast(it.value.message)
                     } else {
                         it.value.message?.let { it1 ->
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> handleApiError(it) { addVendorReview() }
             }
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

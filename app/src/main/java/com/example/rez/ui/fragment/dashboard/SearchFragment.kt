@@ -145,4 +145,9 @@ class SearchFragment : Fragment(), OnTableClickListener {
         val action = SearchFragmentDirections.actionSearchFragmentToTableDetails(tableModel)
         findNavController().navigate(action)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

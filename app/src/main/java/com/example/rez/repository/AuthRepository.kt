@@ -20,8 +20,12 @@ class AuthRepository: BaseRepository() {
         googleapi.getDirect(mode, origin, destination, key)
     }
 
-    suspend fun addVendorRating(token: String, rating: Int, vendorInt: Int) = safeApiCall{
+    suspend fun addVendorRating(token: String, rating: RateVendorRequest, vendorInt: Int) = safeApiCall{
         api.addVendorRating(token, rating, vendorInt)
+    }
+
+    suspend fun deleteTableReview(token: String, reviewId: Int) = safeApiCall{
+        api.deleteTableReview(token, reviewId)
     }
 
     suspend fun addTableReview(token: String, tableReviewRequest: TableReviewRequest, vendorInt: Int, tableId: Int) = safeApiCall{
@@ -31,7 +35,6 @@ class AuthRepository: BaseRepository() {
     suspend fun bookTable(token: String, bookTableRequest: BookTableRequest) = safeApiCall{
         api.bookTable(token, bookTableRequest)
     }
-
 
 //    fun getBookings(token: String) = Pager(PagingConfig(pageSize = 100, enablePlaceholders = false)){
 //        BookingPagingSource(api, token)
@@ -56,9 +59,9 @@ class AuthRepository: BaseRepository() {
 //       // api.getBookingsHistory(token)
 //    }
 
-    suspend fun getVendorProfileTableReviews(vendorInt: Int, tableId: Int, token: String) = safeApiCall{
-        api.getVendorProfileTableReviews(vendorInt, tableId, token)
-    }
+//    suspend fun getVendorProfileTableReviews(vendorInt: Int, tableId: Int, token: String) = safeApiCall{
+//        api.getVendorProfileTableReviews(vendorInt, tableId, token)
+//    }
 
     suspend fun getVendorProfileTable(vendorInt: Int, tableId: Int, token: String) = safeApiCall{
         api.getVendorProfileTable(vendorInt, tableId, token)
@@ -68,17 +71,17 @@ class AuthRepository: BaseRepository() {
         api.getVendorTables(vendorInt, token)
     }
 
-    suspend fun search(search: String, token: String) = safeApiCall{
-        api.search(search, token)
-    }
+//    suspend fun search(search: String, token: String) = safeApiCall{
+//        api.search(search, token)
+//    }
 
     suspend fun getHome(lat: Double, long: Double, token: String) = safeApiCall{
         api.getHome(lat, long, token)
     }
 
-    suspend fun getFavorites(token: String) = safeApiCall{
-        api.getFavorites(token)
-    }
+//    suspend fun getFavorites(token: String) = safeApiCall{
+//        api.getFavorites(token)
+//    }
 
     suspend fun addOrRemoveFavorites(id: String, token: String) = safeApiCall{
         api.addOrRemoveFavorites(id, token)
@@ -111,8 +114,13 @@ class AuthRepository: BaseRepository() {
     suspend fun login( user: LoginRequest) = safeApiCall{
         api.login(user)
     }
-    suspend fun loginWithGoogle(token: String) = safeApiCall{
+
+    suspend fun loginGoogle(token: FacebookRequest) = safeApiCall{
         api.loginWithGoogle(token)
+    }
+
+    suspend fun loginFacebook(token: FacebookRequest) = safeApiCall{
+        api.loginWithFacebook(token)
     }
 
     suspend fun changePassword(user: ChangePasswordRequest, token: String) = safeApiCall{

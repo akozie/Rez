@@ -2,6 +2,12 @@
     <string name="app_name">Rez</string>
     <string name="api_Key">AIzaSyDcTHaA-KVLmTKrP1ZfAY-ZwcsPsVjWoc0</string>
     <string name="PSTK_PUBLIC_KEY">pk_test_0dcba27d2f50f334455e337c93351b9f1310cd38</string>
+    <string name="default_web_client_id">816093053823-k9anfq5eadh37cr90ejonlja65o5unk1.apps.googleusercontent.com</string>
+
+
+    <string name="facebook_app_id">645749483138206</string>
+    <string name="fb_login_protocol_scheme">fb645749483138206</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

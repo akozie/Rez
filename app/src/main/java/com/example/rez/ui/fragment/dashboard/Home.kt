@@ -351,7 +351,9 @@ class Home : Fragment(),OnTopItemClickListener, OnItemClickListener, OnSuggestio
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it)
+                    is Resource.Failure -> {
+                        handleApiError(it) { getVendors() }
+                    }
                 }
             }
         )
@@ -360,5 +362,10 @@ class Home : Fragment(),OnTopItemClickListener, OnItemClickListener, OnSuggestio
     override fun onTopItemClick(topModel: RecommendedVendor) {
         val action = HomeDirections.actionHome2ToTableList(topModel)
         findNavController().navigate(action)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

@@ -31,19 +31,30 @@
                     android:id="@+id/search_restaurants"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_60dp"
-                    android:hint="Search"
                     android:backgroundTint="@color/blue"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_15sp"
-                    android:textColorHint="@color/grey1"
+                    android:hint="Search"
                     android:iconifiedByDefault="false"
                     android:queryBackground="@android:color/transparent"
                     android:searchIcon="@drawable/ic_baseline_search_pink"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/grey1"
+                    android:textSize="@dimen/text_size_15sp"
                     app:layout_anchorGravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="@dimen/margin_50dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/filterImageIv"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:padding="@dimen/margin_10dp"-->
+<!--                    android:src="@drawable/filter11"-->
+<!--                    android:layout_marginEnd="@dimen/margin_10dp"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -62,14 +73,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <TextView
-        android:id="@+id/empty_result_table"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="No result "
-        android:fontFamily="@font/poppins_medium"
-        android:textSize="@dimen/text_size_15sp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/empty_result_table"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:gravity="center"-->
+<!--        android:text="No result "-->
+<!--        android:fontFamily="@font/poppins_medium"-->
+<!--        android:textSize="@dimen/text_size_15sp"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/saveText"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:text="22"-->
+<!--        android:visibility="visible"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/priceText"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/priceText"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:text="22"-->
+<!--        android:visibility="visible"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recyclerview"
@@ -81,5 +113,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btn_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retry"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.594" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check your internet connection"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="No result found"
+        app:layout_constraintBottom_toTopOf="@+id/btn_retry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/error_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

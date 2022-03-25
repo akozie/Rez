@@ -207,7 +207,7 @@
                             android:textSize="11dp"
                             android:drawablePadding="5dp"
                             android:drawableLeft="@drawable/pending2"
-                            android:textColor="@color/pink"/>
+                            android:textColor="@color/orange"/>
 
                         <TextView
                             android:visibility="gone"

@@ -34,7 +34,6 @@ class TopRecommended : Fragment(), OnTopItemClickListener {
     private lateinit var topRecommendedAdapter: TopRecommendedAdapter
     private lateinit var topList:List<RecommendedVendor>
     private lateinit var topRecyclerView: RecyclerView
-    private var argsId: Int = 0
     private val rezViewModel: RezViewModel by activityViewModels()
 
     @Inject
@@ -58,8 +57,6 @@ class TopRecommended : Fragment(), OnTopItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        //sharedPreferences.edit().putInt("vendorid", argsId).apply()
         getVendors()
     }
 
@@ -80,7 +77,7 @@ class TopRecommended : Fragment(), OnTopItemClickListener {
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it)
+                    is Resource.Failure -> handleApiError(it) { getVendors() }
                 }
             }
         )
@@ -98,4 +95,10 @@ class TopRecommended : Fragment(), OnTopItemClickListener {
         val action = TopRecommendedDirections.actionTopRecommendedToTopFragment(topModel)
         findNavController().navigate(action)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
 }

@@ -42,7 +42,7 @@ class SuggestionRestaurantAdapter(private var suggestionRestaurantList: List<Sug
                     }else {
                         topRating.rating = average_rating
                     }
-                    if (total_tables == 1){
+                    if (total_tables == 1 || total_tables == 0){
                         tableQty.text = total_tables.toString() + " table"
                     }else{
                         tableQty.text = total_tables.toString() + " tables"
@@ -60,7 +60,6 @@ class SuggestionRestaurantAdapter(private var suggestionRestaurantList: List<Sug
         holder.unLike.setOnClickListener {
             clickListener.likeUnlike(suggestionRestaurantList[position].id.toString(), holder.like, holder.unLike)
         }
-
         holder.like.setOnClickListener {
             clickListener.likeUnlike(suggestionRestaurantList[position].id.toString(), holder.like, holder.unLike)
         }

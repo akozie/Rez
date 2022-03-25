@@ -1,10 +1,7 @@
 package com.example.rez.api
 
 import android.net.Uri
-import com.example.rez.model.authentication.genresponse.ForPasswordResponse
-import com.example.rez.model.authentication.genresponse.RegResponse
-import com.example.rez.model.authentication.genresponse.ResPasswordResponse
-import com.example.rez.model.authentication.genresponse.UpdateProResponse
+import com.example.rez.model.authentication.genresponse.*
 import com.example.rez.model.authentication.request.*
 import com.example.rez.model.authentication.response.*
 import com.example.rez.model.dashboard.*
@@ -18,8 +15,14 @@ interface AuthApi {
     @PUT("user/vendorProfile/{vendorProfileID}/rate")
     suspend fun addVendorRating(
         @Header("Authorization") token: String,
-        @Field("rating") rating: Int,
+        @Body rating: RateVendorRequest,
         @Path("vendorProfileID") vendorProfileID: Int,
+    ): GeneralResponse
+
+    @DELETE("user/reviews/{reviewID}")
+    suspend fun deleteTableReview(
+        @Header("Authorization") token: String,
+        @Path("reviewID") reviewID: Int
     ): GeneralResponse
 
     @POST("user/vendorProfile/{vendorProfileID}/table/{tableID}/reviews")
@@ -40,15 +43,15 @@ interface AuthApi {
     suspend fun getBookingsHistory(
         @Header("Authorization") token: String,
         @Query("page") page: Int,
-        @Query("per_page") per_page: Int
         ): Response<BookingsHistoryResponse>
 
     @GET("user/vendorProfile/{vendorProfileID}/table/{tableID}/reviews")
     suspend fun getVendorProfileTableReviews(
         @Path("vendorProfileID") vendorProfileID: Int,
         @Path("tableID") tableID: Int,
-        @Header("Authorization") token: String
-    ): ReviewResponse
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        ): Response<ReviewResponse>
 
     @GET("user/vendorProfile/{vendorProfileID}/table/{tableID}")
     suspend fun getVendorProfileTable(
@@ -66,8 +69,12 @@ interface AuthApi {
     @GET("user/home/search")
     suspend fun search(
         @Query("q") q: String,
-        @Header("Authorization") token: String
-    ): SearchResponse
+        @Query("no_persons") no_persons: Int,
+        @Query("price_from") price_from: Int,
+        @Query("price_to") price_to: Int,
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        ): Response<SearchResponse>
 
     @GET("user/home")
     suspend fun getHome(
@@ -78,8 +85,9 @@ interface AuthApi {
 
     @GET("user/favourites")
     suspend fun getFavorites(
-        @Header("Authorization") token: String
-    ): GetFavoritesResponse
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        ): Response<GetFavoritesResponse>
 
     @PUT("user/favourites/{vendorID}")
     suspend fun addOrRemoveFavorites(
@@ -125,10 +133,15 @@ interface AuthApi {
         @Body user: LoginRequest
     ): LoginResponse
 
-    @POST("user/auth/login/in/google/callback")
+    @POST("user/auth/login/google/callback/android")
     suspend fun loginWithGoogle(
-        @Header("Authorization") token: String
-    ): LoginWithGoogleResponse
+        @Body accessToken: FacebookRequest
+    ): SocialResponse
+
+    @POST("user/auth/login/facebook/callback/android")
+    suspend fun loginWithFacebook(
+        @Body access_token: FacebookRequest
+    ): SocialResponse
 
     @PUT("auth/password/change")
     suspend fun changePassword(

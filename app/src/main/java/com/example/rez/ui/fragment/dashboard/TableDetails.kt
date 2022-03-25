@@ -68,18 +68,14 @@ class TableDetails : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val gson = Gson()
-        val json = sharedPreferences.getString("tablelist", "tablelist")
-        val obj = gson.fromJson(json, Array<Table>::class.java)
 
-      //  tableList = obj.toList()
-
-        argsId = arguments?.getParcelable<Table>("TABLE")!!.id
-        sharedPreferences.edit().putInt("tid", argsId).apply()
+        argsId = arguments?.getParcelable<Table>("TABLE")!!.id // get table id
+        sharedPreferences.edit().putInt("tid", argsId).apply() // save table is
         setUpTable()
         setUpAboutTable()
     }
 
+    // get vendor profile table
     private fun setUpTable(){
        val vendoID = sharedPreferences.getInt("vendorid", 0)
         rezViewModel.getVendorProfileTable(vendoID, argsId, "Bearer ${sharedPreferences.getString("token", "token")}")
@@ -91,7 +87,11 @@ class TableDetails : Fragment() {
                         val tableList = it.value.data
                         binding.tabPriceTv.text = tableList.price
                         binding.tabCapacityTv.text = tableList.max_people.toString()
-                        GlideApp.with(requireContext()).load(tableList.image).into(binding.hotelImageIv)
+                        if (tableList.image != null){
+                            GlideApp.with(requireContext()).load(tableList.image).into(binding.hotelImageIv)
+                        } else{
+                            GlideApp.with(requireContext()).load(R.drawable.restaurant).into(binding.hotelImageIv)
+                        }
                         binding.tabNameTv.text = tableList.name
                         sharedPreferences.edit().putString("tablename", tableList.name).apply()
                         sharedPreferences.edit().putString("tablequantity", tableList.max_people.toString()).apply()
@@ -101,11 +101,12 @@ class TableDetails : Fragment() {
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> handleApiError(it) { setUpTable() }
             }
         })
     }
 
+    // set up viewpager
     private fun setUpAboutTable() {
          viewPager2 = binding.pager
          tabLayout = binding.tabs
@@ -119,5 +120,10 @@ class TableDetails : Fragment() {
                 1 -> tab.text = getString(R.string.review)
             }
         }.attach()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

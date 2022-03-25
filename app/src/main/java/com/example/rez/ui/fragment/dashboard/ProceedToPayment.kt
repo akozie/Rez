@@ -41,7 +41,7 @@ import java.text.ParsePosition
 
 class ProceedToPayment : Fragment() {
 
-    private lateinit var _binding: FragmentProceedToPaymentBinding
+    private var _binding: FragmentProceedToPaymentBinding ? = null
     private val binding get() = _binding!!
     private lateinit var argsDate: String
     private lateinit var argsTime: String
@@ -157,8 +157,10 @@ class ProceedToPayment : Fragment() {
                 charge.reference =sharedPreferences.getString("ref", "ref")
                 PaystackSdk.chargeCard(requireActivity(), charge, object : Paystack.TransactionCallback {
                     override fun onSuccess(transaction: Transaction) {
-                        parseResponse(transaction.reference)
-                        showToast("Success")
+                       // parseResponse(transaction.reference)
+                        val action = ProceedToPaymentDirections.actionProceedToPaymentToSuccessFragment()
+                        findNavController().navigate(action)
+                       // showToast("Success")
                     }
                     override fun beforeValidate(transaction: Transaction) {
                         Log.d("Main Activity", "beforeValidate: " + transaction.reference)
@@ -166,14 +168,15 @@ class ProceedToPayment : Fragment() {
                     override fun onError(error: Throwable, transaction: Transaction) {
                         Log.d("Main Activity", "onError: " + error.localizedMessage)
                         Log.d("Main Activity", "onError: $error")
+
                     }
                 })
             }
         }
     }
 
-    private fun parseResponse(transactionReference: String) {
-        val message = "Payment Successful - $transactionReference"
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

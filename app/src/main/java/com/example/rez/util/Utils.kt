@@ -53,18 +53,17 @@ fun View.snackbar(
     snackbar.show()
 }
 
+
 fun Fragment.handleApiError(
-    failure: Resource.Failure
+    failure: Resource.Failure,
+    retry: (() -> Unit)? = null
 ) {
     when {
-        failure.isNetworkError -> requireView().snackbar("Please check your internet connection")
+        failure.isNetworkError -> requireView().snackbar("Please check your internet connection", retry)
         failure.errorCode == 400 -> {
             if (this is LoginFragment) {
                 requireView().snackbar("You have entered incorrect username and password")
             }
-//            else {
-//                (this as BaseFragment<*, *, *>).logout()
-//            }
         }
         else -> {
             requireView().snackbar("Bad request")

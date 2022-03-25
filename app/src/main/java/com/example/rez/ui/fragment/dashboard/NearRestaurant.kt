@@ -87,7 +87,7 @@ class NearRestaurant : Fragment(), NearAdapter.OnNearItemClickListener {
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it)
+                    is Resource.Failure -> handleApiError(it) { getVendors() }
                 }
             }
         )
@@ -135,5 +135,10 @@ class NearRestaurant : Fragment(), NearAdapter.OnNearItemClickListener {
 
     private fun removeObserver() {
         rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

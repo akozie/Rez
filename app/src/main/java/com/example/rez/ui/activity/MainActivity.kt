@@ -1,4 +1,4 @@
-package com.example.rez.ui.activity
+package com.example.rez.ui.activity 
 
 import android.Manifest
 import android.content.Intent

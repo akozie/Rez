@@ -154,14 +154,14 @@ tools:context=".ui.fragment.dashboard.GoogleActivity">
                 app:checkedIconEnabled="true"
                 app:chipBackgroundColor="@color/primaryColor" />
 
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/btnChipWalking"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:checkable="true"-->
-<!--                android:text="Walking"-->
-<!--                android:textColor="@color/white"-->
-<!--                app:chipBackgroundColor="@color/primaryColor" />-->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/btnChipWalking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="Walking"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/primaryColor" />
 
 <!--            <com.google.android.material.chip.Chip-->
 <!--                android:id="@+id/btnChipBike"-->
@@ -172,14 +172,14 @@ tools:context=".ui.fragment.dashboard.GoogleActivity">
 <!--                android:textColor="@color/white"-->
 <!--                app:chipBackgroundColor="@color/primaryColor" />-->
 
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/btnChipTrain"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:checkable="true"-->
-<!--                android:text="Transit"-->
-<!--                android:textColor="@color/white"-->
-<!--                app:chipBackgroundColor="@color/primaryColor" />-->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/btnChipTrain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="Transit"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/primaryColor" />
 
 
         </com.google.android.material.chip.ChipGroup>

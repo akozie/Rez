@@ -134,4 +134,8 @@ class SuggestionForYou : Fragment(), SuggestionAndNearAdapter.OnSuggestionItemCl
         rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

@@ -48,7 +48,7 @@ class NearRestaurantAdapter(private var nearRestaurantList: List<NearbyVendor>, 
                     }
                     category.text = category_name
                     nearDistance.text = distance.toString()+"km"
-                    if (total_tables == 1){
+                    if (total_tables == 1 || total_tables == 0){
                         tableQty.text = total_tables.toString() + " table"
                     }else{
                         tableQty.text = total_tables.toString() + " tables"

@@ -28,6 +28,7 @@ import com.example.rez.ui.RezViewModel
 import com.example.rez.util.handleApiError
 import com.example.rez.util.visible
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONException
@@ -41,9 +42,6 @@ class BookingHistory : Fragment(), BookingPagingAdapter.OnBookingClickListener {
     private val rezViewModel: RezViewModel by activityViewModels()
     private lateinit var bookingAdapter: BookingPagingAdapter
     private lateinit var loaderStateAdapter: BookingPagingStateAdapter
-    private lateinit var bookingListt: ArrayList<Booking>
-    private var page = 1
-    private val perPage = 20
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -64,7 +62,6 @@ class BookingHistory : Fragment(), BookingPagingAdapter.OnBookingClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //getBookingsHistory()
 
         setRv()
         loadData()
@@ -106,12 +103,12 @@ class BookingHistory : Fragment(), BookingPagingAdapter.OnBookingClickListener {
     }
 
     private fun loadData() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             // rezViewModel.getBookings("Bearer ${sharedPreferences.getString("token", "token")}")
-            rezViewModel.getBookings("Bearer ${sharedPreferences.getString("token", "token")}").collect {
+            rezViewModel.getBookings("Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {pagingData ->
                 binding.progressBar.visible(false)
              //   Log.d("BOOKINGSSS", it.toString())
-                bookingAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+                bookingAdapter.submitData(pagingData)
             }
 
         }

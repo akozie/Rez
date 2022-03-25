@@ -146,7 +146,13 @@ dependencies {
     //Paystack sdk
     implementation 'co.paystack.android:paystack:3.1.2'
 
+    //paging
+    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
 
-    implementation "androidx.paging:paging-runtime-ktx:3.1.0"
+    //recyclerview background
+    implementation "it.xabaras.android:recyclerview-swipedecorator:1.2.3"
+
+    //facebook
+    implementation 'com.facebook.android:facebook-login:[8,9)'
 
 }

@@ -11,10 +11,14 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rez.RezApp
-import com.example.rez.adapter.FavoritesAdapter
+import com.example.rez.adapter.BookingPagingAdapter
+import com.example.rez.adapter.BookingPagingStateAdapter
+import com.example.rez.adapter.FavoritesPagingAdapter
 import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentFavoritesBinding
 import com.example.rez.model.authentication.response.Favourite
@@ -23,18 +27,19 @@ import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.util.handleApiError
 import com.example.rez.util.showToast
 import com.example.rez.util.visible
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class Favorites : Fragment(), FavoritesAdapter.OnClickFavoritesItemClickListener {
+class Favorites : Fragment(), FavoritesPagingAdapter.OnClickFavoritesItemClickListener {
 
-    private lateinit var _binding : FragmentFavoritesBinding
-    private val binding get() = _binding
-    private lateinit var nearRestaurantAdapter: FavoritesAdapter
-    private lateinit var favList: List<Favourite>
-    private lateinit var nearRecyclerView: RecyclerView
+    private var _binding : FragmentFavoritesBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var favoritesAdapter: FavoritesPagingAdapter
     private lateinit var rezViewModel: RezViewModel
+    private lateinit var loaderStateAdapter: BookingPagingStateAdapter
+
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -56,12 +61,16 @@ class Favorites : Fragment(), FavoritesAdapter.OnClickFavoritesItemClickListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setRv()
+        loadData()
 
-        getFavorites()
+        binding.btnRetry.setOnClickListener {
+            favoritesAdapter.retry()
+        }
     }
 
-    override fun onEachFavoriteItemClickListener(favourite: Favourite) {
-        val action = FavoritesDirections.actionFavoritesToFavoriteDetailsFragment(favourite)
+    override fun onEachFavoriteItemClickListener(favorites: Favourite) {
+        val action = FavoritesDirections.actionFavoritesToFavoriteDetailsFragment(favorites)
         findNavController().navigate(action)
     }
 
@@ -77,7 +86,7 @@ class Favorites : Fragment(), FavoritesAdapter.OnClickFavoritesItemClickListener
             when(it) {
                 is Resource.Success -> {
                     if (like.isVisible){
-                        getFavorites()
+                        loadData()
                     }
 
                 }
@@ -86,33 +95,50 @@ class Favorites : Fragment(), FavoritesAdapter.OnClickFavoritesItemClickListener
         })
     }
 
-    private fun getFavorites(){
-        rezViewModel.getFavorites("Bearer ${sharedPreferences.getString("token", "token")}")
-        rezViewModel.getFavoritesResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.visible(it is Resource.Loading)
-            when(it) {
-                is Resource.Success -> {
-                    if (it.value.status){
-                        lifecycleScope.launch {
-                             favList = it.value.data.favourites
-                            if (favList.isNotEmpty()){
-                                nearRecyclerView = binding.favoritesRecycler
-                                nearRestaurantAdapter = FavoritesAdapter(favList, this@Favorites)
-                                nearRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-                                nearRecyclerView.adapter = nearRestaurantAdapter
-                                binding.favoritesEmptyText.visible(false)
-                            } else{
-                                binding.favoritesRecycler.visible(false)
-                                binding.favoritesEmptyText.visible(true)
-                            }
-                        }
-                    } else {
-                        it.value.message?.let { it1 -> showToast(it1) }
-                    }
 
+    private fun setRv() {
+        favoritesAdapter = FavoritesPagingAdapter(this)
+        binding.favoritesRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.favoritesRecycler.adapter = favoritesAdapter
+        loaderStateAdapter = BookingPagingStateAdapter { favoritesAdapter.retry() }
+        binding.favoritesRecycler.adapter = favoritesAdapter.withLoadStateFooter(
+            footer = loaderStateAdapter
+        )
+        binding.favoritesRecycler.itemAnimator = null
+        favoritesAdapter.addLoadStateListener { loadState ->
+            binding.apply {
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                favoritesRecycler.isVisible = loadState.source.refresh is LoadState.NotLoading
+                btnRetry.isVisible = loadState.source.refresh is LoadState.Error
+                errorText.isVisible = loadState.source.refresh is LoadState.Error
+
+                if (loadState.source.refresh is LoadState.NotLoading &&
+                    loadState.append.endOfPaginationReached &&
+                    favoritesAdapter.itemCount < 1){
+                    favoritesRecycler.isVisible = false
+                    emptyText.isVisible = true
+                } else {
+                    emptyText.isVisible = false
                 }
-                is Resource.Failure -> handleApiError(it)
             }
-        })
+
+        }
     }
+
+    private fun loadData() {
+        lifecycleScope.launch {
+        rezViewModel.getFavorites("Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
+            binding.progressBar.visible(false)
+            //   Log.d("BOOKINGSSS", it.toString())
+            favoritesAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
+            }
+
+        }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding =  null
+    }
+
 }

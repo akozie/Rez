@@ -80,27 +80,6 @@ class MyProfile : Fragment() {
           binding.progressBar.visibility = View.VISIBLE
 
         //GET USER PROFILE
-        rezViewModel.getProfile(token = "Bearer ${sharedPreferences.getString("token", "token")}")
-        rezViewModel.getProfileResponse.observe(viewLifecycleOwner, Observer {
-              binding.progressBar.visible(it is Resource.Loading)
-            when(it) {
-                is Resource.Success -> {
-                    if (it.value.status){
-                        lifecycleScope.launch {
-                            binding.firstNameEt.text = it.value.data.first_name
-                            binding.lastNameEt.text = it.value.data.last_name
-                            binding.userEmailEt.text = sharedPreferences.getString("email", "email")
-                            binding.mobileNoEt.text = it.value.data.phone.substring(4)
-                            GlideApp.with(requireContext()).load(it.value.data.avatar).into(binding.customerImageIv)
-                        }
-                    } else {
-                        it.value.message?.let { it1 ->
-                            Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
-                    }
-                }
-                is Resource.Failure -> handleApiError(it)
-            }
-        })
 
         return binding.root
     }
@@ -114,6 +93,7 @@ class MyProfile : Fragment() {
         accountEmailEditDialog()
         accountPhoneEditDialog()
 
+        getProfile()
 
         /*Initialize Image Cropper*/
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract) {
@@ -144,7 +124,7 @@ class MyProfile : Fragment() {
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> handleApiError(it) { updateProfile() }
             }
         })
 
@@ -187,6 +167,32 @@ class MyProfile : Fragment() {
                 rezViewModel.updateProfile(newUser, token = "Bearer ${sharedPreferences.getString("token", "token")}")
             }
         }
+    }
+
+    //get profile
+    private fun getProfile() {
+        rezViewModel.getProfile(token = "Bearer ${sharedPreferences.getString("token", "token")}")
+        rezViewModel.getProfileResponse.observe(viewLifecycleOwner, Observer {
+            binding.progressBar.visible(it is Resource.Loading)
+            when(it) {
+                is Resource.Success -> {
+                    if (it.value.status){
+                        lifecycleScope.launch {
+                            binding.firstNameEt.text = it.value.data.first_name
+                            binding.lastNameEt.text = it.value.data.last_name
+                            binding.userEmailEt.text = sharedPreferences.getString("email", "email")
+                            binding.mobileNoEt.text = it.value.data.phone?.substring(4)
+                            GlideApp.with(requireContext()).load(it.value.data.avatar).into(binding.customerImageIv)
+                        }
+                    } else {
+                        it.value.message?.let { it1 ->
+                            Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
+                    }
+                }
+                is Resource.Failure -> handleApiError(it) { getProfile() }
+            }
+        })
+
     }
 
     /*Check for Gallery Permission*/
@@ -391,6 +397,12 @@ class MyProfile : Fragment() {
             )
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
     companion object {
         const val ACCOUNT_FIRST_NAME_REQUEST_KEY = "ACCOUNT FIRST NAME REQUEST KEY"
         const val ACCOUNT_FIRST_NAME_BUNDLE_KEY = "ACCOUNT FIRST NAME BUNDLE KEY"
@@ -411,6 +423,8 @@ class MyProfile : Fragment() {
         const val READ_IMAGE_STORAGE = 102
         const val NAME = "Rez"
     }
+
+
 }
 
 

@@ -34,8 +34,8 @@ import javax.inject.Inject
 
 
 class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
-    private lateinit var _binding: FragmentFavoriteDetailsBinding
-    private val binding get() = _binding
+    private var _binding: FragmentFavoriteDetailsBinding? = null
+    private val binding get() = _binding!!
 
     private val rezViewModel: RezViewModel by activityViewModels()
     private lateinit var tableAdapter: TableAdapter
@@ -152,7 +152,7 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it)
+                    is Resource.Failure -> handleApiError(it) { setList() }
                 }
             }
         )
@@ -201,5 +201,10 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
                 childFragmentManager, TopFragment::class.java.simpleName
             )
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

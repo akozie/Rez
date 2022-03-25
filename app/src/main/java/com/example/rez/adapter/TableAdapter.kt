@@ -4,6 +4,7 @@ package com.example.rez.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rez.R
 import com.example.rez.databinding.TableLayoutBinding
 import com.example.rez.model.dashboard.Table
 import com.example.rez.ui.GlideApp
@@ -37,7 +38,11 @@ class TableAdapter(private var tableList: List<Table>, var tableClickListener: O
             with(holder){
                 with(tableList[position]){
                     if (status){
-                        GlideApp.with(context).load(image).into(tableCategoryImage)
+                        if (image != null){
+                            GlideApp.with(context).load(image).into(tableCategoryImage)
+                        }else if (image == null){
+                            GlideApp.with(context).load(R.drawable.restaurant).into(tableCategoryImage)
+                        }
                         capacity.text = max_people.toString()
                         pricee.text = price
                         tableCategoryName.text = name

@@ -156,7 +156,7 @@ class NearRestFragment : Fragment(), OnTableClickListener {
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it)
+                    is Resource.Failure -> handleApiError(it) { setList() }
                 }
             }
         )
@@ -206,4 +206,10 @@ class NearRestFragment : Fragment(), OnTableClickListener {
             )
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
 }

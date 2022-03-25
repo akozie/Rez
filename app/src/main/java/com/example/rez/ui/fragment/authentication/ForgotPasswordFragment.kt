@@ -70,10 +70,10 @@ class ForgotPasswordFragment : Fragment() {
             email.isEmpty() -> {
                 Toast.makeText(requireContext(), R.string.all_email_cant_be_empty, Toast.LENGTH_SHORT).show()
             }
-            !ValidationObject.validateEmail(email) -> {
-                Toast.makeText(requireContext(), R.string.all_invalid_email, Toast.LENGTH_SHORT).show()
-
-            }
+//            !ValidationObject.validateEmail(email) -> {
+//                Toast.makeText(requireContext(), R.string.all_invalid_email, Toast.LENGTH_SHORT).show()
+//
+//            }
             else -> {
                 if (validateSignUpFieldsOnTextChange()) {
                     val forgotPasswordUser = ForgotPasswordRequest(
@@ -95,11 +95,11 @@ class ForgotPasswordFragment : Fragment() {
                         getString(R.string.all_email_cant_be_empty)
                     isValidated = false
                 }
-                !ValidationObject.validateEmail(binding.emailTextView.text.toString().trim()) -> {
-                    Toast.makeText(requireContext(), R.string.all_invalid_email, Toast.LENGTH_SHORT).show()
-
-                    isValidated = false
-                }
+//                !ValidationObject.validateEmail(binding.emailTextView.text.toString().trim()) -> {
+//                    Toast.makeText(requireContext(), R.string.all_invalid_email, Toast.LENGTH_SHORT).show()
+//
+//                    isValidated = false
+//                }
                 else -> {
                     Toast.makeText(requireContext(), null, Toast.LENGTH_SHORT).show()
 

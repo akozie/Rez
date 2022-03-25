@@ -40,6 +40,5 @@ class ReviewAdapter(private var reviewList: List<ReviewX>): RecyclerView.Adapter
     override fun getItemCount(): Int {
         return reviewList.size
     }
-
 }
 

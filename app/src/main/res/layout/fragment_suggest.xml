@@ -202,12 +202,13 @@ android:orientation="vertical">
             android:layout_height="wrap_content"
             android:id="@+id/priceText"
             android:text="22" />
-        <ImageView
-            android:id="@+id/filterImageIv"
-            android:layout_marginRight="15dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/filter11"/>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/filterImageIv"-->
+<!--            android:layout_marginRight="15dp"-->
+<!--            android:layout_width="20dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:src="@drawable/filter11"/>-->
 
     </LinearLayout>
 

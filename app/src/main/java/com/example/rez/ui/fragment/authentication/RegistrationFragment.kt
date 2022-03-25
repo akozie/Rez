@@ -31,23 +31,19 @@ import com.example.rez.util.visible
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RegistrationFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class RegistrationFragment : Fragment() {
     private var _binding: FragmentRegistrationBinding? = null
     private val binding get() = _binding!!
     private val rezViewModel: RezViewModel by activityViewModels()
 
-//    @Inject
-//    lateinit var sharedPreferences: SharedPreferences
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        (requireActivity().application as RezApp).localComponent?.inject(this)
-//    }
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (requireActivity().application as RezApp).localComponent?.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,29 +72,21 @@ class RegistrationFragment : Fragment() {
             binding.progressBar.visible(it is Resource.Loading)
             when(it) {
                 is Resource.Success -> {
-//                    lifecycleScope.launch {
-//                        val uEmail = binding.edtUserEmail.text.toString().trim()
-//                        val token: String? = it.value.data.token
-//                        val user = sharedPreferences.edit().putString("token", token).commit()
-//                        sharedPreferences.edit().putString("email", uEmail).commit()
-//                        Log.i("TOK", user.toString())
-//
-//                        val message = it.value.message
-//                        showToast(message)
-//                        startActivity(
-//                            Intent(
-//                                requireContext(),
-//                                DashboardActivity::class.java
-//                            )
-//                        )
-//                        requireActivity().finish()
-//                    }
                     lifecycleScope.launch {
+                        val uEmail = binding.edtUserEmail.text.toString().trim()
+                        val token: String? = it.value.data.token
+                        sharedPreferences.edit().putString("token", token).commit() // save user's token
+                        sharedPreferences.edit().putString("email", uEmail).commit() // save user's email
+
                         val message = it.value.message
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                        val action =
-                            RegistrationFragmentDirections.actionRegistrationFragmentToLoginFragment()
-                        findNavController().navigate(action)
+                        startActivity(
+                            Intent(
+                                requireContext(),
+                                DashboardActivity::class.java
+                            )
+                        )
+                        requireActivity().finish()
+                        showToast(message)
                     }
                 }
                 is Resource.Failure -> handleApiError(it)
@@ -111,7 +99,7 @@ class RegistrationFragment : Fragment() {
         }
 
         binding.signUpTv.setOnClickListener {
-            register()
+            register() // register user
         }
     }
 
@@ -260,7 +248,6 @@ class RegistrationFragment : Fragment() {
                 }
             }
         }
-
 
         binding.edtPass.doOnTextChanged { _, _, _, _ ->
             when {

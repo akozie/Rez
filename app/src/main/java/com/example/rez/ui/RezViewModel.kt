@@ -10,16 +10,17 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.example.rez.api.RemoteDataSource.Companion.api
 import com.example.rez.api.Resource
-import com.example.rez.model.authentication.genresponse.ForPasswordResponse
-import com.example.rez.model.authentication.genresponse.RegResponse
-import com.example.rez.model.authentication.genresponse.ResPasswordResponse
-import com.example.rez.model.authentication.genresponse.UpdateProResponse
+import com.example.rez.model.authentication.genresponse.*
 import com.example.rez.model.authentication.request.*
 import com.example.rez.model.authentication.response.*
 import com.example.rez.model.dashboard.*
 import com.example.rez.model.direction.DirectionResponseModel
 import com.example.rez.model.paging.BookingPagingSource
+import com.example.rez.model.paging.FavoritePagingSource
+import com.example.rez.model.paging.ReviewPagingSource
+import com.example.rez.model.paging.SearchPagingSource
 import com.example.rez.repository.AuthRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -27,6 +28,14 @@ class RezViewModel(
     app: Application,
     var rezRepository: AuthRepository
 ): AndroidViewModel(app) {
+
+    private val _addVendorReviewResponse: MutableLiveData<Resource<GeneralResponse>> = MutableLiveData()
+    val addVendorReviewResponse: LiveData<Resource<GeneralResponse>>
+        get() = _addVendorReviewResponse
+
+    private val _deleteTableReviewResponse: MutableLiveData<Resource<GeneralResponse>> = MutableLiveData()
+    val deleteTableReviewResponse: LiveData<Resource<GeneralResponse>>
+        get() = _deleteTableReviewResponse
 
     private val _addTableReviewResponse: MutableLiveData<Resource<GeneralResponse>> = MutableLiveData()
     val addTableReviewResponse: LiveData<Resource<GeneralResponse>>
@@ -55,10 +64,6 @@ class RezViewModel(
     private val _getHomeResponse: MutableLiveData<Resource<HomeResponse>> = MutableLiveData()
     val getHomeResponse: LiveData<Resource<HomeResponse>>
         get() = _getHomeResponse
-
-    private val _getFavoritesResponse: MutableLiveData<Resource<GetFavoritesResponse>> = MutableLiveData()
-    val getFavoritesResponse: LiveData<Resource<GetFavoritesResponse>>
-        get() = _getFavoritesResponse
 
     private val _addOrRemoveFavoritesResponse: MutableLiveData<Resource<GeneralResponse>> = MutableLiveData()
     val addOrRemoveFavoritesResponse: LiveData<Resource<GeneralResponse>>
@@ -92,9 +97,14 @@ class RezViewModel(
     val loginResponse: LiveData<Resource<LoginResponse>>
         get() = _loginResponse
 
-    private val _loginWithGoogleResponse: MutableLiveData<Resource<LoginWithGoogleResponse>> = MutableLiveData()
-    val loginWithGoogleResponse: LiveData<Resource<LoginWithGoogleResponse>>
-        get() = _loginWithGoogleResponse
+
+    private val _loginGoogleResponse: MutableLiveData<Resource<SocialResponse>> = MutableLiveData()
+    val loginGoogleResponse: LiveData<Resource<SocialResponse>>
+        get() = _loginGoogleResponse
+
+    private val _loginWithFacebookResponse: MutableLiveData<Resource<SocialResponse>> = MutableLiveData()
+    val loginWithFacebookResponse: LiveData<Resource<SocialResponse>>
+        get() = _loginWithFacebookResponse
 
     private val _changePasswordResponse: MutableLiveData<Resource<ChangePasswordResponse>> = MutableLiveData()
     val changePasswordResponse: LiveData<Resource<ChangePasswordResponse>>
@@ -104,9 +114,6 @@ class RezViewModel(
     val getDirectionResponse: LiveData<Resource<DirectionResponseModel>>
         get() = _getDirectionResponse
 
-    val breakingBooks: MutableLiveData<Resource<BookingsHistoryResponse>> = MutableLiveData()
-    var bookingHistoryPage = 1
-    var bookingHistoryResponse : BookingsHistoryResponse? = null
 
 
 
@@ -121,11 +128,18 @@ class RezViewModel(
     }
 
     fun addVendorRating(token: String,
-                        rating: Int,
+                        rating: RateVendorRequest,
                        vendorID: Int
     ) = viewModelScope.launch {
-        _addTableReviewResponse.value = Resource.Loading
-        _addTableReviewResponse.value = rezRepository.addVendorRating(token, rating, vendorID)
+        _addVendorReviewResponse.value = Resource.Loading
+        _addVendorReviewResponse.value = rezRepository.addVendorRating(token, rating, vendorID)
+    }
+
+    fun deleteTableReview(token: String,
+                       reviewID: Int
+    ) = viewModelScope.launch {
+        _deleteTableReviewResponse.value = Resource.Loading
+        _deleteTableReviewResponse.value = rezRepository.deleteTableReview(token, reviewID)
     }
 
     fun addTableReview(token: String,
@@ -145,63 +159,15 @@ class RezViewModel(
     }
 
 
-    fun getBookings(token: String) = Pager(PagingConfig(pageSize = 100, enablePlaceholders = false)){
+    fun getBookings(token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
         BookingPagingSource(api, token)
     }.flow.cachedIn(viewModelScope)
 
-
-//    fun getBookingsHistory(
-//                 token: String,
-//                 page: Int,
-//                 perPage: Int
-//    ) = viewModelScope.launch {
-//        _getBookingHistoryResponse.value = Resource.Loading
-//        _getBookingHistoryResponse.value = rezRepository.getBookingsHistory(token, page, perPage)
-//    }
-
-//     fun getBookings(response: BookingsHistoryResponse): Resource<BookingsHistoryResponse>? {
-//        if(response.status){
-//            //this block of code simply means check if body is not equals to null.If it is not the execute the let
-//            response?.let { resultResponse ->
-//                bookingHistoryPage++ //everytime we get a response, we increase the page number by 1
-//                //this function below is for the pagination
-//                if(bookingHistoryResponse == null){ // if this was the first response ever, then we update breakingnewsresponse with the current resultresponse
-//                    bookingHistoryResponse = resultResponse.body()
-//                }else{
-//                    //here, if we already have breakingNewsResponse we add the new incoming resultresponse to the already existing
-//                    // breakingNewsResponse and return it
-//                    val oldArticles = bookingHistoryResponse?.data?.bookings
-//                    val newArticle = resultResponse.body()?.data?.bookings
-//                    if (newArticle != null) {
-//                        oldArticles?.addAll(newArticle)
-//                    }
-//                }
-//                return Resource.Success(bookingHistoryResponse ?: resultResponse.body()) // we return resultresponse only when breakingNewsResponse is null
-//            }
-//        }
-//
-//     }
-
-//    private suspend fun safeBooking(token: String){
-//        //before making the network call, we are going to emmit the loading state to our live data so that the fragment can handle that
-//        bookingHistory.postValue(Resource.Loading)
-//        try {
-//                val response = rezRepository.getBookingsHistory(token, bookingHistoryPage)
-//            bookingHistory.postValue(handleBreakingNewsResponse(response))
-//
-//        } catch (t : Throwable){
-//
-//        }
-//    }
+    fun getVendorProfileTableReviews(vendorID: Int, tableID: Int, token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
+        ReviewPagingSource(vendorID, tableID, api, token)
+    }.flow.cachedIn(viewModelScope)
 
 
-    fun getVendorProfileTableReviews( vendorID: Int,
-                               tableID: Int,
-                 token: String
-    ) = viewModelScope.launch {
-        _getProfileTableReviewResponse.value = Resource.Loading
-        _getProfileTableReviewResponse.value = rezRepository.getVendorProfileTableReviews(vendorID, tableID, token)
-    }
 
     fun getVendorProfileTable( vendorID: Int,
                                tableID: Int,
@@ -218,13 +184,6 @@ class RezViewModel(
         _getVendorTableResponse.value = rezRepository.getVendorTables(vendorID, token)
     }
 
-    fun search( search: String,
-                 token: String
-    ) = viewModelScope.launch {
-        _searchResponse.value = Resource.Loading
-        _searchResponse.value = rezRepository.search(search, token)
-    }
-
     fun getHome( lat: Double,
                  long: Double,
                  token: String
@@ -233,17 +192,21 @@ class RezViewModel(
         _getHomeResponse.postValue(rezRepository.getHome(lat, long, token))
     }
 
-    fun getFavorites( token: String
-    ) = viewModelScope.launch(Dispatchers.IO) {
-        _getFavoritesResponse.postValue(Resource.Loading)
-        _getFavoritesResponse.postValue( rezRepository.getFavorites(token))
-    }
+    fun search(search: String, noOfPersons: Int, priceFrom: Int, priceTo: Int, token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
+        SearchPagingSource(search, noOfPersons, priceFrom,  priceTo,  api, token)
+    }.flow.cachedIn(viewModelScope)
+
+
+    fun getFavorites(token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
+        FavoritePagingSource(api, token)
+    }.flow.cachedIn(viewModelScope)
+
 
     fun addOrRemoveFavorites(
         id: String,
         token: String
     ) = viewModelScope.launch {
-      //  _addOrRemoveFavoritesResponse.value = Resource.Loading
+        _addOrRemoveFavoritesResponse.value = Resource.Loading
         _addOrRemoveFavoritesResponse.value = rezRepository.addOrRemoveFavorites(id, token)
     }
 
@@ -290,9 +253,16 @@ class RezViewModel(
         _loginResponse.value = Resource.Loading
         _loginResponse.value = rezRepository.login(user)
     }
-    fun loginWithGoogle(token: String) = viewModelScope.launch {
-        _loginWithGoogleResponse.value = Resource.Loading
-        _loginWithGoogleResponse.value = rezRepository.loginWithGoogle(token)
+
+
+    fun loginWithGoogle(token: FacebookRequest) = viewModelScope.launch {
+        _loginGoogleResponse.value = Resource.Loading
+        _loginGoogleResponse.value = rezRepository.loginGoogle(token)
+    }
+
+    fun loginWithFacebook(token: FacebookRequest) = viewModelScope.launch {
+        _loginWithFacebookResponse.value = Resource.Loading
+        _loginWithFacebookResponse.value = rezRepository.loginFacebook(token)
     }
 
     fun changePassword(user: ChangePasswordRequest,

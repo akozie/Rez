@@ -25,6 +25,10 @@ import com.example.rez.databinding.ActivityDashboardBinding
 import com.example.rez.repository.AuthRepository
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.RezViewModelProviderFactory
+import com.facebook.AccessToken
+import com.facebook.GraphRequest
+import com.facebook.HttpMethod
+import com.facebook.login.LoginManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
@@ -165,6 +169,16 @@ class DashboardActivity : AppCompatActivity() {
                         //sharedPreferences.edit().clear().apply()
                         val token = ""
                         sharedPreferences.edit().putString("token", token).apply()
+//                        if (AccessToken.getCurrentAccessToken() != null) {
+//                            GraphRequest(
+//                                AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE,
+//                                GraphRequest.Callback {
+//                                    AccessToken.setCurrentAccessToken(null)
+//                                    LoginManager.getInstance().logOut()
+//                                    finish()
+//                                }
+//                            ).executeAsync()
+//                        }
                         // After clearing the shared preference, navigate the user back to the landing screen which is the MainActivity
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
@@ -284,6 +298,48 @@ class DashboardActivity : AppCompatActivity() {
                     profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.search -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.bookingHistory -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.bookingDetailsFragment -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.settings2 -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.help2 -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.securityAndPrivacy -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.changePassword -> {
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    profilePicture.visibility = View.INVISIBLE
+                }
+                R.id.qr_code -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE

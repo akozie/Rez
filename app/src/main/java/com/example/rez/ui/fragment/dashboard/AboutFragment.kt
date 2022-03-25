@@ -37,8 +37,8 @@ import kotlin.time.Duration.Companion.seconds
 
 class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    private lateinit var _binding: FragmentAboutBinding
-    private val binding get() = _binding
+    private var _binding: FragmentAboutBinding? = null
+    private val binding get() = _binding!!
     private val rezViewModel: RezViewModel by activityViewModels()
     private  var tableID: Int = 0
 
@@ -153,22 +153,20 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
         } else {
             time = "$savedHour:$savedMinutes"
         }
+
+        bookTable()
+
+    }
+
+    private fun bookTable() {
         val bTable = BookTableRequest(
             date = date,
             table_id = tableID,
             time = time
         )
-//        if (savedHour <= 12){
-//            secondDate = "$savedHour:$savedMinutes am"
-//            time = secondDate
-//        } else {
-//            val cal = savedHour - 12
-//            secondDate = "$cal:$savedMinutes pm"
-//            time = secondDate
-//        }
         rezViewModel.bookTable("Bearer ${sharedPreferences.getString("token", "token")}", bTable)
         rezViewModel.bookTableResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-           // binding.progressBar.visible(it is Resource.Loading)
+            // binding.progressBar.visible(it is Resource.Loading)
             when(it) {
                 is Resource.Success -> {
                     if (it.value.status){
@@ -177,7 +175,7 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
                             val amount = it.value.data.amount
                             sharedPreferences.edit().putString("ref", ref).apply()
                             sharedPreferences.edit().putString("amount", amount).apply()
-                            showToast(it.value.message)
+                            showToast("Proceed to make payment")
                             val action = TableDetailsDirections.actionTableDetailsToProceedToPayment(date, time)
                             findNavController().navigate(action)
                         }
@@ -189,10 +187,14 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
                 is Resource.Failure -> {
                     val msg = "Date must be a date after $date"
                     showToast(msg)
-                    handleApiError(it)
+                    handleApiError(it) { bookTable() }
                 }
             }
         })
 
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

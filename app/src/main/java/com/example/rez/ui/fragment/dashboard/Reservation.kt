@@ -1,33 +1,45 @@
 package com.example.rez.ui.fragment.dashboard
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rez.R
+import com.example.rez.RezApp
+import com.example.rez.adapter.BookingPagingAdapter
+import com.example.rez.adapter.BookingPagingStateAdapter
+import com.example.rez.databinding.FragmentBookingHistoryBinding
+import com.example.rez.databinding.FragmentReservationBinding
+import com.example.rez.model.authentication.response.Booking
+import com.example.rez.ui.RezViewModel
+import com.example.rez.util.visible
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Reservation.newInstance] factory method to
- * create an instance of this fragment.
- */
-class Reservation : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
+
+    private var _binding: FragmentReservationBinding? = null
+    private val binding get() = _binding!!
+    private val rezViewModel: RezViewModel by activityViewModels()
+    private lateinit var bookingAdapter: BookingPagingAdapter
+    private lateinit var loaderStateAdapter: BookingPagingStateAdapter
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        (requireActivity().application as RezApp).localComponent?.inject(this)
     }
 
     override fun onCreateView(
@@ -35,26 +47,79 @@ class Reservation : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reservation, container, false)
+        _binding = FragmentReservationBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Reservation.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Reservation().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setRv()
+        loadData()
+
+        binding.btnRetry.setOnClickListener {
+            bookingAdapter.retry()
+        }
+    }
+
+
+
+    private fun setRv() {
+        bookingAdapter = BookingPagingAdapter(this)
+        binding.bookingRecyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.bookingRecyclerview.adapter = bookingAdapter
+        loaderStateAdapter = BookingPagingStateAdapter { bookingAdapter.retry() }
+        binding.bookingRecyclerview.adapter = bookingAdapter.withLoadStateFooter(
+            footer = loaderStateAdapter
+        )
+        binding.bookingRecyclerview.itemAnimator = null
+        bookingAdapter.addLoadStateListener { loadState ->
+            binding.apply {
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                bookingRecyclerview.isVisible = loadState.source.refresh is LoadState.NotLoading
+                btnRetry.isVisible = loadState.source.refresh is LoadState.Error
+                errorText.isVisible = loadState.source.refresh is LoadState.Error
+
+                if (loadState.source.refresh is LoadState.NotLoading &&
+                    loadState.append.endOfPaginationReached &&
+                    bookingAdapter.itemCount < 1){
+                    bookingRecyclerview.isVisible = false
+                    emptyText.isVisible = true
+                } else {
+                    emptyText.isVisible = false
                 }
             }
+
+        }
     }
+
+    private fun loadData() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            // rezViewModel.getBookings("Bearer ${sharedPreferences.getString("token", "token")}")
+            rezViewModel.getBookings("Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {pagingData ->
+                binding.progressBar.visible(false)
+                //   Log.d("BOOKINGSSS", it.toString())
+                bookingAdapter.submitData(pagingData)
+            }
+
+        }
+
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onBookingItemClick(booking: Booking) {
+        if (booking.confirmed_payment){
+            val action = ReservationDirections.actionReservationToQRCodeFragment()
+            findNavController().navigate(action)
+        }else {
+            val action = ReservationDirections.actionReservationToBookingDetailsFragment(booking)
+            findNavController().navigate(action)
+        }
+    }
+
 }

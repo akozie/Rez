@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.rez.R
 import com.example.rez.databinding.NearRestaurantAdapterBinding
 import com.example.rez.databinding.SuggestionAdapterBinding
 import com.example.rez.databinding.SuggestionAndNearLayoutBinding
@@ -37,7 +38,11 @@ class SuggestionAndNearAdapter(private var suggestionList: List<SuggestedVendor>
         holder.itemView.apply {
             with(holder){
                 with(suggestionList[position]){
-                    Glide.with(context).load(avatar).into(hotelImage)
+                    if (avatar != null){
+                        Glide.with(context).load(avatar).into(hotelImage)
+                    } else if (avatar == null ){
+                        Glide.with(context).load(R.drawable.restaurant).into(hotelImage)
+                    }
                     hotelName.text = company_name
                     ratingTv.rating = average_rating
                     category.text = category_name

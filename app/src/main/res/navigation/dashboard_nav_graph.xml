@@ -93,7 +93,14 @@
         android:id="@+id/reservation"
         android:name="com.example.rez.ui.fragment.dashboard.Reservation"
         android:label="Reservations"
-        tools:layout="@layout/fragment_reservation" />
+        tools:layout="@layout/fragment_reservation" >
+        <action
+            android:id="@+id/action_reservation_to_bookingDetailsFragment"
+            app:destination="@id/bookingDetailsFragment" />
+        <action
+            android:id="@+id/action_reservation_to_QRCodeFragment"
+            app:destination="@id/QRCodeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/changePassword"
         android:name="com.example.rez.ui.fragment.dashboard.ChangePassword"
@@ -191,11 +198,18 @@
             android:name="INTVALUE"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_proceedToPayment_to_errorFragment"
+            app:destination="@id/errorFragment" />
     </fragment>
     <dialog
         android:id="@+id/successFragment"
         android:name="com.example.rez.ui.fragment.dashboard.SuccessFragment"
-        tools:layout="@layout/fragment_success" />
+        tools:layout="@layout/fragment_success" >
+        <action
+            android:id="@+id/action_successFragment_to_home2"
+            app:destination="@id/home2" />
+    </dialog>
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.example.rez.ui.fragment.dashboard.AboutFragment"
@@ -255,10 +269,24 @@
     <fragment
         android:id="@+id/bookingDetailsFragment"
         android:name="com.example.rez.ui.fragment.dashboard.BookingDetailsFragment"
-        android:label="fragment_booking_details"
+        android:label="Booking details"
         tools:layout="@layout/fragment_booking_details" >
         <argument
             android:name="BOOKINGS"
             app:argType="com.example.rez.model.authentication.response.Booking" />
     </fragment>
+    <fragment
+        android:id="@+id/errorFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.ErrorFragment"
+        android:label="fragment_error"
+        tools:layout="@layout/fragment_error" >
+        <action
+            android:id="@+id/action_errorFragment_to_proceedToPayment"
+            app:destination="@id/proceedToPayment" />
+    </fragment>
+    <fragment
+        android:id="@+id/QRCodeFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.QRCodeFragment"
+        android:label="QR Code"
+        tools:layout="@layout/fragment_q_r_code" />
 </navigation>

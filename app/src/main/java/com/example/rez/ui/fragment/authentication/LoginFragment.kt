@@ -15,16 +15,24 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import co.paystack.android.PaystackSdk.applicationContext
 import com.example.rez.R
 import com.example.rez.RezApp
 import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentLoginBinding
+import com.example.rez.model.authentication.request.FacebookRequest
 import com.example.rez.model.authentication.request.LoginRequest
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.ui.activity.MainActivity
 import com.example.rez.util.*
 import com.example.rez.util.ValidationObject.validateEmail
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -32,21 +40,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var rezViewModel: RezViewModel
     private lateinit var googleSignInButton: TextView
+    private lateinit var facebookSignInButton: LoginButton
     private lateinit var rezSignInClient: GoogleSignInClient
     private var GOOGLE_SIGNIN_RQ_CODE = 100
+    private lateinit var callbackManager : CallbackManager
+    private val EMAIL = "email"
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -68,8 +76,27 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rezViewModel = (activity as MainActivity).rezViewModel
+        callbackManager = CallbackManager.Factory.create()
+
         googleSignInButton = binding.googleTv
+        facebookSignInButton  = binding.loginButton
         googleSignInClient()
+
+        facebookSignInButton.setReadPermissions(Arrays.asList(EMAIL))
+        facebookSignInButton.fragment = this
+
+        facebookSignInButton.registerCallback(callbackManager, object :
+            FacebookCallback<LoginResult?> {
+            override fun onSuccess(loginResult: LoginResult?) {
+                Log.d("MainActivity", "Facebook token: " + loginResult!!.accessToken.token)
+                // App code
+                startDashboardFromFacebook()
+            }
+            override fun onCancel() { // App code
+            }
+            override fun onError(exception: FacebookException) { // App code
+            }
+        })
 
         binding.register.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToRegistrationFragment()
@@ -80,9 +107,6 @@ class LoginFragment : Fragment() {
             val action = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment()
             findNavController().navigate(action)
         }
-
-//        binding.progressBar.visible(false)
-//        binding.loginTv.enable(false)
 
         rezViewModel.loginResponse.observe(viewLifecycleOwner, Observer {
             binding.progressBar.visible(it is Resource.Loading)
@@ -95,7 +119,6 @@ class LoginFragment : Fragment() {
                             val user = sharedPreferences.edit().putString("token", token).commit()
                             sharedPreferences.edit().putString("email", uEmail).commit()
                             Log.i("TOK", user.toString())
-
                             val message = it.value.message
                             showToast(message)
                             startActivity(
@@ -208,14 +231,14 @@ class LoginFragment : Fragment() {
             }
         }
 
-
         return isValidated
     }
 
     /*create the googleSignIn client*/
     private fun googleSignInClient() {
+        val serverClientId = getString(R.string.default_web_client_id) // get the client id
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            //.requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken(serverClientId)
             .requestEmail()
             .build()
 
@@ -224,7 +247,6 @@ class LoginFragment : Fragment() {
 
     /*launch the signIn with google dialog*/
     private fun signIn() {
-        //rezSignInClient.signOut()
         val signInIntent = rezSignInClient.signInIntent
         startActivityForResult(signInIntent, GOOGLE_SIGNIN_RQ_CODE)
     }
@@ -232,8 +254,10 @@ class LoginFragment : Fragment() {
     /*gets the selected google account from the intent*/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GOOGLE_SIGNIN_RQ_CODE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+
             handleSignInResult(task)
         }
     }
@@ -244,55 +268,80 @@ class LoginFragment : Fragment() {
             val account = completedTask.getResult(ApiException::class.java)
             startDashboard(account)
         } catch (e: ApiException) {
-            Log.d("GGGGGG", e.message!!)
             showToast(e.localizedMessage)
         }
     }
 
     /*open the dashboard fragment if account was selected*/
     private fun startDashboard(account: GoogleSignInAccount?) {
-        if (account != null) {
-
-            account.idToken.let {
-                if (it != null) {
-                    rezViewModel.loginWithGoogle(it)
-                }
-
-                rezViewModel.loginWithGoogleResponse.observe(viewLifecycleOwner, Observer {
-                    binding.progressBar.visible(it is Resource.Loading)
-                    when (it) {
-                        is Resource.Success -> {
-                            if (it.value.status) {
-                                lifecycleScope.launch {
-                                    val uEmail = account.email
-                                    val token: String = it.value.data
-                                    val user =
-                                        sharedPreferences.edit().putString("token", token).commit()
-                                    sharedPreferences.edit().putString("email", uEmail).commit()
-                                    Log.i("GOOGLETOK", user.toString())
-                                    val message = it.value.message
-                                    showToast(message)
-                                    startActivity(
-                                        Intent(
-                                            requireContext(),
-                                            DashboardActivity::class.java
-                                        )
+        account?.idToken?.let {
+            val googleRequest = FacebookRequest(it)
+            rezViewModel.loginWithGoogle(googleRequest) // make the google login request
+            rezViewModel.loginGoogleResponse.observe(viewLifecycleOwner, Observer {
+                binding.progressBar.visible(it is Resource.Loading) // hide progress bar after the response
+                when (it) {
+                    is Resource.Success -> {
+                        if (it.value.status) {
+                            lifecycleScope.launch {
+                                val uEmail = it.value.data.email
+                                val token: String? = it.value.data.token
+                                sharedPreferences.edit().putString("token", token).commit()
+                                sharedPreferences.edit().putString("email", uEmail).commit() //save the user's email
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        DashboardActivity::class.java
                                     )
-                                    requireActivity().finish()
-                                }
-                            } else {
-                                it.value.message?.let { it1 -> showToast(it1) }
+                                ) // start the dashboard
+                                requireActivity().finish() // finish the activity
+                                val message = it.value.message
+                                showToast(message) // show the user the message
 
                             }
-
+                        } else {
+                            it.value.message?.let { it1 -> showToast(it1) } // show the user the message
                         }
-                        is Resource.Failure -> handleApiError(it)
+
                     }
-                })
-
-            }
+                    is Resource.Failure ->  handleApiError(it) // handle error
+                }
+            })
         }
+    }    /*open the dashboard fragment if facebook account was selected*/
+    private fun startDashboardFromFacebook() {
+        val accessToken = AccessToken.getCurrentAccessToken()
+        if (accessToken != null && !accessToken.isExpired){
+            val facebookRequest = FacebookRequest(accessToken.token)
+            rezViewModel.loginWithFacebook(facebookRequest) // make the facebook login request
+            rezViewModel.loginWithFacebookResponse.observe(viewLifecycleOwner, Observer {
+                binding.progressBar.visible(it is Resource.Loading) // hide progress bar after the response
+                when (it) {
+                    is Resource.Success -> {
+                        if (it.value.status) {
+                            lifecycleScope.launch {
+                                val uEmail = it.value.data.email
+                                val token: String? = it.value.data.token
+                                sharedPreferences.edit().putString("token", token).commit()
+                                sharedPreferences.edit().putString("email", uEmail).commit() //save the user's email
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        DashboardActivity::class.java
+                                    )
+                                ) // start the dashboard
+                                requireActivity().finish() // finish the activity
+                                val message = it.value.message
+                                showToast(message) // show the user the message
 
+                            }
+                        } else {
+                            it.value.message?.let { it1 -> showToast(it1) } // show the user the message
+                        }
 
+                    }
+                    is Resource.Failure ->  handleApiError(it) // handle error
+                }
+            })
+        }
     }
 }

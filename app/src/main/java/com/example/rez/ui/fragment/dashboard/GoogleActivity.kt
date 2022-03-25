@@ -44,7 +44,8 @@ import java.util.ArrayList
 class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
 
   //  private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityGoogleBinding
+    private var _binding: ActivityGoogleBinding? = null
+    private val binding get() = _binding!!
     private var mGoogleMap: GoogleMap? = null
   //  private lateinit var appPermissions: AppPermissions
     private var isLocationPermissionOk = false
@@ -63,7 +64,7 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityGoogleBinding.inflate(layoutInflater)
+        _binding = ActivityGoogleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 //        setSupportActionBar(binding.toolbar)
@@ -117,6 +118,8 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
             if (checked != -1) {
                 when (checked) {
                     R.id.btnChipDriving -> getDirection("driving")
+                    R.id.btnChipWalking -> getDirection("walking")
+                    R.id.btnChipTrain -> getDirection("transit")
                 }
             }
         }
@@ -384,6 +387,11 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
             path.add(com.google.maps.model.LatLng(lat * 1e-5, lng * 1e-5))
         }
         return path
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }

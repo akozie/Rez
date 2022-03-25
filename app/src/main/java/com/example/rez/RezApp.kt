@@ -8,9 +8,12 @@ import com.example.rez.di.components.DaggerLocalComponent
 import com.example.rez.di.components.LocalComponent
 import com.example.rez.di.module.AppModule
 import com.example.rez.di.module.LocalModule
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import javax.inject.Inject
 
 class RezApp: Application() {
+
 
     var localComponent: LocalComponent? = null
     var appcomponent: Appcomponent? = null
@@ -22,6 +25,9 @@ class RezApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        FacebookSdk.sdkInitialize(applicationContext)
+        AppEventsLogger.activateApp(this)
 
         appcomponent = DaggerAppcomponent.builder()
             .appModule(AppModule(this))
