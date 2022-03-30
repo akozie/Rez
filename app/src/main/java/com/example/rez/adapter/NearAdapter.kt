@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.rez.R
 import com.example.rez.databinding.NearRestaurantAdapterBinding
 import com.example.rez.databinding.SuggestionAdapterBinding
 import com.example.rez.databinding.SuggestionAndNearLayoutBinding
 import com.example.rez.model.dashboard.*
+import com.example.rez.util.visible
 
 
 class NearAdapter(private var nearByList: List<NearbyVendor>, val onNearClickListener:OnNearItemClickListener): RecyclerView.Adapter<NearAdapter.MyViewHolder>() {
@@ -20,9 +22,9 @@ class NearAdapter(private var nearByList: List<NearbyVendor>, val onNearClickLis
         val tableQtyTv = binding.tableQtyTv
         val categoryTv = binding.categoryTv
         val hotelNameTv = binding.hotelNameTv
-        val addressTv = binding.addressTv
+//        val addressTv = binding.addressTv
         val ratingTv = binding.ratingBar
-        val distanceTv = binding.distanceTv
+//        val distanceTv = binding.distanceTv
         // val cardView = binding.cardView
 
     }
@@ -36,9 +38,26 @@ class NearAdapter(private var nearByList: List<NearbyVendor>, val onNearClickLis
         holder.itemView.apply {
             with(holder){
                 with(nearByList[position]){
-                    Glide.with(context).load(avatar).into(hotelImageIv)
-                    ratingTv.rating = average_rating
+                    if (avatar != null){
+                        Glide.with(context).load(avatar).into(hotelImageIv)
+                    } else if (avatar == null ){
+                        Glide.with(context).load(R.drawable.restaurant).into(hotelImageIv)
+                    }
                     hotelNameTv.text = company_name
+                    ratingTv.rating = average_rating
+                    categoryTv.text = category_name
+                    if (total_tables == 1){
+                        tableQtyTv.text = total_tables.toString() + " table"
+                    }else{
+                        tableQtyTv.text = total_tables.toString() + " tables"
+                    }
+                    if (liked_by_user){
+                        likeIv.visible(true)
+                        unLikeIv.visible(false)
+                    }else{
+                        likeIv.visible(false)
+                        unLikeIv.visible(true)
+                    }
                 }
             }
         }

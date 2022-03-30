@@ -103,11 +103,12 @@ class SearchFragment : Fragment(), OnTableClickListener {
 
     private fun searchData() {
         binding.hotelNameTv.text = args?.company_name
-        // binding.addressTv.text = args?.address
-        // binding.categoryTv.text = args?.categoryName
-        //binding.distanceTv.text = args?.distance.toString()
-        // binding.tableQtyTv.text = args?.tables
-        //GlideApp.with(requireContext()).load(args?.avatar).into(binding.hotelImageIv)
+        binding.hotelNameTv.text = args?.company_name
+        if (args?.ratings == 0){
+            binding.ratingBar.rating = "3".toFloat()
+        }else {
+            binding.ratingBar.rating = args?.ratings!!.toFloat()
+        }
     }
 
 

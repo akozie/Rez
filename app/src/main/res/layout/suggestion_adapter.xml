@@ -64,7 +64,6 @@
                 android:padding="5dp"
                 android:paddingStart="7dp"
                 android:paddingEnd="7dp"
-
                 android:text=""
                 android:textColor="@color/white"
                 android:textSize="10dp"
@@ -85,7 +84,8 @@
                 android:gravity="start"
                 android:padding="5dp"
                 android:paddingStart="7dp"
-                android:paddingEnd="7dp"                android:text=""
+                android:paddingEnd="7dp"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="10dp"
                 android:textStyle="bold" />
@@ -138,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="start"
                 android:orientation="horizontal">
 
                 <RatingBar
@@ -149,8 +149,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?android:ratingBarStyleSmall"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="start"
+                    android:layout_gravity="start"
                     android:progressTint="@color/yellow"
                     android:progressBackgroundTint="@color/white"
                     />
@@ -167,17 +167,17 @@
 <!--                    android:layout_gravity="center"-->
 <!--                    android:drawableLeft="@drawable/ic_star_24"/>-->
 
-                <TextView
-                    android:id="@+id/distanceTv"
-                    android:layout_weight="1.2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="9dp"
-                    android:drawablePadding="2dp"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center"
-                    android:text=""
-                    android:drawableLeft="@drawable/ic_baseline_location_on_24"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/distanceTv"-->
+<!--                    android:layout_weight="1.2"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textSize="9dp"-->
+<!--                    android:drawablePadding="2dp"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:text=""-->
+<!--                    android:drawableLeft="@drawable/ic_baseline_location_on_24"/>-->
 
 
             </LinearLayout>

@@ -37,8 +37,6 @@ import java.text.ParsePosition
 
 
 
-
-
 class ProceedToPayment : Fragment() {
 
     private var _binding: FragmentProceedToPaymentBinding ? = null
@@ -48,7 +46,6 @@ class ProceedToPayment : Fragment() {
     private lateinit var tableCapacity:  String
     private lateinit var grandTotal:  String
     private lateinit var tableName:  String
-    private val rezViewModel: RezViewModel by activityViewModels()
     private lateinit var mCardNumber: EditText
     private lateinit var mCardExpiry: EditText
     private lateinit var mCardCVV: EditText
@@ -92,8 +89,7 @@ class ProceedToPayment : Fragment() {
         binding.paymentTv.setOnClickListener {
             performCharge()
             binding.paymentTv.enable(false)
-//            val action = ProceedToPaymentDirections.actionProceedToPaymentToSuccessFragment()
-//            findNavController().navigate(action)
+            binding.progressBar.enable(true)
         }
 
     }
@@ -143,32 +139,24 @@ class ProceedToPayment : Fragment() {
                 val cardExpiryArray = cardExpiry.split("/").toTypedArray()
                 val expiryMonth = cardExpiryArray[0].toInt()
                 val expiryYear = cardExpiryArray[1].toInt()
-//        var amount = requireActivity().intent.getIntExtra(getString(R.string.meal_name), 0)
-//        amount *= 100
                 val card = Card(cardNumber, expiryMonth, expiryYear, cvv)
                 val charge = Charge()
-             //   val num = "00"
                 grandTotal += "00"
-               // val format = NumberFormat.getInstance().parse(grandTotal).toInt()
-               // Log.d("PRICEE", format.toString())
                 charge.amount = grandTotal.toInt()
                 charge.email = sharedPreferences.getString("email", "email")
                 charge.card = card
                 charge.reference =sharedPreferences.getString("ref", "ref")
                 PaystackSdk.chargeCard(requireActivity(), charge, object : Paystack.TransactionCallback {
                     override fun onSuccess(transaction: Transaction) {
-                       // parseResponse(transaction.reference)
+                        binding.progressBar.enable(false)
                         val action = ProceedToPaymentDirections.actionProceedToPaymentToSuccessFragment()
                         findNavController().navigate(action)
-                       // showToast("Success")
                     }
                     override fun beforeValidate(transaction: Transaction) {
                         Log.d("Main Activity", "beforeValidate: " + transaction.reference)
                     }
                     override fun onError(error: Throwable, transaction: Transaction) {
                         Log.d("Main Activity", "onError: " + error.localizedMessage)
-                        Log.d("Main Activity", "onError: $error")
-
                     }
                 })
             }

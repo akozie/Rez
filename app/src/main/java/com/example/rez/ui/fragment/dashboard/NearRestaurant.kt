@@ -34,11 +34,6 @@ import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass.
- * Use the [NearRestaurant.newInstance] factory method to
- * create an instance of this fragment.
- */
 class NearRestaurant : Fragment(), NearAdapter.OnNearItemClickListener {
     private var _binding : FragmentNearRestaurantBinding? = null
     private val binding get() = _binding!!

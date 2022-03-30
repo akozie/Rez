@@ -35,6 +35,9 @@ class AuthRepository: BaseRepository() {
     suspend fun bookTable(token: String, bookTableRequest: BookTableRequest) = safeApiCall{
         api.bookTable(token, bookTableRequest)
     }
+    suspend fun getEachBooking(token: String, bookingID: Int) = safeApiCall{
+        api.getEachBooking(token, bookingID)
+    }
 
 //    fun getBookings(token: String) = Pager(PagingConfig(pageSize = 100, enablePlaceholders = false)){
 //        BookingPagingSource(api, token)

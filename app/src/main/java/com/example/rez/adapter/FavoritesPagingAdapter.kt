@@ -22,13 +22,7 @@ class FavoritesPagingAdapter(private val onFavoritesItemClickListener: OnClickFa
     inner  class BookingMyViewHolder(private val binding: FavoritesLayoutBinding): RecyclerView.ViewHolder(binding.root) {
         val hotelImageIv = binding.hotelImageIv
         val like = binding.likeIv
-        val tableQtyTv = binding.tableQtyTv
-        val categoryTv = binding.categoryTv
         val hotelNameTv = binding.hotelNameTv
-        //  val addressTv = binding.addressTv
-        val rating = binding.ratingBar
-        val distanceTv = binding.distanceTv
-        // val cardView = binding.cardView
     }
 
     companion object{
@@ -54,7 +48,6 @@ class FavoritesPagingAdapter(private val onFavoritesItemClickListener: OnClickFa
                         with(current){
                             GlideApp.with(context).load(current?.avatar).into(holder.hotelImageIv)
                             holder.hotelNameTv.text = current?.company_name
-                            holder.rating.rating = current?.ratings!!
                         }
                 }
             holder.itemView.setOnClickListener {

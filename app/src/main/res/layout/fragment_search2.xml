@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
@@ -51,20 +51,20 @@ android:orientation="vertical">
             android:layout_marginRight="10dp"
             android:src="@drawable/like3" />
 
-        <TextView
-            android:id="@+id/tableQtyTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rectangle_box_button_orange"
-            android:padding="6dp"
-            android:text=""
-            android:textColor="@color/white"
-            android:textSize="10dp"
-            android:textStyle="bold" />
+<!--        <TextView-->
+<!--            android:id="@+id/tableQtyTv"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:background="@drawable/rectangle_box_button_orange"-->
+<!--            android:padding="6dp"-->
+<!--            android:text=""-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="10dp"-->
+<!--            android:textStyle="bold" />-->
 
         <LinearLayout
             android:layout_alignParentBottom="true"
@@ -91,19 +91,19 @@ android:orientation="vertical">
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/categoryTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/rectangle_box_button_pinc"
-                    android:gravity="start"
-                    android:padding="6dp"
-                    android:text=""
-                    android:textColor="@color/white"
-                    android:textSize="10dp"
-                    android:textStyle="bold" />
+<!--                <TextView-->
+<!--                    android:id="@+id/categoryTv"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginLeft="5dp"-->
+<!--                    android:background="@drawable/rectangle_box_button_pinc"-->
+<!--                    android:gravity="start"-->
+<!--                    android:padding="6dp"-->
+<!--                    android:text=""-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="10dp"-->
+<!--                    android:textStyle="bold" />-->
 
             </LinearLayout>
 
@@ -190,16 +190,11 @@ android:orientation="vertical">
             android:textStyle="bold"
             android:textSize="15dp" />
 
-        <ImageView
-            android:id="@+id/filterImageIv"
-            android:layout_marginRight="15dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/filter11"/>
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="@dimen/margin_10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tableListRecycler" />
@@ -217,4 +212,4 @@ android:orientation="vertical">
 
 
 
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

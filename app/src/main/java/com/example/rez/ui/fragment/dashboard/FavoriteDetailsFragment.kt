@@ -109,19 +109,6 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
     private fun setNearData() {
         binding.hotelNameTv.text = args?.company_name
         binding.ratingBar.rating = args?.ratings!!
-       // binding.categoryTv.text = args?.category_name
-//        if (args?.total_tables == 1){
-//            binding.tableQtyTv.text = args?.total_tables.toString() + " table"
-//        }else{
-//            binding.tableQtyTv.text = args?.total_tables.toString() + " tables"
-//        }
-//        if (args?.liked_by_user == true){
-//            binding.likeIv.visible(true)
-//            binding.unLikeIv.visible(false)
-//        }else{
-//            binding.likeIv.visible(false)
-//            binding.unLikeIv.visible(true)
-//        }
     }
 
     override fun onTableItemClick(tableModel: Table) {
@@ -145,8 +132,6 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
                             binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                             binding.tableListRecycler.adapter = tableAdapter
                             setTableDetailsViewPagerAdapter()
-                            // setRecyclerview()
-                            //nearList = emptyList()
                         } else {
                             it.value.message?.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }

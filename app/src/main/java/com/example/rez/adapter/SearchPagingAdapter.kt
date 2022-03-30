@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.rez.R
 import com.example.rez.databinding.FavoritesLayoutBinding
 import com.example.rez.databinding.ReservationListAdapterBinding
+import com.example.rez.databinding.SearchAdapterBinding
 import com.example.rez.databinding.SuggestionAdapterBinding
 import com.example.rez.model.authentication.response.Booking
 import com.example.rez.model.authentication.response.Favourite
@@ -22,11 +23,10 @@ import com.example.rez.util.visible
 class SearchPagingAdapter(private val onClickListener : OnSearchClickListener): PagingDataAdapter<ResultX, SearchPagingAdapter.BookingMyViewHolder>(differCallback)  {
 
 
-    inner  class BookingMyViewHolder(private val binding: SuggestionAdapterBinding): RecyclerView.ViewHolder(binding.root) {
+    inner  class BookingMyViewHolder(private val binding: SearchAdapterBinding): RecyclerView.ViewHolder(binding.root) {
         var hotelImage = binding.hotelImageIv
         var hotelName = binding.hotelNameTv
         var hotelRatingBar = binding.ratingBar
-        // var hotelReviews = binding.totalReviewTv
 
     }
 
@@ -43,7 +43,7 @@ class SearchPagingAdapter(private val onClickListener : OnSearchClickListener): 
     }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookingMyViewHolder {
-            val binding = SuggestionAdapterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = SearchAdapterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return BookingMyViewHolder(binding)
         }
 

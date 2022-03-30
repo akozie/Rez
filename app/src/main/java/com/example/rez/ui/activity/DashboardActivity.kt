@@ -29,6 +29,9 @@ import com.facebook.AccessToken
 import com.facebook.GraphRequest
 import com.facebook.HttpMethod
 import com.facebook.login.LoginManager
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
@@ -45,8 +48,8 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var searchview: TextView
     private lateinit var toolbarFragmentName: TextView
     private lateinit var drawerCloseIcon: ImageView
-    private lateinit var profilePicture: CircleImageView
     private lateinit var navigationView: NavigationView
+
     private lateinit var navView: NavigationView
     lateinit var rezViewModel: RezViewModel
 
@@ -91,7 +94,7 @@ class DashboardActivity : AppCompatActivity() {
         searchview = binding.appBarDashboard.dashboardActivityToolbarSearchView
         toolbarFragmentName = binding.appBarDashboard.dashboardActivityToolbarFragmentNameTextView
         bottomNavigationView = binding.appBarDashboard.contentDashboard.dashboardActivityBottomNavigationView
-        profilePicture = binding.appBarDashboard.dashboardActivityToolbarProfileImageView
+      //  profilePicture = binding.appBarDashboard.dashboardActivityToolbarProfileImageView
         navigationView = binding.navView
 
        // searchview.queryHint = Html.fromHtml("<font color = #BDBABA>" + getResources().getString(R.string.hintSearchMess) + "</font>")
@@ -123,15 +126,6 @@ class DashboardActivity : AppCompatActivity() {
         /*Close Drawer Icon*/
         drawerCloseIcon.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
-        }
-
-        /*Open Messages onClick*/
-        profilePicture.setOnClickListener {
-            navController.navigate(R.id.notificationFragment)
-            bottomNavigationView.visibility = View.GONE
-            searchview.visibility = View.INVISIBLE
-            toolbarFragmentName.visibility = View.VISIBLE
-            profilePicture.visibility = View.INVISIBLE
         }
 
         navigationView.setNavigationItemSelectedListener { it ->
@@ -166,21 +160,9 @@ class DashboardActivity : AppCompatActivity() {
                     confirmationDialog.setMessage(R.string.logout_confirmation_dialog_message)
                     confirmationDialog.setPositiveButton("YES") { _: DialogInterface, _: Int ->
                         // First clear the Shared preference, so that the authentication token stored in it will be deleted
-                        //sharedPreferences.edit().clear().apply()
-                        val token = ""
-                        sharedPreferences.edit().putString("token", token).apply()
-//                        if (AccessToken.getCurrentAccessToken() != null) {
-//                            GraphRequest(
-//                                AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE,
-//                                GraphRequest.Callback {
-//                                    AccessToken.setCurrentAccessToken(null)
-//                                    LoginManager.getInstance().logOut()
-//                                    finish()
-//                                }
-//                            ).executeAsync()
-//                        }
-                        // After clearing the shared preference, navigate the user back to the landing screen which is the MainActivity
+                        sharedPreferences.edit().clear().apply()
                         val intent = Intent(this, MainActivity::class.java)
+                        // After clearing the shared preference, navigate the user back to the landing screen which is the MainActivity
                         startActivity(intent)
                         // Use Toast to notify the user that they are being logged out
                         Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
@@ -223,133 +205,106 @@ class DashboardActivity : AppCompatActivity() {
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.VISIBLE
                     toolbarFragmentName.visibility = View.GONE
-                    profilePicture.visibility = View.VISIBLE
                 }
                 R.id.favorites -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.reservation -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.myProfile -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.topRecommended -> {
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.nearRestaurant -> {
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.suggestionForYou -> {
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.topFragment -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.nearRestFragment -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.suggestFragment -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.tableDetails -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.proceedToPayment -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.favoriteDetailsFragment -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.search -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
-                }
-                R.id.bookingHistory -> {
-                    toolbarFragmentName.visibility = View.VISIBLE
-                    bottomNavigationView.visibility = View.GONE
-                    searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.bookingDetailsFragment -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.settings2 -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.help2 -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.securityAndPrivacy -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 R.id.changePassword -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
-                R.id.qr_code -> {
+                R.id.QRCodeFragment -> {
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
-                    profilePicture.visibility = View.INVISIBLE
                 }
                 else -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
-                    profilePicture.visibility = View.VISIBLE
                 }
             }
         }

@@ -118,8 +118,6 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
             if (checked != -1) {
                 when (checked) {
                     R.id.btnChipDriving -> getDirection("driving")
-                    R.id.btnChipWalking -> getDirection("walking")
-                    R.id.btnChipTrain -> getDirection("transit")
                 }
             }
         }
@@ -139,12 +137,6 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
 
             }
     }
-
-//    override fun onSupportNavigateUp(): Boolean {
-//        val navController = findNavController(R.id.nav_host_fragment_content_google)
-//        return navController.navigateUp(appBarConfiguration)
-//                || super.onSupportNavigateUp()
-//    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -244,12 +236,6 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun getDirection(mode: String) {
 
         if (isLocationPermissionOk) {
-//            val url = "https://maps.googleapis.com/maps/api/directions/json?" +
-//                    "origin=" + currentLocation.latitude + "," + currentLocation.longitude +
-//                    "&destination=" + endLat + "," + endLng +
-//                    "&mode=" + mode +
-             //       "&key=" + resources.getString(R.string.API_KEY)
-            Log.d("ENDDDDDLAT", endLat.toString())
             locationViewModel.getDirect(mode,"${currentLocation.latitude}, ${currentLocation.longitude}", "$endLat, $endLng", resources.getString(R.string.api_Key))
             locationViewModel.getDirectionResponse.observe(this, Observer {
                 // binding.progressBar.visible(it is Resource.Loading)
@@ -260,7 +246,6 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
                         val routeModel: DirectionRouteModel =
                             directionResponseModel.routes!![0]
 
-//                        supportActionBar!!.title = routeModel.summary
                         val legModel: DirectionLegModel = routeModel.legs?.get(0)!!
                         binding.apply {
                             txtStartLocation.text = legModel.start_address
@@ -350,9 +335,6 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     }
                     is Resource.Failure -> {
-//                        binding.g.visible(true)
-//                        binding.grid.visible(false)
-//                        handleApiError(it)
                     }
                 }
             })

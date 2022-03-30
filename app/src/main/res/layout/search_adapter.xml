@@ -7,12 +7,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_10dp"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_marginEnd="@dimen/margin_10dp"
-        android:layout_marginStart="@dimen/margin_10dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -31,6 +28,17 @@
                 android:scaleType="fitXY" />
 
             <ImageView
+                android:id="@+id/unLikeIv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/fav2x" />
+
+            <ImageView
+                android:visibility="gone"
                 android:id="@+id/likeIv"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -53,8 +61,9 @@
 <!--                android:layout_marginBottom="5dp"-->
 <!--                android:background="@drawable/rectangle_box_button_orange"-->
 <!--                android:gravity="start"-->
-<!--                android:padding="4dp"-->
-
+<!--                android:padding="5dp"-->
+<!--                android:paddingStart="7dp"-->
+<!--                android:paddingEnd="7dp"-->
 <!--                android:text=""-->
 <!--                android:textColor="@color/white"-->
 <!--                android:textSize="10dp"-->
@@ -73,7 +82,9 @@
 <!--                android:layout_marginBottom="5dp"-->
 <!--                android:background="@drawable/rectangle_box_button_pinc"-->
 <!--                android:gravity="start"-->
-<!--                android:padding="4dp"-->
+<!--                android:padding="5dp"-->
+<!--                android:paddingStart="7dp"-->
+<!--                android:paddingEnd="7dp"-->
 <!--                android:text=""-->
 <!--                android:textColor="@color/white"-->
 <!--                android:textSize="10dp"-->
@@ -122,42 +133,54 @@
                 android:layout_height="1dp"
                 android:background="@color/grey_light"/>
 
-<!--            <LinearLayout-->
-<!--                android:layout_margin="5dp"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="start"-->
-<!--                android:gravity="start"-->
-<!--                android:orientation="horizontal">-->
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start"
+                android:orientation="horizontal">
 
-<!--                <RatingBar-->
-<!--                    android:id="@+id/ratingBar"-->
-<!--                    android:rating="1"-->
-<!--                    android:stepSize="1"-->
-<!--                    android:numStars="5"-->
-<!--                    android:layout_width="wrap_content"-->
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:rating="1"
+                    android:stepSize="1"
+                    android:numStars="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:ratingBarStyleSmall"
+                    android:gravity="start"
+                    android:layout_gravity="start"
+                    android:progressTint="@color/yellow"
+                    android:progressBackgroundTint="@color/white"
+                    />
+<!--                <TextView-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:id="@+id/ratingTv"-->
+<!--                    android:layout_weight="0.8"-->
+<!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="wrap_content"-->
-<!--                    style="?android:ratingBarStyleSmall"-->
-<!--                    android:gravity="center"-->
-<!--                    android:layout_gravity="center_vertical"-->
-<!--                    android:progressTint="@color/yellow"-->
-<!--                    android:progressBackgroundTint="@color/white"-->
-<!--                    />-->
+<!--                    android:textSize="9dp"-->
+<!--                    android:drawablePadding="5dp"-->
+<!--                    android:text=""-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:drawableLeft="@drawable/ic_star_24"/>-->
 
-<!--&lt;!&ndash;                <TextView&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:id="@+id/distanceTv"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:layout_weight="1.2"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:textSize="9dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:drawablePadding="2dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:gravity="center_vertical"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:layout_gravity="center"&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:text=""&ndash;&gt;-->
-<!--&lt;!&ndash;                    android:drawableLeft="@drawable/ic_baseline_location_on_24"/>&ndash;&gt;-->
+<!--                <TextView-->
+<!--                    android:id="@+id/distanceTv"-->
+<!--                    android:layout_weight="1.2"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textSize="9dp"-->
+<!--                    android:drawablePadding="2dp"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:text=""-->
+<!--                    android:drawableLeft="@drawable/ic_baseline_location_on_24"/>-->
 
 
-<!--            </LinearLayout>-->
+            </LinearLayout>
 
 
 

@@ -177,51 +177,6 @@ private fun setTopData() {
         findNavController().navigate(action)
     }
 
-     private fun filter(guest: String, price: String) {
-                var newList = listOf<Table>()
-                newList = tableList.filter { it.price <= price || it.max_people.toString() == guest }
-
-                tableAdapter = TableAdapter(newList, this)
-                binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                binding.tableListRecycler.adapter = tableAdapter
-    }
-
-//     private fun accountFilterDialog() {
-//        // when first name value is clicked
-//        childFragmentManager.setFragmentResultListener(
-//            TopFragment.FILTER_NAME_REQUEST_KEY,
-//            requireActivity()
-//        ){ key, bundle ->
-//            // collect input values from dialog fragment and update the firstname text of user
-//             firstName = bundle.getString(TopFragment.ACCOUNT_FILTER_BUNDLE_KEY)
-//            binding.saveText.text = firstName
-//        }
-//        childFragmentManager.setFragmentResultListener(
-//            TopFragment.FILTER_SECOND_NAME_REQUEST_KEY,
-//            requireActivity()
-//        ) { key, bundle ->
-//            // collect input values from dialog fragment and update the firstname text of user
-//            val secondName = bundle.getString(TopFragment.ACCOUNT_SECOND_FILTER_BUNDLE_KEY)
-//            binding.priceText.text = secondName
-//                filter(firstName!!, secondName!!)
-//              //  filter(secondName!!, firstName!!)
-//        }
-//
-//        // when first name value is clicked
-//        binding.filterImageIv.setOnClickListener {
-//            val currentFilterName = binding.saveText.toString()
-//            val currentFilterSecondName = binding.priceText.toString()
-//            val bundle = bundleOf(TopFragment.CURRENT_FILTER_NAME_BUNDLE_KEY to currentFilterName)
-//            val bundleSecond = bundleOf(TopFragment.CURRENT_SECOND_FILTER_NAME_BUNDLE_KEY to currentFilterSecondName)
-//            ProfileManagementDialogFragments.createProfileDialogFragment(
-//                R.layout.account_filter_dialog_fragment,
-//                bundle, bundleSecond
-//            ).show(
-//                childFragmentManager, TopFragment::class.java.simpleName
-//            )
-//        }
-//    }
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

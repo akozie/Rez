@@ -27,10 +27,7 @@ import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.ui.activity.MainActivity
 import com.example.rez.util.*
 import com.example.rez.util.ValidationObject.validateEmail
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -39,9 +36,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FacebookAuthCredential
+import com.google.firebase.auth.FacebookAuthProvider
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import com.facebook.GraphResponse
+
+import com.facebook.GraphRequest
+
+import com.facebook.AccessToken
+import org.json.JSONObject
 
 
 class LoginFragment : Fragment() {
@@ -54,7 +60,8 @@ class LoginFragment : Fragment() {
     private lateinit var rezSignInClient: GoogleSignInClient
     private var GOOGLE_SIGNIN_RQ_CODE = 100
     private lateinit var callbackManager : CallbackManager
-    private val EMAIL = "email"
+    private val EMAIL = "public_profile"
+    private lateinit var request: GraphRequest
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -76,14 +83,16 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rezViewModel = (activity as MainActivity).rezViewModel
-        callbackManager = CallbackManager.Factory.create()
 
         googleSignInButton = binding.googleTv
-        facebookSignInButton  = binding.loginButton
+        facebookSignInButton  = binding.facebookTv
         googleSignInClient()
 
-        facebookSignInButton.setReadPermissions(Arrays.asList(EMAIL))
-        facebookSignInButton.fragment = this
+        //facebookSignInButton.setLoginBehavior(SessionLo.SUPPRESS_SSO);
+        facebookSignInButton.setPermissions(Arrays.asList("email"))
+        facebookSignInButton.setFragment(this)
+        callbackManager = CallbackManager.Factory.create()
+
 
         facebookSignInButton.registerCallback(callbackManager, object :
             FacebookCallback<LoginResult?> {
@@ -247,6 +256,7 @@ class LoginFragment : Fragment() {
 
     /*launch the signIn with google dialog*/
     private fun signIn() {
+        rezSignInClient.signOut()
         val signInIntent = rezSignInClient.signInIntent
         startActivityForResult(signInIntent, GOOGLE_SIGNIN_RQ_CODE)
     }
@@ -254,12 +264,12 @@ class LoginFragment : Fragment() {
     /*gets the selected google account from the intent*/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        callbackManager.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GOOGLE_SIGNIN_RQ_CODE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-
             handleSignInResult(task)
         }
+        callbackManager.onActivityResult(requestCode, resultCode, data)
+
     }
 
     /*handles the result of successful sign in*/
@@ -268,7 +278,7 @@ class LoginFragment : Fragment() {
             val account = completedTask.getResult(ApiException::class.java)
             startDashboard(account)
         } catch (e: ApiException) {
-            showToast(e.localizedMessage)
+            //showToast(e.localizedMessage)
         }
     }
 
@@ -307,7 +317,9 @@ class LoginFragment : Fragment() {
                 }
             })
         }
-    }    /*open the dashboard fragment if facebook account was selected*/
+    }
+
+    /*open the dashboard fragment if facebook account was selected*/
     private fun startDashboardFromFacebook() {
         val accessToken = AccessToken.getCurrentAccessToken()
         if (accessToken != null && !accessToken.isExpired){
@@ -337,7 +349,6 @@ class LoginFragment : Fragment() {
                         } else {
                             it.value.message?.let { it1 -> showToast(it1) } // show the user the message
                         }
-
                     }
                     is Resource.Failure ->  handleApiError(it) // handle error
                 }

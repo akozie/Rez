@@ -22,9 +22,9 @@ class SuggestionAndNearAdapter(private var suggestionList: List<SuggestedVendor>
         val tableQty = binding.tableQtyTv
         val category = binding.categoryTv
         val hotelName = binding.hotelNameTv
-        val addressTv = binding.addressTv
+      //  val addressTv = binding.addressTv
         val ratingTv = binding.ratingBar
-        val distanceTv = binding.distanceTv
+     //   val distanceTv = binding.distanceTv
         // val cardView = binding.cardView
 
     }

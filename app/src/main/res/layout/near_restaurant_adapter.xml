@@ -155,14 +155,17 @@
                     android:progressTint="@color/yellow"
                     android:progressBackgroundTint="@color/white"
                     />
+
                 <TextView
                     android:id="@+id/distanceTv"
                     android:layout_weight="1.3"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_11sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_gravity="center"
                     android:drawablePadding="5dp"
-                    android:gravity="center_vertical"
+                    android:gravity="start"
                     android:text=""
                     android:textColor="@color/black"
                     android:drawableLeft="@drawable/ic_baseline_location_on_24"/>

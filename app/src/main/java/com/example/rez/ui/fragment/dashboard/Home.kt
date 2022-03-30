@@ -282,6 +282,7 @@ class Home : Fragment(),OnTopItemClickListener, OnItemClickListener, OnSuggestio
 
     private fun registerObservers(like: ImageView, unLike: ImageView) {
         rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
+            binding.progressBar.visible(it is Resource.Loading)
             when(it) {
                 is Resource.Success -> {
                     if (unLike.isVisible) {

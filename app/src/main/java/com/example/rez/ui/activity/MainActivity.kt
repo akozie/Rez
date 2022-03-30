@@ -34,9 +34,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         ( application as RezApp).localComponent?.inject(this)
 
-        if (sharedPreferences.getString("token", "token") == ""){
+        if (!sharedPreferences.all.containsKey("token")){
             setContentView(R.layout.activity_main)
-        } else{
+        } else if (sharedPreferences.all.containsKey("token")){
             startActivity(Intent(this, DashboardActivity::class.java))
         }
 

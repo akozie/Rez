@@ -1,11 +1,13 @@
 package com.example.rez.ui.fragment.dashboard
 
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +25,7 @@ import com.example.rez.ui.RezViewModel
 import com.example.rez.util.visible
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 
@@ -106,15 +109,15 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
 
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBookingItemClick(booking: Booking) {
-        if (booking.confirmed_payment){
-            val action = ReservationDirections.actionReservationToQRCodeFragment()
+        if (LocalDateTime.now().toString() < booking.booked_for ){
+            val action = ReservationDirections.actionReservationToQRCodeFragment(booking)
             findNavController().navigate(action)
         }else {
             val action = ReservationDirections.actionReservationToBookingDetailsFragment(booking)

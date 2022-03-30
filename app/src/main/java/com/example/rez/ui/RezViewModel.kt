@@ -41,6 +41,10 @@ class RezViewModel(
     val addTableReviewResponse: LiveData<Resource<GeneralResponse>>
         get() = _addTableReviewResponse
 
+    private val _eachBookingResponse: MutableLiveData<Resource<GetEachBookingResponse>> = MutableLiveData()
+    val eachBookingResponse: LiveData<Resource<GetEachBookingResponse>>
+        get() = _eachBookingResponse
+
     private val _bookTableResponse: MutableLiveData<Resource<BookTableResponse>> = MutableLiveData()
     val bookTableResponse: LiveData<Resource<BookTableResponse>>
         get() = _bookTableResponse
@@ -158,6 +162,13 @@ class RezViewModel(
         _bookTableResponse.value = rezRepository.bookTable(token, bookTableRequest)
     }
 
+
+    fun getEachBooking(token: String,
+                 bookingID: Int
+    ) = viewModelScope.launch {
+        _eachBookingResponse.value = Resource.Loading
+        _eachBookingResponse.value = rezRepository.getEachBooking(token, bookingID)
+    }
 
     fun getBookings(token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
         BookingPagingSource(api, token)

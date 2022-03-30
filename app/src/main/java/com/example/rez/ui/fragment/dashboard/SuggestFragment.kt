@@ -33,7 +33,6 @@ import javax.inject.Inject
 
 class SuggestFragment : Fragment(), OnTableClickListener {
 
-
     private var _binding: FragmentSuggestBinding? = null
     private val binding get() = _binding!!
     private val rezViewModel: RezViewModel by activityViewModels()
@@ -45,7 +44,6 @@ class SuggestFragment : Fragment(), OnTableClickListener {
     private var tableDetailsViewPager: ViewPager? = null
     private lateinit var tableDetailsDataList: List<Image>
     private var current = 0
-    private var firstName: String? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -96,6 +94,7 @@ class SuggestFragment : Fragment(), OnTableClickListener {
 
             })
     }
+
     private fun setTableDetailsViewPagerAdapter() {
         tableDetailsPagerAdapter = TableDetailsViewPagerAdapter(requireContext(), tableDetailsDataList)
         tableDetailsViewPager?.adapter = tableDetailsPagerAdapter
@@ -104,7 +103,6 @@ class SuggestFragment : Fragment(), OnTableClickListener {
         val density = resources.displayMetrics.density
         sliderDot.radius = 5 * density
     }
-
 
     private fun setSuggestionData() {
             binding.hotelNameTv.text = args?.company_name
@@ -145,8 +143,6 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                             binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                             binding.tableListRecycler.adapter = tableAdapter
                             setTableDetailsViewPagerAdapter()
-                            // setRecyclerview()
-                            //nearList = emptyList()
                         } else {
                             it.value.message?.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
@@ -164,14 +160,14 @@ class SuggestFragment : Fragment(), OnTableClickListener {
         findNavController().navigate(action)
     }
 
-    private fun filter(guest: String, price: String) {
-        var newList = listOf<Table>()
-        newList = tableList.filter { it.price <= price || it.max_people.toString() == guest }
-
-        tableAdapter = TableAdapter(newList, this)
-        binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.tableListRecycler.adapter = tableAdapter
-    }
+//    private fun filter(guest: String, price: String) {
+//        var newList = listOf<Table>()
+//        newList = tableList.filter { it.price <= price || it.max_people.toString() == guest }
+//
+//        tableAdapter = TableAdapter(newList, this)
+//        binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+//        binding.tableListRecycler.adapter = tableAdapter
+//    }
 
 //    private fun accountFilterDialog() {
 //        // when first name value is clicked

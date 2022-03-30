@@ -37,6 +37,7 @@ interface LocalComponent {
     fun inject(fragment: ProceedToPayment)
     fun inject(fragment: FavoriteDetailsFragment)
     fun inject(fragment: Reservation)
+    fun inject(fragment: QRCodeFragment)
     fun inject(activity: MainActivity)
     fun inject(activity: DashboardActivity)
     fun inject(fragment : Favorites)

@@ -20,7 +20,7 @@ class SuggestionRestaurantAdapter(private var suggestionRestaurantList: List<Sug
         val category = binding.categoryTv
         val hotelName = binding.hotelNameTv
         val topRating = binding.ratingBar
-        val suggestedDistance = binding.distanceTv
+       // val suggestedDistance = binding.distanceTv
         // val cardView = binding.cardView
 
     }

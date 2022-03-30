@@ -45,6 +45,12 @@ interface AuthApi {
         @Query("page") page: Int,
         ): Response<BookingsHistoryResponse>
 
+    @GET("user/bookings/{bookingID}")
+    suspend fun getEachBooking(
+        @Header("Authorization") token: String,
+        @Path("bookingID") bookingID: Int,
+        ): GetEachBookingResponse
+
     @GET("user/vendorProfile/{vendorProfileID}/table/{tableID}/reviews")
     suspend fun getVendorProfileTableReviews(
         @Path("vendorProfileID") vendorProfileID: Int,

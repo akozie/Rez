@@ -44,7 +44,6 @@ class NearRestFragment : Fragment(), OnTableClickListener {
     private var tableDetailsViewPager: ViewPager? = null
     private lateinit var tableDetailsDataList: List<Image>
     private var current = 0
-    private var firstName: String? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -70,8 +69,6 @@ class NearRestFragment : Fragment(), OnTableClickListener {
         setNearData()
         sharedPreferences.edit().putInt("vendorid", args!!.id).apply()
 
-        // setRecyclerview()
-        accountFilterDialog()
         tableDetailsViewPager = binding.viewPager
         sliderDot = binding.indicator
 
@@ -94,6 +91,7 @@ class NearRestFragment : Fragment(), OnTableClickListener {
 
             })
     }
+
     private fun setTableDetailsViewPagerAdapter() {
         tableDetailsPagerAdapter = TableDetailsViewPagerAdapter(requireContext(), tableDetailsDataList)
         tableDetailsViewPager?.adapter = tableDetailsPagerAdapter
@@ -102,7 +100,6 @@ class NearRestFragment : Fragment(), OnTableClickListener {
         val density = resources.displayMetrics.density
         sliderDot.radius = 5 * density
     }
-
 
     private fun setNearData() {
             binding.hotelNameTv.text = args?.company_name
@@ -149,8 +146,6 @@ class NearRestFragment : Fragment(), OnTableClickListener {
                             binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                             binding.tableListRecycler.adapter = tableAdapter
                             setTableDetailsViewPagerAdapter()
-                            // setRecyclerview()
-                            //nearList = emptyList()
                         } else {
                             it.value.message?.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
@@ -162,50 +157,6 @@ class NearRestFragment : Fragment(), OnTableClickListener {
         )
     }
 
-    private fun filter(guest: String, price: String) {
-        var newList = listOf<Table>()
-        newList = tableList.filter { it.price <= price || it.max_people.toString() == guest }
-
-        tableAdapter = TableAdapter(newList, this)
-        binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.tableListRecycler.adapter = tableAdapter
-    }
-
-    private fun accountFilterDialog() {
-        // when first name value is clicked
-        childFragmentManager.setFragmentResultListener(
-            TopFragment.FILTER_NAME_REQUEST_KEY,
-            requireActivity()
-        ){ key, bundle ->
-            // collect input values from dialog fragment and update the firstname text of user
-            firstName = bundle.getString(TopFragment.ACCOUNT_FILTER_BUNDLE_KEY)
-            binding.saveText.text = firstName
-        }
-        childFragmentManager.setFragmentResultListener(
-            TopFragment.FILTER_SECOND_NAME_REQUEST_KEY,
-            requireActivity()
-        ) { key, bundle ->
-            // collect input values from dialog fragment and update the firstname text of user
-            val secondName = bundle.getString(TopFragment.ACCOUNT_SECOND_FILTER_BUNDLE_KEY)
-            binding.priceText.text = secondName
-            filter(firstName!!, secondName!!)
-            //  filter(secondName!!, firstName!!)
-        }
-
-        // when first name value is clicked
-        binding.filterImageIv.setOnClickListener {
-            val currentFilterName = binding.saveText.toString()
-            val currentFilterSecondName = binding.priceText.toString()
-            val bundle = bundleOf(TopFragment.CURRENT_FILTER_NAME_BUNDLE_KEY to currentFilterName)
-            val bundleSecond = bundleOf(TopFragment.CURRENT_SECOND_FILTER_NAME_BUNDLE_KEY to currentFilterSecondName)
-            ProfileManagementDialogFragments.createProfileDialogFragment(
-                R.layout.account_filter_dialog_fragment,
-                bundle, bundleSecond
-            ).show(
-                childFragmentManager, TopFragment::class.java.simpleName
-            )
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()
