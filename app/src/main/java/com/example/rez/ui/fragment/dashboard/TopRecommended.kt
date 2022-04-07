@@ -64,7 +64,7 @@ class TopRecommended : Fragment(), OnTopItemClickListener {
         rezViewModel.getHome(Double.fromBits(sharedPreferences.getLong("lat", 1)), Double.fromBits(sharedPreferences.getLong("long", 1)), token = "Bearer ${sharedPreferences.getString("token", "token")}")
         rezViewModel.getHomeResponse.observe(
             viewLifecycleOwner, Observer {
-                binding.progressBar.visible(it is Resource.Loading)
+               // binding.progressBar.visible(it is Resource.Loading)
                 when(it) {
                     is Resource.Success -> {
                         if (it.value.status){
@@ -88,7 +88,7 @@ class TopRecommended : Fragment(), OnTopItemClickListener {
         topRecommendedAdapter = TopRecommendedAdapter(topList, this)
         topRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         topRecyclerView.adapter = topRecommendedAdapter
-        binding.progressBar.visibility = View.GONE
+        //binding.progressBar.visibility = View.GONE
     }
 
     override fun onTopItemClick(topModel: RecommendedVendor) {

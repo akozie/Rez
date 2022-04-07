@@ -82,6 +82,8 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
                 bookingRecyclerview.isVisible = loadState.source.refresh is LoadState.NotLoading
                 btnRetry.isVisible = loadState.source.refresh is LoadState.Error
                 errorText.isVisible = loadState.source.refresh is LoadState.Error
+                noInternetImg.isVisible = loadState.source.refresh is LoadState.Error
+
 
                 if (loadState.source.refresh is LoadState.NotLoading &&
                     loadState.append.endOfPaginationReached &&
@@ -124,5 +126,4 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
             findNavController().navigate(action)
         }
     }
-
 }

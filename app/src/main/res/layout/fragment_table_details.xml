@@ -58,7 +58,7 @@ android:orientation="vertical">
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/people2"
+                    android:src="@drawable/ic_people_icon"
                     android:scaleType="fitXY" />
 
                 <TextView

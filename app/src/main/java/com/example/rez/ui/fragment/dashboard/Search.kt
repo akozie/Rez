@@ -21,6 +21,7 @@ import com.example.rez.util.visible
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.os.Handler
+import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -31,6 +32,22 @@ import com.example.rez.adapter.SearchPagingAdapter
 import com.example.rez.ui.fragment.ProfileManagementDialogFragments
 import com.example.rez.util.showToast
 import kotlinx.coroutines.flow.collectLatest
+import android.view.KeyEvent
+
+import android.widget.TextView
+
+import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
+
+import android.R
+
+import android.widget.EditText
+
+
+
+
+
+
 
 
 class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
@@ -38,8 +55,6 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val rezViewModel: RezViewModel by activityViewModels()
-    private lateinit var searchRecyclerview:  RecyclerView
-    private lateinit var searchList: List<ResultX>
     private lateinit var searchAdapter: SearchPagingAdapter
     private lateinit var loaderStateAdapter: BookingPagingStateAdapter
     private var noOfPersons: String? = null
@@ -77,7 +92,35 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
             searchAdapter.retry()
         }
 
-        binding.searchRestaurants.addTextChangedListener(object : TextWatcher {
+
+
+//        binding.searchRestaurants.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//            }
+//
+//            override fun afterTextChanged(editable: Editable?) {
+//
+//                    val handler =  Handler()
+//                    handler.postDelayed( Runnable() {
+//                        run() {
+//                            //Write whatever to want to do after delay specified (3 sec)
+//                            if (noOfPersons.isNullOrEmpty() || priceTo.isNullOrEmpty()){
+//                                loadData(editable.toString(), 0, PRICEFROM, 0,"Bearer ${sharedPreferences.getString("token", "token")}")
+//                            } else{
+//                                loadData(editable.toString(), noOfPersons!!.toInt(), PRICEFROM, priceTo!!.toInt(),"Bearer ${sharedPreferences.getString("token", "token")}")
+//                            }
+//                            Log.d("Handler", "Running Handler");
+//                        }
+//                    }, 3000)
+//            }
+//        })
+
+            binding.searchRestaurants.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -87,18 +130,22 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
             }
 
             override fun afterTextChanged(editable: Editable?) {
-                    val handler =  Handler()
-                    handler.postDelayed( Runnable() {
-                        run() {
-                            //Write whatever to want to do after delay specified (3 sec)
-                            if (noOfPersons.isNullOrEmpty() || priceTo.isNullOrEmpty()){
-                                loadData(editable.toString(), 0, PRICEFROM, 0,"Bearer ${sharedPreferences.getString("token", "token")}")
-                            } else{
-                                loadData(editable.toString(), noOfPersons!!.toInt(), PRICEFROM, priceTo!!.toInt(),"Bearer ${sharedPreferences.getString("token", "token")}")
-                            }
-                            Log.d("Handler", "Running Handler");
+                binding.searchRestaurants.setOnKeyListener(object : View.OnKeyListener {
+                    override fun onKey(p0: View?, p1: Int, p2: KeyEvent?): Boolean {
+                        if(p2?.action == KeyEvent.ACTION_DOWN && p1 == KeyEvent.KEYCODE_ENTER){
+                            //do stuff
+                                    //Write whatever to want to do after delay specified (3 sec)
+                                    if (noOfPersons.isNullOrEmpty() || priceTo.isNullOrEmpty()){
+                                        loadData(editable.toString(), 0, PRICEFROM, 0,"Bearer ${sharedPreferences.getString("token", "token")}")
+                                    } else{
+                                        loadData(editable.toString(), noOfPersons!!.toInt(), PRICEFROM, priceTo!!.toInt(),"Bearer ${sharedPreferences.getString("token", "token")}")
+                                    }
+                                    Log.d("Handler", "Running Handler")
+                            return true;
                         }
-                    }, 3000)
+                        return false;
+                    }
+                })
             }
         })
     }
@@ -123,6 +170,7 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
                 searchRecyclerview.isVisible = loadState.source.refresh is LoadState.NotLoading
                 btnRetry.isVisible = loadState.source.refresh is LoadState.Error
                 errorText.isVisible = loadState.source.refresh is LoadState.Error
+                noInternetImg.isVisible = loadState.source.refresh is LoadState.Error
 
                 if (loadState.source.refresh is LoadState.NotLoading &&
                     loadState.append.endOfPaginationReached &&

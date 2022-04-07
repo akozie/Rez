@@ -32,13 +32,13 @@
 
             <ImageView
                 android:id="@+id/likeIv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/like3" />
+                android:src="@drawable/ic_fav" />
 
 <!--            <TextView-->
 <!--                android:id="@+id/tableQtyTv"-->
@@ -98,7 +98,8 @@
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:textStyle="bold"
-                android:textSize="10dp"
+                android:padding="@dimen/padding_2dp"
+                android:textSize="@dimen/text_size_17sp"
                 android:textColor="@color/black"/>
 
 <!--                <TextView-->

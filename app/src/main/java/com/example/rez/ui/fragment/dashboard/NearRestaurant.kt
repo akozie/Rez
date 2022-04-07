@@ -69,7 +69,7 @@ class NearRestaurant : Fragment(), NearAdapter.OnNearItemClickListener {
         rezViewModel.getHome(Double.fromBits(sharedPreferences.getLong("lat", 1)), Double.fromBits(sharedPreferences.getLong("long", 1)), token = "Bearer ${sharedPreferences.getString("token", "token")}")
         rezViewModel.getHomeResponse.observe(
             viewLifecycleOwner, Observer {
-                binding.progressBar.visible(it is Resource.Loading)
+              //  binding.progressBar.visible(it is Resource.Loading)
                 when(it) {
                     is Resource.Success -> {
                         if (it.value.status){

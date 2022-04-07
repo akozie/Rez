@@ -2,27 +2,35 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:visibility="gone"
-        android:layout_width="15dp"
-        android:layout_height="15dp" />
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progress_bar"-->
+<!--        android:visibility="visible"-->
+<!--        android:layout_width="15dp"-->
+<!--        android:layout_height="15dp" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
     <TextView
         android:id="@+id/text_view_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_40dp"
         android:text="Results could not be loaded" />
 
     <Button
         android:id="@+id/button_retry"
+        android:layout_marginTop="@dimen/margin_20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Retry" />
 
+    </LinearLayout>
 </LinearLayout>

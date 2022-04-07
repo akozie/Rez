@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-        <item
-            android:id="@+id/bookingHistory"
-            android:title="Booking History"
-            android:icon="@drawable/booking_history2" />
-
 
         <item
             android:id="@+id/settings2"

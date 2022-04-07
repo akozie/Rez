@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -33,6 +34,7 @@ import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.ui.fragment.ProfileManagementDialogFragments
 import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import com.google.gson.Gson
 import com.viewpagerindicator.CirclePageIndicator
@@ -80,8 +82,16 @@ class TopFragment : Fragment(), OnTableClickListener {
 
         setList()
         setTopData()
-        //setRecyclerview()
-        //accountFilterDialog()
+
+        binding.likeIv.setOnClickListener {
+            registerObservers()
+            rezViewModel.addOrRemoveFavorites(args?.id.toString(), "Bearer ${sharedPreferences.getString("token", "token")}")
+        }
+
+        binding.unLikeIv.setOnClickListener {
+            registerObservers()
+            rezViewModel.addOrRemoveFavorites(args?.id.toString(), "Bearer ${sharedPreferences.getString("token", "token")}")
+        }
 
     tableDetailsViewPager = binding.viewPager
     sliderDot = binding.indicator
@@ -172,6 +182,33 @@ private fun setTopData() {
         )
     }
 
+    private fun registerObservers() {
+        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
+            binding.progressBar.visible(it is Resource.Loading)
+            when(it) {
+                is Resource.Success -> {
+                    if (binding.unLikeIv.isVisible) {
+                        showToast("Added Successfully to favorites")
+                        //rezViewModel.favoriteResponse = 1
+                        binding.likeIv.visibility = View.VISIBLE
+                        binding.unLikeIv.visibility = View.INVISIBLE
+                        removeObserver()
+                    } else if(!binding.unLikeIv.isVisible){
+                        showToast("Removed Successfully from favorites")
+                        //rezViewModel.favoriteResponse = 0
+                        binding.likeIv.visibility = View.INVISIBLE
+                        binding.unLikeIv.visibility = View.VISIBLE
+                        removeObserver()
+                    }
+                }
+                is Resource.Failure -> handleApiError(it)
+            }
+        })
+    }
+
+    private fun removeObserver() {
+        rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)
+    }
     override fun onTableItemClick(tableModel: Table) {
         val action = TopFragmentDirections.actionTopFragmentToTableDetails(tableModel)
         findNavController().navigate(action)

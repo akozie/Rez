@@ -30,15 +30,8 @@ class TableDetailsViewPagerAdapter(private var context: Context, private var tab
         val view = LayoutInflater.from(context).inflate(R.layout.tab_details_layout, null)
 
         val imageView: ImageView = view.findViewById(R.id.tab_details_fragment_image)
-      //  val tableNameTv: TextView = view.findViewById(R.id.tabNameTv)
-       // val tableCapacityTv: TextView = view.findViewById(R.id.tabCapacityTv)
-//        val tabPriceTv: TextView = view.findViewById(R.id.tabPriceTv)
         val position = tableDetailsDataList[position]
         Glide.with(context).load(position.image_url).into(imageView)
-       // imageView.setImageResource(position.avatar)
-       // tableNameTv.text = position.company_name
-       // tableCapacityTv.text = position.toString()
-        //tabPriceTv.text = position.price
         container.addView(view)
         return view
     }

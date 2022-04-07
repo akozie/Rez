@@ -1,13 +1,16 @@
 package com.example.rez.ui.fragment.dashboard
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -26,6 +29,7 @@ import com.example.rez.ui.GlideApp
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.fragment.ProfileManagementDialogFragments
 import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import com.viewpagerindicator.CirclePageIndicator
 import javax.inject.Inject
@@ -72,6 +76,24 @@ class NearRestFragment : Fragment(), OnTableClickListener {
         tableDetailsViewPager = binding.viewPager
         sliderDot = binding.indicator
 
+        //navigate to google map activity
+        binding.addressTv.setOnClickListener {
+            val intent = Intent(requireContext(), GoogleActivity::class.java)
+            intent.putExtra("lat", args?.lat)
+            intent.putExtra("long", args?.lng)
+            intent.putExtra("name", args?.company_name)
+            startActivity(intent)
+        }
+
+        binding.likeIv.setOnClickListener {
+            registerObservers()
+            rezViewModel.addOrRemoveFavorites(args?.id.toString(), "Bearer ${sharedPreferences.getString("token", "token")}")
+        }
+
+        binding.unLikeIv.setOnClickListener {
+            registerObservers()
+            rezViewModel.addOrRemoveFavorites(args?.id.toString(), "Bearer ${sharedPreferences.getString("token", "token")}")
+        }
         //Tab indicator listener
         sliderDot.setOnPageChangeListener(
             object : ViewPager.OnPageChangeListener {
@@ -109,7 +131,7 @@ class NearRestFragment : Fragment(), OnTableClickListener {
             binding.ratingBar.rating = args?.average_rating!!
         }
         binding.categoryTv.text = args?.category_name
-            binding.addressTv.text = args?.distance.toString()+"km"
+            binding.addressTv.text = "%.5f".format(args?.distance) +"km"
             if (args?.total_tables == 1){
                 binding.tableQtyTv.text = args?.total_tables.toString() + " table"
             }else{
@@ -157,6 +179,33 @@ class NearRestFragment : Fragment(), OnTableClickListener {
         )
     }
 
+    private fun registerObservers() {
+        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
+            binding.progressBar.visible(it is Resource.Loading)
+            when(it) {
+                is Resource.Success -> {
+                    if (binding.unLikeIv.isVisible) {
+                        showToast("Added Successfully to favorites")
+                        //rezViewModel.favoriteResponse = 1
+                        binding.likeIv.visibility = View.VISIBLE
+                        binding.unLikeIv.visibility = View.INVISIBLE
+                        removeObserver()
+                    } else if(!binding.unLikeIv.isVisible){
+                        showToast("Removed Successfully from favorites")
+                        //rezViewModel.favoriteResponse = 0
+                        binding.likeIv.visibility = View.INVISIBLE
+                        binding.unLikeIv.visibility = View.VISIBLE
+                        removeObserver()
+                    }
+                }
+                is Resource.Failure -> handleApiError(it)
+            }
+        })
+    }
+
+    private fun removeObserver() {
+        rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

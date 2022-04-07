@@ -70,7 +70,7 @@ class SuggestionForYou : Fragment(), SuggestionAndNearAdapter.OnSuggestionItemCl
         rezViewModel.getHome(Double.fromBits(sharedPreferences.getLong("lat", 1)), Double.fromBits(sharedPreferences.getLong("long", 1)), token = "Bearer ${sharedPreferences.getString("token", "token")}")
         rezViewModel.getHomeResponse.observe(
             viewLifecycleOwner, Observer {
-                binding.progressBar.visible(it is Resource.Loading)
+              //  binding.progressBar.visible(it is Resource.Loading)
                 when(it) {
                     is Resource.Success -> {
                         if (it.value.status){
@@ -94,7 +94,7 @@ class SuggestionForYou : Fragment(), SuggestionAndNearAdapter.OnSuggestionItemCl
         suggestionRestaurantAdapter = SuggestionAndNearAdapter(suggestionList, this)
         suggestionRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         suggestionRecyclerView.adapter = suggestionRestaurantAdapter
-        binding.progressBar.visible(false)
+      //  binding.progressBar.visible(false)
     }
 
     override fun onSuggestionItemClick(suggestedModel: SuggestedVendor) {
@@ -109,7 +109,7 @@ class SuggestionForYou : Fragment(), SuggestionAndNearAdapter.OnSuggestionItemCl
 
     private fun registerObservers(like: ImageView, unLike: ImageView) {
         rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
-            binding.progressBar.visible(it is Resource.Loading)
+            //binding.progressBar.visible(it is Resource.Loading)
             when(it) {
                 is Resource.Success -> {
                     if (unLike.isVisible) {

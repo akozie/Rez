@@ -15,13 +15,12 @@ android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="210dp">
+        android:layout_height="300dp">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center" />
+            android:layout_height="match_parent" />
 
 <!--        <ImageView-->
 <!--            android:id="@+id/hotelImageIv"-->
@@ -32,24 +31,24 @@ android:orientation="vertical">
         <ImageView
             android:visibility="gone"
             android:id="@+id/unLikeIv"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:src="@drawable/fav2x" />
+            android:src="@drawable/ic_no_fav" />
 
         <ImageView
             android:visibility="gone"
             android:id="@+id/likeIv"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:src="@drawable/like3" />
+            android:src="@drawable/ic_fav" />
 
         <TextView
             android:id="@+id/tableQtyTv"

@@ -134,40 +134,40 @@ class RezViewModel(
     fun addVendorRating(token: String,
                         rating: RateVendorRequest,
                        vendorID: Int
-    ) = viewModelScope.launch {
-        _addVendorReviewResponse.value = Resource.Loading
-        _addVendorReviewResponse.value = rezRepository.addVendorRating(token, rating, vendorID)
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _addVendorReviewResponse.postValue( Resource.Loading)
+        _addVendorReviewResponse.postValue( rezRepository.addVendorRating(token, rating, vendorID))
     }
 
     fun deleteTableReview(token: String,
                        reviewID: Int
-    ) = viewModelScope.launch {
-        _deleteTableReviewResponse.value = Resource.Loading
-        _deleteTableReviewResponse.value = rezRepository.deleteTableReview(token, reviewID)
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _deleteTableReviewResponse.postValue( Resource.Loading)
+        _deleteTableReviewResponse.postValue( rezRepository.deleteTableReview(token, reviewID))
     }
 
     fun addTableReview(token: String,
                        tableReviewRequest: TableReviewRequest,
                        vendorID: Int,
                        tableID: Int
-    ) = viewModelScope.launch {
-        _addTableReviewResponse.value = Resource.Loading
-        _addTableReviewResponse.value = rezRepository.addTableReview(token, tableReviewRequest, vendorID, tableID)
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _addTableReviewResponse.postValue( Resource.Loading)
+        _addTableReviewResponse.postValue( rezRepository.addTableReview(token, tableReviewRequest, vendorID, tableID))
     }
 
     fun bookTable(token: String,
                  bookTableRequest: BookTableRequest
-    ) = viewModelScope.launch {
-        _bookTableResponse.value = Resource.Loading
-        _bookTableResponse.value = rezRepository.bookTable(token, bookTableRequest)
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _bookTableResponse.postValue( Resource.Loading)
+        _bookTableResponse.postValue( rezRepository.bookTable(token, bookTableRequest))
     }
 
 
     fun getEachBooking(token: String,
                  bookingID: Int
-    ) = viewModelScope.launch {
-        _eachBookingResponse.value = Resource.Loading
-        _eachBookingResponse.value = rezRepository.getEachBooking(token, bookingID)
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _eachBookingResponse.postValue( Resource.Loading)
+        _eachBookingResponse.postValue( rezRepository.getEachBooking(token, bookingID))
     }
 
     fun getBookings(token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
@@ -190,9 +190,9 @@ class RezViewModel(
 
     fun getVendorTables( vendorID: Int,
                  token: String
-    ) = viewModelScope.launch {
-        _getVendorTableResponse.value = Resource.Loading
-        _getVendorTableResponse.value = rezRepository.getVendorTables(vendorID, token)
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _getVendorTableResponse.postValue( Resource.Loading)
+        _getVendorTableResponse.postValue( rezRepository.getVendorTables(vendorID, token))
     }
 
     fun getHome( lat: Double,
@@ -216,9 +216,9 @@ class RezViewModel(
     fun addOrRemoveFavorites(
         id: String,
         token: String
-    ) = viewModelScope.launch {
-        _addOrRemoveFavoritesResponse.value = Resource.Loading
-        _addOrRemoveFavoritesResponse.value = rezRepository.addOrRemoveFavorites(id, token)
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _addOrRemoveFavoritesResponse.postValue( Resource.Loading)
+        _addOrRemoveFavoritesResponse.postValue( rezRepository.addOrRemoveFavorites(id, token))
     }
 
     fun uploadImage(image: String,
@@ -278,7 +278,7 @@ class RezViewModel(
 
     fun changePassword(user: ChangePasswordRequest,
                        token: String
-    ) = viewModelScope.launch {
+    ) = viewModelScope.launch{
         _changePasswordResponse.value = Resource.Loading
         _changePasswordResponse.value = rezRepository.changePassword(user, token)
     }

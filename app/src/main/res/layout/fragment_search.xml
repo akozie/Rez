@@ -27,22 +27,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/search_restaurants"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_60dp"
-                    android:backgroundTint="@color/blue"
-                    android:hint="Search"
+                    android:backgroundTint="@color/quantum_grey600"
+                    android:hint="Type here to search"
                     android:iconifiedByDefault="false"
                     android:queryBackground="@android:color/transparent"
                     android:searchIcon="@drawable/ic_baseline_search_pink"
                     android:textColor="@color/white"
                     android:textColorHint="@color/grey1"
+                    android:singleLine="true"
                     android:textSize="@dimen/text_size_15sp"
+                    android:clickable="true"
+                    android:imeOptions="actionSearch"
                     app:layout_anchorGravity="center"
                     android:layout_marginEnd="@dimen/margin_50dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:focusable="true" />
 
 
 <!--                <ImageView-->
@@ -137,6 +141,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/no_internet_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_internet"
+        app:layout_constraintBottom_toBottomOf="@+id/error_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_recyclerview" />
 
     <TextView
         android:visibility="gone"

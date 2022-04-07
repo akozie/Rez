@@ -47,7 +47,7 @@ class NearRestaurantAdapter(private var nearRestaurantList: List<NearbyVendor>, 
                         ratingTv.rating = average_rating
                     }
                     category.text = category_name
-                    nearDistance.text = distance.toString()+"km"
+                    nearDistance.text = "%.5f".format(distance) +"km"
                     if (total_tables == 1 || total_tables == 0){
                         tableQty.text = total_tables.toString() + " table"
                     }else{
@@ -74,6 +74,10 @@ class NearRestaurantAdapter(private var nearRestaurantList: List<NearbyVendor>, 
 
         holder.itemView.setOnClickListener {
             clickListener.onItemClick(nearRestaurantList[position])
+        }
+
+        holder.hotelName.setOnClickListener {
+            clickListener.onIconClick(nearRestaurantList[position])
         }
         holder.nearDistance.setOnClickListener {
             clickListener.onIconClick(nearRestaurantList[position])

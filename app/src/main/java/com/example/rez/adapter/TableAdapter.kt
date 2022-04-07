@@ -47,6 +47,9 @@ class TableAdapter(private var tableList: List<Table>, var tableClickListener: O
                         pricee.text = price
                         tableCategoryName.text = name
                         tableDescription.text = description
+                        holder.itemView.setOnClickListener {
+                            tableClickListener.onTableItemClick(tableList[position])
+                        }
                     } else{
                         cardView1.visible(true)
                         GlideApp.with(context).load(image).into(tableImageIv1)
@@ -57,9 +60,6 @@ class TableAdapter(private var tableList: List<Table>, var tableClickListener: O
                     }
                 }
             }
-        }
-        holder.itemView.setOnClickListener {
-            tableClickListener.onTableItemClick(tableList[position])
         }
     }
 

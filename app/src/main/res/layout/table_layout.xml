@@ -94,7 +94,7 @@
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:scaleType="fitXY"
-                                android:src="@drawable/people2" />
+                                android:src="@drawable/ic_people_icon" />
 
                             <TextView
                                 android:layout_width="wrap_content"

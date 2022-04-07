@@ -47,7 +47,7 @@ class BookingPagingStateAdapter(private val retry: () -> Unit) :
 
         fun bind(loadState: LoadState) {
             binding.apply {
-                progressBar.isVisible = loadState is LoadState.Loading
+            //    progressBar.isVisible = loadState is LoadState.Loading
                 buttonRetry.isVisible = loadState !is LoadState.Loading
                 textViewError.isVisible = loadState !is LoadState.Loading
             }

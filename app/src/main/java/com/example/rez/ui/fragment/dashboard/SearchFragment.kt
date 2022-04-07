@@ -109,6 +109,13 @@ class SearchFragment : Fragment(), OnTableClickListener {
         }else {
             binding.ratingBar.rating = args?.ratings!!.toFloat()
         }
+//        if (args?.liked_by_user == true){
+//            binding.likeIv.visible(true)
+//            binding.unLikeIv.visible(false)
+//        }else{
+//            binding.likeIv.visible(false)
+//            binding.unLikeIv.visible(true)
+//        }
     }
 
 
