@@ -21,11 +21,12 @@ android:orientation="vertical">
 
     <TextView
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Details"
-        android:textSize="15dp"
+        android:fontFamily="@font/poppins_light"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:textColor="@color/black"/>
 
@@ -52,24 +53,26 @@ android:orientation="vertical">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Date"
-                    android:textSize="15dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:textSize="15sp"
                     android:textStyle="bold"
-                    android:drawableLeft="@drawable/calender2"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
                     android:drawablePadding="10dp"
-                    android:textColor="@color/gray_dark"/>
+                    android:textColor="@color/gray_dark"
+                    app:drawableLeftCompat="@drawable/calender2" />
 
                 <TextView
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Time"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_light"
                     android:textStyle="bold"
-                    android:drawableLeft="@drawable/clock2"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
                     android:drawablePadding="10dp"
-                    android:textColor="@color/gray_dark"/>
+                    android:textColor="@color/gray_dark"
+                    app:drawableLeftCompat="@drawable/clock2" />
 
             </LinearLayout>
             <LinearLayout
@@ -84,9 +87,9 @@ android:orientation="vertical">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Date"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:paddingLeft="10dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:textSize="15sp"
+                    android:paddingStart="10dp"
                     android:drawablePadding="10dp"
                     android:textColor="@color/black" />
 
@@ -96,8 +99,8 @@ android:orientation="vertical">
                     android:layout_height="wrap_content"
                     android:id="@+id/timeTv"
                     android:text="Time"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_light"
+                    android:textSize="15sp"
                     android:paddingLeft="10dp"
                     android:drawablePadding="10dp"
                     android:textColor="@color/black"/>
@@ -115,24 +118,26 @@ android:orientation="vertical">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="No. of People"
-                    android:textSize="15dp"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_light"
                     android:textStyle="bold"
-                    android:drawableLeft="@drawable/people2"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
                     android:drawablePadding="10dp"
-                    android:textColor="@color/gray_dark"/>
+                    android:textColor="@color/gray_dark"
+                    android:drawableTint="@color/gray_dark"
+                    app:drawableLeftCompat="@drawable/ic_people_icon" />
 
                 <TextView
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Table Name"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:drawableLeft="@drawable/table_name2"
-                    android:paddingLeft="10dp"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_light"
+                    android:paddingStart="10dp"
                     android:drawablePadding="10dp"
-                    android:textColor="@color/gray_dark"/>
+                    android:textColor="@color/gray_dark"
+                    app:drawableLeftCompat="@drawable/table_name2" />
 
             </LinearLayout>
             <LinearLayout
@@ -147,9 +152,9 @@ android:orientation="vertical">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:paddingLeft="10dp"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_light"
+                    android:paddingStart="10dp"
                     android:drawablePadding="10dp"
                     android:textColor="@color/black" />
 
@@ -159,9 +164,9 @@ android:orientation="vertical">
                     android:layout_height="wrap_content"
                     android:id="@+id/tableNameTv"
                     android:text="Table Name"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:paddingLeft="10dp"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_light"
+                    android:paddingStart="10dp"
                     android:drawablePadding="10dp"
                     android:textColor="@color/black"/>
 
@@ -176,8 +181,8 @@ android:orientation="vertical">
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Grand Total :"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_light"
                     android:textColor="@color/blue"/>
 
                 <TextView
@@ -186,12 +191,11 @@ android:orientation="vertical">
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Grand Total"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:drawableLeft="@drawable/ic_naira_pink"
-                    android:paddingLeft="10dp"
-                    android:drawablePadding="2dp"
-                    android:textColor="@color/pink"/>
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_light"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/pink"
+                    app:drawableLeftCompat="@drawable/ic_naira_pink" />
 
             </LinearLayout>
 
@@ -204,7 +208,7 @@ android:orientation="vertical">
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Rez will take 10% " />
+                android:text="Booking fee -5% " />
 
         </LinearLayout>
 
@@ -218,8 +222,8 @@ android:orientation="vertical">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Payment Details"
-        android:textSize="15dp"
-        android:textStyle="bold"
+        android:textSize="15sp"
+        android:fontFamily="@font/poppins_light"
         android:textColor="@color/black"/>
 
     <LinearLayout
@@ -257,8 +261,9 @@ android:orientation="vertical">
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="Paystack"
+                    android:fontFamily="@font/poppins_light"
                     android:textColor="@color/white"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -308,17 +313,17 @@ android:orientation="vertical">
 
 
     </LinearLayout>
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progressBar"-->
+<!--        style="?android:attr/progressBarStyle"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <EditText
         android:id="@+id/cardNumberEt"
@@ -328,6 +333,8 @@ android:orientation="vertical">
         android:layout_height="40dp"
         android:layout_marginTop="@dimen/padding_20dp"
         android:hint="Card Number"
+        android:fontFamily="@font/poppins_light"
+        android:maxLength="19"
         android:padding="7dp"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_15sp"
@@ -342,13 +349,14 @@ android:orientation="vertical">
         android:orientation="horizontal">
 
         <EditText
-            android:layout_weight="1"
             android:id="@+id/expiryDateEt"
+            android:layout_weight="1"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="Expiry Date"
+            android:fontFamily="@font/poppins_light"
             android:padding="7dp"
             android:maxLength="5"
             android:textColor="@color/black"
@@ -366,6 +374,7 @@ android:orientation="vertical">
             android:layout_height="40dp"
             android:maxLength="3"
             android:hint="CVV "
+            android:fontFamily="@font/poppins_light"
             android:padding="7dp"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_15sp"
@@ -383,25 +392,42 @@ android:orientation="vertical">
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.button.MaterialButton
+        <include
             android:id="@+id/paymentTv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_55dp"
-            android:layout_gravity="bottom"
+            style="@style/LoginFragmentButtonStyle"
+            layout="@layout/custom_button"
             android:layout_marginStart="@dimen/margin_10dp"
             android:layout_marginEnd="@dimen/margin_10dp"
             android:backgroundTint="@color/blue"
-            android:fontFamily="@font/poppins_bold"
-            android:gravity="center"
-            android:text="Proceed To Payment"
-            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_16sp"
             app:cornerRadius="@dimen/margin_5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/paymentTv"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/margin_55dp"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            android:layout_marginStart="@dimen/margin_10dp"-->
+<!--            android:layout_marginEnd="@dimen/margin_10dp"-->
+<!--            android:backgroundTint="@color/blue"-->
+<!--            android:fontFamily="@font/poppins_light"-->
+<!--            android:gravity="center"-->
+<!--            android:text="Proceed To Payment"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="@dimen/text_size_16sp"-->
+<!--            app:cornerRadius="@dimen/margin_5dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
 
 

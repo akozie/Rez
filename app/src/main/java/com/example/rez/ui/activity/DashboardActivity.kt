@@ -4,15 +4,12 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Html
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -25,13 +22,6 @@ import com.example.rez.databinding.ActivityDashboardBinding
 import com.example.rez.repository.AuthRepository
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.RezViewModelProviderFactory
-import com.facebook.AccessToken
-import com.facebook.GraphRequest
-import com.facebook.HttpMethod
-import com.facebook.login.LoginManager
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
@@ -46,9 +36,11 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var searchview: TextView
+    private lateinit var hiText: TextView
     private lateinit var toolbarFragmentName: TextView
     private lateinit var drawerCloseIcon: ImageView
     private lateinit var navigationView: NavigationView
+    private lateinit var notification: CircleImageView
 
     private lateinit var navView: NavigationView
     lateinit var rezViewModel: RezViewModel
@@ -72,6 +64,7 @@ class DashboardActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarDashboard.dashboardActivityToolbar)
 
+
         /*Set Status bar Color*/
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
 //            window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -83,23 +76,34 @@ class DashboardActivity : AppCompatActivity() {
         drawerLayout = binding.drawerLayout
         navView = binding.navView
         val navViewHeader = navView.getHeaderView(0)
-       // editProfile = navViewHeader.findViewById(R.id.nav_drawer_edit_profile_text_view)
         drawerCloseIcon = navViewHeader.findViewById(R.id.nav_drawer_close_icon_image_view)
-        //profileImage = navViewHeader.findViewById(R.id.nav_drawer_profile_avatar_image_view)
 
 
-        //var mDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, , R.string.drawer_open, R.string.drawer_close)
 
         /*Initialize Toolbar Views*/
         searchview = binding.appBarDashboard.dashboardActivityToolbarSearchView
+        hiText = binding.appBarDashboard.hiText
+        searchview.text = sharedPreferences.getString("name", "name")
         toolbarFragmentName = binding.appBarDashboard.dashboardActivityToolbarFragmentNameTextView
         bottomNavigationView = binding.appBarDashboard.contentDashboard.dashboardActivityBottomNavigationView
-      //  profilePicture = binding.appBarDashboard.dashboardActivityToolbarProfileImageView
+        notification = binding.appBarDashboard.dashboardActivityNotificationIcon
         navigationView = binding.navView
 
-       // searchview.queryHint = Html.fromHtml("<font color = #BDBABA>" + getResources().getString(R.string.hintSearchMess) + "</font>")
+//        val fragment1: Fragment = Home()
+//        val fragment2: Fragment = Favorites()
+//        val fragment3: Fragment = Reservation()
+//        val fm: FragmentManager = supportFragmentManager
+//        val active: Fragment = fragment1
+//
+//
+//        fm.beginTransaction().add(binding.appBarDashboard.contentDashboard.navHostFragmentContentDashboard, fragment3, "3").hide(fragment3).commit();
+//        fm.beginTransaction().add(binding.appBarDashboard.contentDashboard.navHostFragmentContentDashboard, fragment2, "2").hide(fragment2).commit();
+//        fm.beginTransaction().add(binding.appBarDashboard.contentDashboard.navHostFragmentContentDashboard,fragment1, "1").commit();
 
-        //profileName = navViewHeader.findViewById(R.id.nav_drawer_user_full_name_text_view)
+        // searchview.queryHint = Html.fromHtml("<font color = #BDBABA>" + getResources().getString(R.string.hintSearchMess) + "</font>")
+
+
+
         navController = findNavController(R.id.nav_host_fragment_content_dashboard)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -107,9 +111,9 @@ class DashboardActivity : AppCompatActivity() {
             navController.graph, drawerLayout
         )
 
-        searchview.setOnClickListener {
-            navController.navigate(R.id.search)
-        }
+//        searchview.setOnClickListener {
+//            navController.navigate(R.id.search)
+//        }
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         bottomNavigationView.setupWithNavController(navController)
@@ -117,12 +121,10 @@ class DashboardActivity : AppCompatActivity() {
         /*Set Up Navigation Change Listener*/
         onDestinationChangedListener()
 
-        /*Edit User Detail onClick*/
-//        editProfile.setOnClickListener {
-//            drawerLayout.closeDrawer(GravityCompat.START)
-//            navController.navigate(R.id.editProfileFragment)
-//        }
 
+        notification.setOnClickListener {
+            navController.navigate(R.id.notificationFragment)
+        }
         /*Close Drawer Icon*/
         drawerCloseIcon.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -133,6 +135,12 @@ class DashboardActivity : AppCompatActivity() {
                 R.id.bookingHistory -> {
                     findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
                         R.id.bookingHistory)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    return@setNavigationItemSelectedListener true
+                }
+                R.id.notificationFragment -> {
+                    findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
+                        R.id.notificationFragment)
                     drawerLayout.closeDrawer(GravityCompat.START)
                     return@setNavigationItemSelectedListener true
                 }
@@ -204,111 +212,224 @@ class DashboardActivity : AppCompatActivity() {
                 R.id.home2 -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.VISIBLE
+                    hiText.visibility = View.VISIBLE
                     toolbarFragmentName.visibility = View.GONE
+                    notification.visibility = View.VISIBLE
+                }
+                R.id.favoritesCover -> {
+                    hiText.visibility = View.GONE
+                    bottomNavigationView.visibility = View.VISIBLE
+                    searchview.visibility = View.INVISIBLE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.favorites -> {
-                    bottomNavigationView.visibility = View.VISIBLE
+                    hiText.visibility = View.GONE
+                    bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.reservation -> {
+                    hiText.visibility = View.GONE
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.myProfile -> {
+                    hiText.visibility = View.GONE
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.topRecommended -> {
+                    hiText.visibility = View.GONE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.nearRestaurant -> {
+                    hiText.visibility = View.GONE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.suggestionForYou -> {
+                    hiText.visibility = View.GONE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.topFragment -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.nearRestFragment -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.suggestFragment -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.tableDetails -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.proceedToPayment -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.favoriteDetailsFragment -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
+                }
+                R.id.searchFragment -> {
+                    hiText.visibility = View.GONE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.search -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.bookingDetailsFragment -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.settings2 -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
+                }
+                R.id.notificationFragment -> {
+                    hiText.visibility = View.GONE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.help2 -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.securityAndPrivacy -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.changePassword -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 R.id.QRCodeFragment -> {
+                    hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
                     searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
+                }
+                R.id.successFragment -> {
+                    hiText.visibility = View.GONE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
+                }
+                R.id.errorFragment -> {
+                    hiText.visibility = View.GONE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
+                }
+                R.id.complaintsFragment -> {
+                    hiText.visibility = View.GONE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.VISIBLE
+                    searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
                 }
                 else -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
+                    notification.visibility = View.VISIBLE
                 }
             }
         }
     }
+
+//    private val mOnNavigationItemSelectedListener =
+//        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+//            when (item.itemId) {
+//                R.id.navigation_home -> {
+//                    fm.beginTransaction().hide(active).show(fragment1).commit()
+//                    active = fragment1
+//                    return@OnNavigationItemSelectedListener true
+//                }
+//                R.id.navigation_dashboard -> {
+//                    fm.beginTransaction().hide(active).show(fragment2).commit()
+//                    active = fragment2
+//                    return@OnNavigationItemSelectedListener true
+//                }
+//                R.id.navigation_notifications -> {
+//                    fm.beginTransaction().hide(active).show(fragment3).commit()
+//                    active = fragment3
+//                    return@OnNavigationItemSelectedListener true
+//                }
+//            }
+//            false
+//        }
+
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        onDestinationChangedListener()
+//    }
+
+
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)

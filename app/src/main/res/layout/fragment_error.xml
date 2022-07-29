@@ -32,6 +32,7 @@
                     android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="Failed"
+                    android:fontFamily="@font/poppins_light"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -41,9 +42,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
+                    android:fontFamily="@font/poppins_light"
                     android:text="Failed to book table"
                     android:textColor="@color/grey1"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -51,10 +53,11 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="You can try again"
+                    android:fontFamily="@font/poppins_light"
                     android:textColor="@color/black"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
-                <TextView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/okTv"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -63,9 +66,9 @@
                     android:background="@drawable/rectangle_box_button_pinc"
                     android:gravity="center"
                     android:text="Ok"
+                    android:fontFamily="@font/poppins_light"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_15sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/text_size_15sp" />
             </LinearLayout>
 
         </LinearLayout>

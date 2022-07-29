@@ -17,9 +17,11 @@ import java.io.IOException
 
 class SearchPagingSource(
     val value: String,
-    val noOfPersons: Int,
-    val priceFrom: Int,
-    val  priceTo: Int,
+    private val noOfPersons: String?,
+    private val priceFrom: Int?,
+    private val  priceTo: Int?,
+    private val  stateID: Int?,
+    val  type: Int?,
     private val authApi: AuthApi,
     val token: String
 ) : PagingSource<Int, ResultX>() {
@@ -31,7 +33,7 @@ class SearchPagingSource(
         val currentPage = params.key ?: 1
 
         return try {
-            val response = authApi.search(value, noOfPersons, priceFrom, priceTo, token, currentPage)
+            val response = authApi.search(value, noOfPersons, priceFrom, priceTo, stateID, type, token, currentPage)
             val bookings = response.body()?.data?.results!!.toList()
 
 

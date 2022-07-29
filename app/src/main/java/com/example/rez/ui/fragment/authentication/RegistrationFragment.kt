@@ -8,9 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
+import android.widget.*
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -18,15 +16,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.rez.R
 import com.example.rez.RezApp
+import com.example.rez.adapter.PhoneAdapter
 import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentRegistrationBinding
+import com.example.rez.model.authentication.genresponse.RegResponse
+import com.example.rez.model.authentication.genresponse.RegistrationErrorData
+import com.example.rez.model.authentication.genresponse.RegistrationSuccessData
 import com.example.rez.model.authentication.request.FacebookRequest
 import com.example.rez.model.authentication.request.RegisterRequest
+import com.example.rez.model.authentication.response.CountryCodes
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
+import com.example.rez.util.ValidationObject.isValidPhoneNumber
 import com.example.rez.util.ValidationObject.validateEmail
 import com.example.rez.util.ValidationObject.validatePasswordMismatch
-import com.example.rez.util.enable
+import com.example.rez.util.ValidationObject.validatePhoneNumber
 import com.example.rez.util.handleApiError
 import com.example.rez.util.showToast
 import com.example.rez.util.visible
@@ -45,6 +49,7 @@ import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class RegistrationFragment : Fragment() {
@@ -56,6 +61,13 @@ class RegistrationFragment : Fragment() {
     private lateinit var rezSignInClient: GoogleSignInClient
     private var GOOGLE_SIGNIN_RQ_CODE = 100
     private lateinit var callbackManager : CallbackManager
+    private lateinit var phoneNumberText: String
+
+ //   private lateinit var phoneNumber: AutoCompleteTextView
+    private lateinit var country: ArrayList<CountryCodes>
+    //private lateinit var phone: String
+   // private lateinit var phoneAdapter: ArrayAdapter
+
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -76,6 +88,19 @@ class RegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.loginTv.button.text = "SIGNUP"
+        phoneNumberText = binding.initPhoneNumber.text.toString().trim()+binding.edtUserMobile.text.toString().trim()
+        val phoneNumber = binding.initPhoneNumber
+        val countryCode = arrayListOf("+1", "+20", "+212", "+213", "+216", "+218", "+220", "+221", "+222", "+223", "+224", "+225", "+226", "+227", "+228", "+229", "+230", "+231", "+232", "+233", "+234", "+235", "+236", "+237", "+238", "+239", "+240", "+241", "+242", "+243", "+244", "+245", "+246", "+248", "+249", "+250", "+251", "+252", "+253", "+254", "+255", "+256", "+257", "+258", "+260", "+261", "+262", "+262", "+263", "+264", "+265", "+266", "+267", "+268", "+269", "+27", "+290", "+291", "+297", "+298", "+299", "+30", "+31", "+32", "+33", "+34", "+345", "+350", "+351", "+352", "+353", "+354", "+355", "+356", "+358", "+359", "+36", "+370", "+371", "+372", "+373", "+374", "+375", "+376", "+377", "+378", "+379", "+380", "+381", "+382", "+385", "+386", "+387", "+389", "+39", "+40", "+41", "+420", "+421", "+423", "+43", "+44", "+45", "+46", "+47", "+48", "+49", "+500", "+501", "+502", "+503", "+504", "+505", "+506", "+507", "+508", "+509", "+51", "+52", "+53", "+537", "+54", "+55", "+56", "+57", "+58", "+590", "+591", "+593", "+594", "+595", "+596", "+597", "+598", "+599", "+60", "+61", "+62", "+63", "+64", "+65", "+66", "+670", "+672", "+673", "+674", "+675", "+676", "+677", "+678", "+679", "+680", "+681", "+682", "+683", "+685", "+686", "+687", "+688", "+689", "+690", "+691", "+692", "+7", "+77", "+81", "+82", "+84", "+850", "+852", "+853", "+855", "+856", "+86", "+872", "+880", "+886", "+90", "+91", "+92", "+93", "+94", "+95", "+960", "+961", "+962", "+963", "+964", "+965", "+966", "+967", "+968", "+970", "+971", "+972", "+973", "+974", "+975", "+976", "+977", "+98", "+992", "+993", "+994", "+995", "+996", "+998")
+        country = arrayListOf()
+        val phoneAdapter = PhoneAdapter(countryCode, requireContext(),
+            android.R.layout.simple_dropdown_item_1line)
+        phoneNumber.setAdapter(phoneAdapter)
+
+
+        rezViewModel.phoneNumber.observe(viewLifecycleOwner){
+            validatePhoneNumber(it)
+        }
 
         googleSignInButton = binding.googleTv
         facebookSignInButton  = binding.facebookTv
@@ -104,29 +129,28 @@ class RegistrationFragment : Fragment() {
         })
 
 
-        binding.signUpTv.setOnClickListener {
-            val action = RegistrationFragmentDirections.actionRegistrationFragmentToOTPFragment()
-            findNavController().navigate(action)
-        }
         binding.signIn.setOnClickListener {
             val action = RegistrationFragmentDirections.actionRegistrationFragmentToLoginFragment()
             findNavController().navigate(action)
         }
 
-        binding.progressBar.visible(false)
+        binding.loginTv.progressBar.visible(false)
        // binding.signUpTv.enable(false)
 
-        rezViewModel.registerResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.visible(it is Resource.Loading)
+        rezViewModel.registerResp.observe(viewLifecycleOwner, Observer {
+            binding.loginTv.progressBar.visible(it is Resource.Loading)
+            binding.loginTv.button.text = "Please wait.."
             when(it) {
                 is Resource.Success -> {
-                    lifecycleScope.launch {
+                    binding.loginTv.button.text = "SIGNUP"
+                    if (it.value.body()?.status == true){
+                        val data = it.value.body()?.data
                         val uEmail = binding.edtUserEmail.text.toString().trim()
-                        val token: String? = it.value.data.token
+                        val token: String? = data?.token
                         sharedPreferences.edit().putString("token", token).commit() // save user's token
                         sharedPreferences.edit().putString("email", uEmail).commit() // save user's email
 
-                        val message = it.value.message
+                        val message = it.value.body()?.message!!
                         startActivity(
                             Intent(
                                 requireContext(),
@@ -135,18 +159,70 @@ class RegistrationFragment : Fragment() {
                         )
                         requireActivity().finish()
                         showToast(message)
+                    } else {
+                        val message = it.value.body()?.message!!
+                        showToast(message)
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> {
+                    binding.loginTv.button.text = "SIGNUP"
+                    handleApiError(it)
+                    val error = it.value as RegResponse
+
+                    if (error.errors?.phone?.isNotEmpty() == true){
+                        val phoneErrors = error.errors.phone[0]
+                        showToast(phoneErrors)
+                    }else if (error.errors?.email?.isNotEmpty() == true ){
+                        val emailErrors = error.errors.email[0]
+                        showToast(emailErrors)
+                    }
+                }
             }
         })
+
+
+//        rezViewModel.registerResp.observe(viewLifecycleOwner, Observer {
+//            binding.loginTv.progressBar.visible(it is Resource.Loading)
+//            binding.loginTv.button.text = "Please wait.."
+//            when(it) {
+//                is Resource.Success -> {
+//                    binding.loginTv.button.text = "SIGNUP"
+//                    if (it.value.containsKey("data")){
+//                        val data = it.value.get("data") as RegistrationSuccessData
+//                        val uEmail = binding.edtUserEmail.text.toString().trim()
+//                        val token: String? = data.token
+//                        sharedPreferences.edit().putString("token", token).commit() // save user's token
+//                        sharedPreferences.edit().putString("email", uEmail).commit() // save user's email
+//
+//                        val message = it.value.get("message") as String
+//                        startActivity(
+//                            Intent(
+//                                requireContext(),
+//                                DashboardActivity::class.java
+//                            )
+//                        )
+//                        requireActivity().finish()
+//                        showToast(message)
+//                    } else {
+//                        val message = it.value.get("message") as String
+//                        showToast(message)
+//                    }
+//                }
+//                is Resource.Failure -> {
+//                    binding.loginTv.button.text = "SIGNUP"
+//                    handleApiError(it)
+//
+//                }
+//            }
+//        })
+
 
 //        binding.edtFirstName.addTextChangedListener {
 //            val email = binding.edtUserEmail.text.toString().trim()
 //            binding.signUpTv.enable(email.isNotEmpty() && it.toString().isNotEmpty())
 //        }
 
-        binding.signUpTv.setOnClickListener {
+        binding.loginTv.submit.setOnClickListener {
             register() // register user
         }
     }
@@ -186,12 +262,13 @@ class RegistrationFragment : Fragment() {
             phoneNumber.isEmpty() -> {
                 binding.TILedtMobile.error =
                     getString(R.string.all_phone_number_is_required)
-
+                binding.TILedtMobile.errorIconDrawable = null
             }
-//            !validateEmail(email) -> {
+//            !phoneNumber.isValidPhoneNumber() -> {
 //                binding.TILedtMobile.error =
-//                    getString(R.string.all_invalid_email)
-//
+//                    getString(R.string.invalid_phone_number)
+//                binding.TILedtMobile.errorIconDrawable =
+//                    null
 //            }
             password.isEmpty() -> {
                 binding.TILedtPass.error =
@@ -282,20 +359,25 @@ class RegistrationFragment : Fragment() {
                 }
             }
         }
-
-        binding.edtUserMobile.doOnTextChanged { _, _, _, _ ->
-            when {
-                binding.edtUserMobile.text.toString().trim().isEmpty() -> {
-                    binding.TILedtMobile.error =
-                        getString(R.string.all_phone_number_is_required)
-                    isValidated = false
-                }
-                else -> {
-                    binding.TILedtMobile.error = null
-                    isValidated = true
-                }
-            }
-        }
+//        binding.edtUserMobile.doOnTextChanged { charSequence, _, _, _ ->
+////            when {
+////                binding.edtUserMobile.text.toString().trim().isEmpty() -> {
+////                    binding.TILedtMobile.error =
+////                        getString(R.string.all_phone_number_is_required)
+////                    isValidated = false
+////                }
+////                !phoneNumberText.isValidPhoneNumber() -> {
+////                    binding.TILedtMobile.error =
+////                        getString(R.string.invalid_phone_number)
+////                    isValidated = false
+////                }
+////                else -> {
+////                    binding.TILedtMobile.error = null
+////                    isValidated = true
+////                }
+////            }
+//            rezViewModel.updatePhoneNumber(charSequence.toString())
+//        }
 
         binding.edtPass.doOnTextChanged { _, _, _, _ ->
             when {
@@ -385,9 +467,11 @@ class RegistrationFragment : Fragment() {
             val googleRequest = FacebookRequest(it)
             rezViewModel.loginWithGoogle(googleRequest) // make the google login request
             rezViewModel.loginGoogleResponse.observe(viewLifecycleOwner, Observer {
-                binding.progressBar.visible(it is Resource.Loading) // hide progress bar after the response
+                binding.loginTv.progressBar.visible(it is Resource.Loading) // hide progress bar after the response
+                binding.loginTv.button.text = "Please wait.."
                 when (it) {
                     is Resource.Success -> {
+                        binding.loginTv.button.text = "SIGNUP"
                         if (it.value.status) {
                             lifecycleScope.launch {
                                 val uEmail = it.value.data.email
@@ -410,7 +494,10 @@ class RegistrationFragment : Fragment() {
                         }
 
                     }
-                    is Resource.Failure ->  handleApiError(it) // handle error
+                    is Resource.Failure ->  {
+                        binding.loginTv.button.text = "SIGNUP"
+                        handleApiError(it)
+                    } // handle error
                 }
             })
         }
@@ -423,9 +510,11 @@ class RegistrationFragment : Fragment() {
             val facebookRequest = FacebookRequest(accessToken.token)
             rezViewModel.loginWithFacebook(facebookRequest) // make the facebook login request
             rezViewModel.loginWithFacebookResponse.observe(viewLifecycleOwner, Observer {
-                binding.progressBar.visible(it is Resource.Loading) // hide progress bar after the response
+                binding.loginTv.progressBar.visible(it is Resource.Loading) // hide progress bar after the response
+                binding.loginTv.button.text = "Please wait.."
                 when (it) {
                     is Resource.Success -> {
+                        binding.loginTv.button.text = "SIGNUP"
                         if (it.value.status) {
                             lifecycleScope.launch {
                                 val uEmail = it.value.data.email
@@ -447,9 +536,20 @@ class RegistrationFragment : Fragment() {
                             it.value.message?.let { it1 -> showToast(it1) } // show the user the message
                         }
                     }
-                    is Resource.Failure ->  handleApiError(it) // handle error
+                    is Resource.Failure ->  {
+                        binding.loginTv.button.text = "SIGNUP"
+                        handleApiError(it)
+                    } // handle error
                 }
             })
+        }
+    }
+    private fun validatePhoneNumber(phoneNumber:String){
+        when{
+            !phoneNumber.isValidPhoneNumber() ->{
+                binding.TILedtMobile.error =
+                        getString(R.string.invalid_phone_number)
+            }
         }
     }
 }

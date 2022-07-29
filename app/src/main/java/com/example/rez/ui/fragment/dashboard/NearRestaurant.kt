@@ -106,8 +106,8 @@ class NearRestaurant : Fragment(), NearAdapter.OnNearItemClickListener {
     }
 
     private fun registerObservers(like: ImageView, unLike: ImageView) {
-        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
-            when(it) {
+        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner) {
+            when (it) {
                 is Resource.Success -> {
                     if (unLike.isVisible) {
                         showToast("Added Successfully to favorites")
@@ -115,7 +115,7 @@ class NearRestaurant : Fragment(), NearAdapter.OnNearItemClickListener {
                         like.visibility = View.VISIBLE
                         unLike.visibility = View.INVISIBLE
                         removeObserver()
-                    } else if(!unLike.isVisible){
+                    } else if (!unLike.isVisible) {
                         showToast("Removed Successfully from favorites")
                         //rezViewModel.favoriteResponse = 0
                         like.visibility = View.INVISIBLE
@@ -125,7 +125,7 @@ class NearRestaurant : Fragment(), NearAdapter.OnNearItemClickListener {
                 }
                 is Resource.Failure -> handleApiError(it)
             }
-        })
+        }
     }
 
     private fun removeObserver() {

@@ -15,14 +15,12 @@ import com.example.rez.model.authentication.request.*
 import com.example.rez.model.authentication.response.*
 import com.example.rez.model.dashboard.*
 import com.example.rez.model.direction.DirectionResponseModel
-import com.example.rez.model.paging.BookingPagingSource
-import com.example.rez.model.paging.FavoritePagingSource
-import com.example.rez.model.paging.ReviewPagingSource
-import com.example.rez.model.paging.SearchPagingSource
+import com.example.rez.model.paging.*
 import com.example.rez.repository.AuthRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class RezViewModel(
     app: Application,
@@ -32,6 +30,14 @@ class RezViewModel(
     private val _addVendorReviewResponse: MutableLiveData<Resource<GeneralResponse>> = MutableLiveData()
     val addVendorReviewResponse: LiveData<Resource<GeneralResponse>>
         get() = _addVendorReviewResponse
+
+//    private val _getVendorStateResponse: MutableLiveData<Resource<StateResponse>> = MutableLiveData()
+//    val getVendorStateResponse: LiveData<Resource<StateResponse>>
+//        get() = _getVendorStateResponse
+
+    private val _getVendorCategoryResponse: MutableLiveData<Resource<GetVendorCategoryResponse>> = MutableLiveData()
+    val getVendorCategoryResponse: LiveData<Resource<GetVendorCategoryResponse>>
+        get() = _getVendorCategoryResponse
 
     private val _deleteTableReviewResponse: MutableLiveData<Resource<GeneralResponse>> = MutableLiveData()
     val deleteTableReviewResponse: LiveData<Resource<GeneralResponse>>
@@ -65,6 +71,10 @@ class RezViewModel(
     val searchResponse: LiveData<Resource<SearchResponse>>
         get() = _searchResponse
 
+    private val _getFavoritesCover: MutableLiveData<Resource<FavoritesCoverResponse>> = MutableLiveData()
+    val getFavoritesCover: LiveData<Resource<FavoritesCoverResponse>>
+        get() = _getFavoritesCover
+
     private val _getHomeResponse: MutableLiveData<Resource<HomeResponse>> = MutableLiveData()
     val getHomeResponse: LiveData<Resource<HomeResponse>>
         get() = _getHomeResponse
@@ -93,9 +103,13 @@ class RezViewModel(
     val forgotPasswordResponse: LiveData<Resource<ForPasswordResponse>>
         get() = _forgotPasswordResponse
 
-    private val _registerResponse: MutableLiveData<Resource<RegResponse>> = MutableLiveData()
-    val registerResponse: LiveData<Resource<RegResponse>>
-        get() = _registerResponse
+//    private val _registerResponse: MutableLiveData<Resource<Map<String, Any>>> = MutableLiveData()
+//    val registerResponse: LiveData<Resource<Map<String, Any>>>
+//        get() = _registerResponse
+
+    private val _registerResp: MutableLiveData<Resource<Response<RegResponse>>> = MutableLiveData()
+    val registerResp: LiveData<Resource<Response<RegResponse>>>
+        get() = _registerResp
 
     private val _loginResponse: MutableLiveData<Resource<LoginResponse>> = MutableLiveData()
     val loginResponse: LiveData<Resource<LoginResponse>>
@@ -114,13 +128,25 @@ class RezViewModel(
     val changePasswordResponse: LiveData<Resource<ChangePasswordResponse>>
         get() = _changePasswordResponse
 
+    private val _complaintResponse: MutableLiveData<Resource<GeneralResponse>> = MutableLiveData()
+    val complaintResponse: LiveData<Resource<GeneralResponse>>
+        get() = _complaintResponse
+
     private val _getDirectionResponse: MutableLiveData<Resource<DirectionResponseModel>> = MutableLiveData()
     val getDirectionResponse: LiveData<Resource<DirectionResponseModel>>
         get() = _getDirectionResponse
 
 
 
+    private val _phoneNumber: MutableLiveData<String> = MutableLiveData()
+    val phoneNumber: LiveData<String>
+        get() = _phoneNumber
 
+
+
+    fun updatePhoneNumber(phoneNumber:String){
+        _phoneNumber.value = phoneNumber
+    }
 
     fun getDirect(mode: String,
                   origin: String,
@@ -137,6 +163,18 @@ class RezViewModel(
     ) = viewModelScope.launch(Dispatchers.IO) {
         _addVendorReviewResponse.postValue( Resource.Loading)
         _addVendorReviewResponse.postValue( rezRepository.addVendorRating(token, rating, vendorID))
+    }
+
+//    fun getVendorStates(
+//    ) = viewModelScope.launch(Dispatchers.IO) {
+//        _getVendorStateResponse.postValue( Resource.Loading)
+//        _getVendorStateResponse.postValue( rezRepository.getVendorStates())
+//    }
+
+    fun getVendorCategories(
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _getVendorCategoryResponse.postValue( Resource.Loading)
+        _getVendorCategoryResponse.postValue( rezRepository.getVendorCategories())
     }
 
     fun deleteTableReview(token: String,
@@ -174,6 +212,10 @@ class RezViewModel(
         BookingPagingSource(api, token)
     }.flow.cachedIn(viewModelScope)
 
+    fun getNotification(token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
+        NotificationPagingSource(api, token)
+    }.flow.cachedIn(viewModelScope)
+
     fun getVendorProfileTableReviews(vendorID: Int, tableID: Int, token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
         ReviewPagingSource(vendorID, tableID, api, token)
     }.flow.cachedIn(viewModelScope)
@@ -203,14 +245,20 @@ class RezViewModel(
         _getHomeResponse.postValue(rezRepository.getHome(lat, long, token))
     }
 
-    fun search(search: String, noOfPersons: Int, priceFrom: Int, priceTo: Int, token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
-        SearchPagingSource(search, noOfPersons, priceFrom,  priceTo,  api, token)
+    fun search(search: String, noOfPersons: String?, priceFrom: Int?, priceTo: Int?, stateId: Int?, type: Int?, token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
+        SearchPagingSource(search, noOfPersons, priceFrom,  priceTo, stateId, type, api, token)
     }.flow.cachedIn(viewModelScope)
 
 
-    fun getFavorites(token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
-        FavoritePagingSource(api, token)
+    fun getFavoritesState(token: String, stateId: Int) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
+        FavoritePagingSource(api, token, stateId)
     }.flow.cachedIn(viewModelScope)
+
+
+    fun getFavorites(token: String) = viewModelScope.launch {
+        _getFavoritesCover.postValue(Resource.Loading)
+        _getFavoritesCover.postValue(rezRepository.getFavorites(token))
+    }
 
 
     fun addOrRemoveFavorites(
@@ -253,10 +301,16 @@ class RezViewModel(
         _forgotPasswordResponse.value = rezRepository.forgotPassword(user)
     }
 
-    fun register( user: RegisterRequest
-    ) = viewModelScope.launch {
-        _registerResponse.value = Resource.Loading
-        _registerResponse.value = rezRepository.register(user)
+//    fun register( user: RegisterRequest
+//    ) = viewModelScope.launch {
+//        _registerResponse.value = Resource.Loading
+//        _registerResponse.value = rezRepository.register(user)
+//    }
+
+
+    fun register(user: RegisterRequest) = viewModelScope.launch {
+        _registerResp.value = Resource.Loading
+       // _registerResp.value  = rezRepository.register(user)
     }
 
     fun login( user: LoginRequest
@@ -281,5 +335,12 @@ class RezViewModel(
     ) = viewModelScope.launch{
         _changePasswordResponse.value = Resource.Loading
         _changePasswordResponse.value = rezRepository.changePassword(user, token)
+    }
+
+    fun complaints(user: ComplaintRequest,
+                       token: String
+    ) = viewModelScope.launch{
+        _complaintResponse.value = Resource.Loading
+        _complaintResponse.value = rezRepository.complaints(user, token)
     }
 }

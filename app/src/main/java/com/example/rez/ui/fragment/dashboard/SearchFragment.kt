@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,7 @@ import com.example.rez.model.dashboard.SuggestedVendor
 import com.example.rez.model.dashboard.Table
 import com.example.rez.ui.RezViewModel
 import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import com.viewpagerindicator.CirclePageIndicator
 import javax.inject.Inject
@@ -68,6 +70,16 @@ class SearchFragment : Fragment(), OnTableClickListener {
         searchData()
         sharedPreferences.edit().putInt("vendorid", args!!.id).apply()
 
+        binding.likeIv.setOnClickListener {
+            registerObservers()
+            rezViewModel.addOrRemoveFavorites(args?.id.toString(), "Bearer ${sharedPreferences.getString("token", "token")}")
+        }
+
+        binding.unLikeIv.setOnClickListener {
+            registerObservers()
+            rezViewModel.addOrRemoveFavorites(args?.id.toString(), "Bearer ${sharedPreferences.getString("token", "token")}")
+        }
+
         // setRecyclerview()
         tableDetailsViewPager = binding.viewPager
         sliderDot = binding.indicator
@@ -109,13 +121,7 @@ class SearchFragment : Fragment(), OnTableClickListener {
         }else {
             binding.ratingBar.rating = args?.ratings!!.toFloat()
         }
-//        if (args?.liked_by_user == true){
-//            binding.likeIv.visible(true)
-//            binding.unLikeIv.visible(false)
-//        }else{
-//            binding.likeIv.visible(false)
-//            binding.unLikeIv.visible(true)
-//        }
+
     }
 
 
@@ -127,10 +133,23 @@ class SearchFragment : Fragment(), OnTableClickListener {
                 when(it) {
                     is Resource.Success -> {
                         if (it.value.status){
-                            val message = it.value.message
-                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                            tableList = it.value.data.tables
                             tableDetailsDataList = it.value.data.images
+                            if (tableDetailsDataList.isEmpty()){
+                                tableDetailsDataList = listOf(Image("", 1, "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
+                            }
+                            tableList = it.value.data.tables
+                            if (tableList.isEmpty()){
+                                binding.tableListRecycler.visibility = View.GONE
+                                binding.empty.visibility = View.VISIBLE
+                            }
+                            val favorite = it.value.data.favourite
+                            if (favorite){
+                                binding.likeIv.visible(true)
+                                binding.unLikeIv.visible(false)
+                            }else{
+                                binding.likeIv.visible(false)
+                                binding.unLikeIv.visible(true)
+                            }
                             tableAdapter = TableAdapter(tableList, this)
                             binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                             binding.tableListRecycler.adapter = tableAdapter
@@ -148,6 +167,33 @@ class SearchFragment : Fragment(), OnTableClickListener {
         )
     }
 
+    private fun registerObservers() {
+        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
+            binding.progressBar.visible(it is Resource.Loading)
+            when(it) {
+                is Resource.Success -> {
+                    if (binding.unLikeIv.isVisible) {
+                        showToast("Added Successfully to favorites")
+                        //rezViewModel.favoriteResponse = 1
+                        binding.likeIv.visibility = View.VISIBLE
+                        binding.unLikeIv.visibility = View.INVISIBLE
+                        removeObserver()
+                    } else if(!binding.unLikeIv.isVisible){
+                        showToast("Removed Successfully from favorites")
+                        //rezViewModel.favoriteResponse = 0
+                        binding.likeIv.visibility = View.INVISIBLE
+                        binding.unLikeIv.visibility = View.VISIBLE
+                        removeObserver()
+                    }
+                }
+                is Resource.Failure -> handleApiError(it)
+            }
+        })
+    }
+
+    private fun removeObserver() {
+        rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)
+    }
 
     override fun onTableItemClick(tableModel: Table) {
         val action = SearchFragmentDirections.actionSearchFragmentToTableDetails(tableModel)

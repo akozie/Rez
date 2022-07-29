@@ -2,13 +2,14 @@ package com.example.rez.repository
 
 
 import android.net.Uri
-import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.example.rez.api.AuthApi
 import com.example.rez.api.RemoteDataSource.Companion.api
 import com.example.rez.api.RemoteDirectionDataSource.Companion.googleapi
+import com.example.rez.model.authentication.genresponse.RegResponse
 import com.example.rez.model.authentication.request.*
 import com.example.rez.model.dashboard.BookTableRequest
+import com.example.rez.model.dashboard.ComplaintRequest
 import com.example.rez.model.paging.BookingPagingSource
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -18,6 +19,14 @@ class AuthRepository: BaseRepository() {
 
     suspend fun getDirection(mode: String, origin: String, destination: String, key: String) = safeApiCall {
         googleapi.getDirect(mode, origin, destination, key)
+    }
+
+//    suspend fun getVendorStates() = safeApiCall{
+//        api.getVendorStates()
+//    }
+
+    suspend fun getVendorCategories() = safeApiCall{
+        api.getVendorCategories()
     }
 
     suspend fun addVendorRating(token: String, rating: RateVendorRequest, vendorInt: Int) = safeApiCall{
@@ -82,9 +91,9 @@ class AuthRepository: BaseRepository() {
         api.getHome(lat, long, token)
     }
 
-//    suspend fun getFavorites(token: String) = safeApiCall{
-//        api.getFavorites(token)
-//    }
+    suspend fun getFavorites(token: String) = safeApiCall{
+        api.getFavorites(token)
+    }
 
     suspend fun addOrRemoveFavorites(id: String, token: String) = safeApiCall{
         api.addOrRemoveFavorites(id, token)
@@ -128,5 +137,9 @@ class AuthRepository: BaseRepository() {
 
     suspend fun changePassword(user: ChangePasswordRequest, token: String) = safeApiCall{
         api.changePassword(user, token)
+    }
+
+    suspend fun  complaints(user: ComplaintRequest, token: String) = safeApiCall {
+        api.complaints(user, token)
     }
 }

@@ -122,8 +122,10 @@ class SuggestFragment : Fragment(), OnTableClickListener {
         }else {
             binding.ratingBar.rating = args?.average_rating!!
         }
-            if (args?.total_tables == 1){
-                binding.tableQtyTv.text = args?.total_tables.toString() + " table"
+        if (args?.total_tables.toString().isEmpty()){
+            binding.tableQtyTv.text = "0 table"
+        }else  if (args?.total_tables == 1){
+                binding.tableQtyTv.text = "1 table"
             }else{
                 binding.tableQtyTv.text = args?.total_tables.toString() + " tables"
             }
@@ -145,10 +147,15 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                 when(it) {
                     is Resource.Success -> {
                         if (it.value.status){
-                            val message = it.value.message
-                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                             tableList = it.value.data.tables
+                            if (tableList.isEmpty()){
+                                binding.tableListRecycler.visibility = View.GONE
+                                binding.empty.visibility = View.VISIBLE
+                            }
                             tableDetailsDataList = it.value.data.images
+                            if (tableDetailsDataList.isEmpty()){
+                                tableDetailsDataList = listOf(Image("", 1, "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
+                            }
                             tableAdapter = TableAdapter(tableList, this)
                             binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                             binding.tableListRecycler.adapter = tableAdapter

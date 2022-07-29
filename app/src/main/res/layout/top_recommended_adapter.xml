@@ -8,8 +8,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
-        android:layout_width="180dp"
-        android:layout_height="90dp"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
         android:layout_marginEnd="@dimen/margin_10dp"
         android:layout_marginStart="@dimen/margin_10dp"
         android:layout_marginTop="@dimen/margin_10dp"
@@ -24,13 +24,13 @@
                 android:id="@+id/hotelImageIv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY" />
+                android:scaleType="center" />
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:src="@drawable/book_mark3" />
 
                 <LinearLayout
@@ -52,7 +52,7 @@
                         android:layout_gravity="center"
                         android:gravity="start"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="11sp"
                         android:textColor="@color/white"/>
 
                     <LinearLayout
@@ -73,16 +73,14 @@
                             android:progressBackgroundTint="@color/white"
                             />
 
-                        <!-- style="?android:ratingBarStyleSmall"-->
-
                         <TextView
                             android:visibility="gone"
                             android:id="@+id/totalReviewTv"
                             android:layout_weight="1"
-                            android:layout_marginLeft="1dp"
+                            android:layout_marginStart="1dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="9dp"
+                            android:textSize="11sp"
                             android:textColor="@color/blue"
                             android:text=""
                             android:gravity="center"
@@ -91,17 +89,17 @@
                         <TextView
                             android:visibility="gone"
                             android:layout_weight="1"
-                            android:layout_marginLeft="1dp"
+                            android:layout_marginStart="1dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="9dp"
+                            android:textSize="11sp"
                             android:textColor="@color/white"
                             android:text="Reviews"
                             android:gravity="start"
                             android:layout_gravity="center_vertical"/>
 
                     </LinearLayout>
-                    
+
                 </LinearLayout>
 
 

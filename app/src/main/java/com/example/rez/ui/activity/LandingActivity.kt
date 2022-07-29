@@ -133,9 +133,9 @@ class LandingActivity : AppCompatActivity() {
     // create a function outside the onCreate to bind the variables to the actual views
     private fun setOnBoardingViewPagerAdapter() {
         onBoardingDataList = ArrayList()
-        onBoardingDataList.add(OnBoardingData("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tortor vitae, amet etiam mi sit massa proin.", R.drawable.sp1))
-        onBoardingDataList.add(OnBoardingData("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tortor vitae, amet etiam mi sit massa proin.",  R.drawable.sp2))
-        onBoardingDataList.add(OnBoardingData("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tortor vitae, amet etiam mi sit massa proin.",  R.drawable.sp3))
+        onBoardingDataList.add(OnBoardingData("Welcome to Rez! ", R.drawable.onboarding_1))
+        onBoardingDataList.add(OnBoardingData("Enjoy Fine Dining, lounging and VIP experience.",  R.drawable.onboarding_2))
+        onBoardingDataList.add(OnBoardingData("Discover the Rez Difference!",  R.drawable.onboarding_3))
 
         onBoardingViewPagerAdapter = OnBoardingViewPagerAdapter(this, onBoardingDataList)
         onBoardingViewPager!!.adapter = onBoardingViewPagerAdapter

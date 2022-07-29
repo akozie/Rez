@@ -43,11 +43,9 @@ import java.util.ArrayList
 
 class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
 
-  //  private lateinit var appBarConfiguration: AppBarConfiguration
     private var _binding: ActivityGoogleBinding? = null
     private val binding get() = _binding!!
     private var mGoogleMap: GoogleMap? = null
-  //  private lateinit var appPermissions: AppPermissions
     private var isLocationPermissionOk = false
     private var isTrafficEnable = false
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<RelativeLayout>
@@ -67,12 +65,6 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
         _binding = ActivityGoogleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        setSupportActionBar(binding.toolbar)
-//
-//        val navController = findNavController(R.id.nav_host_fragment_content_google)
-//        appBarConfiguration = AppBarConfiguration(navController.graph)
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-
         val rezRepository = AuthRepository()
         val viewModelProviderFactory = RezViewModelProviderFactory(application, rezRepository)
         locationViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RezViewModel::class.java)
@@ -85,7 +77,6 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-       // appPermissions = AppPermissions()
 
         bottomSheetLayoutBinding = binding.bottomSheet
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayoutBinding.root)
@@ -253,8 +244,8 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
                         }
 
                         bottomSheetLayoutBinding.apply {
-                            txtSheetTime.text = legModel.duration?.text
-                            txtSheetDistance.text = legModel.distance?.text
+                            txtSheetTime.text = legModel.duration.text
+                            txtSheetDistance.text = legModel.distance.text
                         }
 
                         adapterStep.setDirectionStepModels(legModel.steps!!)
@@ -287,7 +278,7 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         options.pattern(pattern)
                         for (stepModel in legModel.steps) {
-                            val decodedList = decode(stepModel.polyline?.points!!)
+                            val decodedList = decode(stepModel.polyline.points)
                             for (latLng in decodedList) {
                                 stepList.add(
                                     LatLng(
@@ -301,13 +292,13 @@ class GoogleActivity : AppCompatActivity(), OnMapReadyCallback {
                         options.addAll(stepList)
                         mGoogleMap?.addPolyline(options)
                         val startLocation = LatLng(
-                            legModel.start_location?.lat!!,
-                            legModel.start_location.lng!!
+                            legModel.start_location.lat,
+                            legModel.start_location.lng
                         )
 
                         val endLocation = LatLng(
-                            legModel.end_location?.lat!!,
-                            legModel.end_location.lng!!
+                            legModel.end_location.lat,
+                            legModel.end_location.lng
                         )
 
                         mGoogleMap?.addMarker(

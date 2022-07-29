@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,7 @@ import com.example.rez.model.dashboard.Table
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.fragment.ProfileManagementDialogFragments
 import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import com.viewpagerindicator.CirclePageIndicator
 import javax.inject.Inject
@@ -72,8 +74,18 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
         setNearData()
         sharedPreferences.edit().putInt("vendorid", args!!.id).apply()
 
+        binding.likeIv.setOnClickListener {
+            registerObservers()
+            rezViewModel.addOrRemoveFavorites(args?.id.toString(), "Bearer ${sharedPreferences.getString("token", "token")}")
+        }
+
+        binding.unLikeIv.setOnClickListener {
+            registerObservers()
+            rezViewModel.addOrRemoveFavorites(args?.id.toString(), "Bearer ${sharedPreferences.getString("token", "token")}")
+        }
+
         // setRecyclerview()
-        accountFilterDialog()
+       // accountFilterDialog()
         tableDetailsViewPager = binding.viewPager
         sliderDot = binding.indicator
 
@@ -109,6 +121,8 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
     private fun setNearData() {
         binding.hotelNameTv.text = args?.company_name
         binding.ratingBar.rating = args?.ratings!!
+
+
     }
 
     override fun onTableItemClick(tableModel: Table) {
@@ -124,10 +138,36 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
                 when(it) {
                     is Resource.Success -> {
                         if (it.value.status){
-                            val message = it.value.message
-                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                            tableList = it.value.data.tables
                             tableDetailsDataList = it.value.data.images
+                            if (tableDetailsDataList.isEmpty()){
+                                tableDetailsDataList = listOf(Image("", 1, "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
+                            }
+                            binding.categoryTv.text = it.value.data.category
+                            val result = it.value.data
+                            if (result?.ratings?.toInt() == 0){
+                                binding.ratingBar.rating = "3".toFloat()
+                            }else {
+                                binding.ratingBar.rating = result.ratings
+                            }
+                            if (result.tables.isEmpty()){
+                                binding.tableQtyTv.text =  " 0 table"
+                            }else if (result.tables.size == 1){
+                                binding.tableQtyTv.text =  " 1 table"
+                            } else{
+                                binding.tableQtyTv.text = result.tables.size.toString() + " tables"
+                            }
+                            if (result.favourite){
+                                binding.likeIv.visible(true)
+                                binding.unLikeIv.visible(false)
+                            }else{
+                                binding.likeIv.visible(false)
+                                binding.unLikeIv.visible(true)
+                            }
+                            tableList = it.value.data.tables
+                            if (tableList.isEmpty()){
+                                binding.tableListRecycler.visibility = View.GONE
+                                binding.empty.visibility = View.VISIBLE
+                            }
                             tableAdapter = TableAdapter(tableList, this)
                             binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                             binding.tableListRecycler.adapter = tableAdapter
@@ -152,40 +192,33 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
         binding.tableListRecycler.adapter = tableAdapter
     }
 
-    private fun accountFilterDialog() {
-        // when first name value is clicked
-        childFragmentManager.setFragmentResultListener(
-            TopFragment.FILTER_NAME_REQUEST_KEY,
-            requireActivity()
-        ){ key, bundle ->
-            // collect input values from dialog fragment and update the firstname text of user
-            firstName = bundle.getString(TopFragment.ACCOUNT_FILTER_BUNDLE_KEY)
-            binding.saveText.text = firstName
-        }
-        childFragmentManager.setFragmentResultListener(
-            TopFragment.FILTER_SECOND_NAME_REQUEST_KEY,
-            requireActivity()
-        ) { key, bundle ->
-            // collect input values from dialog fragment and update the firstname text of user
-            val secondName = bundle.getString(TopFragment.ACCOUNT_SECOND_FILTER_BUNDLE_KEY)
-            binding.priceText.text = secondName
-            filter(firstName!!, secondName!!)
-            //  filter(secondName!!, firstName!!)
-        }
 
-        // when first name value is clicked
-        binding.filterImageIv.setOnClickListener {
-            val currentFilterName = binding.saveText.toString()
-            val currentFilterSecondName = binding.priceText.toString()
-            val bundle = bundleOf(TopFragment.CURRENT_FILTER_NAME_BUNDLE_KEY to currentFilterName)
-            val bundleSecond = bundleOf(TopFragment.CURRENT_SECOND_FILTER_NAME_BUNDLE_KEY to currentFilterSecondName)
-            ProfileManagementDialogFragments.createProfileDialogFragment(
-                R.layout.account_filter_dialog_fragment,
-                bundle, bundleSecond
-            ).show(
-                childFragmentManager, TopFragment::class.java.simpleName
-            )
-        }
+    private fun registerObservers() {
+        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
+            binding.progressBar.visible(it is Resource.Loading)
+            when(it) {
+                is Resource.Success -> {
+                    if (binding.unLikeIv.isVisible) {
+                        showToast("Added Successfully to favorites")
+                        //rezViewModel.favoriteResponse = 1
+                        binding.likeIv.visibility = View.VISIBLE
+                        binding.unLikeIv.visibility = View.INVISIBLE
+                        removeObserver()
+                    } else if(!binding.unLikeIv.isVisible){
+                        showToast("Removed Successfully from favorites")
+                        //rezViewModel.favoriteResponse = 0
+                        binding.likeIv.visibility = View.INVISIBLE
+                        binding.unLikeIv.visibility = View.VISIBLE
+                        removeObserver()
+                    }
+                }
+                is Resource.Failure -> handleApiError(it)
+            }
+        })
+    }
+
+    private fun removeObserver() {
+        rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)
     }
 
     override fun onDestroy() {

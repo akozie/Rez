@@ -13,6 +13,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toTopOf="@id/on_boarding_activity_tab_layout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/on_boarding_activity_skip_text_view" />
 
@@ -22,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20dp"
         android:layout_marginEnd="@dimen/margin_20dp"
-        android:fontFamily="@font/poppins_light"
+        android:fontFamily="@font/poppins_medium"
         android:gravity="end"
         android:text="@string/skip"
         android:textSize="@dimen/text_size_16sp"

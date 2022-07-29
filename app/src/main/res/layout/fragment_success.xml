@@ -32,36 +32,37 @@ android:layout_height="fill_parent">
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:text="Awesome..!"
+                android:fontFamily="@font/poppins_light"
                 android:textColor="@color/black"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="Successfully Booked"
+                android:text="Successful"
+                android:fontFamily="@font/poppins_light"
                 android:textColor="@color/grey1"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="You can Check Booking status in"
-                android:textColor="@color/black"
-                android:textSize="15dp" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Done"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="15dp" />-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:gravity="center"
-                android:text="Booking section"
-                android:textColor="@color/black"
-                android:textSize="15dp" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="1dp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Booking section"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="15dp" />-->
 
             <TextView
                 android:id="@+id/okTv"
@@ -72,9 +73,9 @@ android:layout_height="fill_parent">
                 android:background="@drawable/rectangle_box_button_pinc"
                 android:gravity="center"
                 android:text="Ok"
+                android:fontFamily="@font/poppins_light"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_15sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_size_15sp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -11,9 +11,10 @@
         <ImageView
             android:id="@+id/find_event_fragment_image"
             android:layout_width="0dp"
-            android:layout_height="400dp"
-            android:layout_marginTop="@dimen/margin_11dp"
-            android:src="@drawable/sp1"
+            android:layout_height="500dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:scaleType="center"
+            android:src="@drawable/onboarding_1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -22,14 +23,13 @@
         <TextView
             android:id="@+id/find_event_fragment_dummy_text_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
             android:text="one"
             android:textSize="@dimen/text_size_16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/find_event_fragment_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/find_event_fragment_image" />

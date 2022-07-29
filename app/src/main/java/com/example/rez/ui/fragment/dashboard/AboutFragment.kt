@@ -3,6 +3,7 @@ package com.example.rez.ui.fragment.dashboard
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,13 +13,13 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.rez.R
 import com.example.rez.RezApp
 import com.example.rez.api.Resource
-import com.example.rez.databinding.ActivityDashboardBinding
 import com.example.rez.databinding.FragmentAboutBinding
 import com.example.rez.model.dashboard.BookTableRequest
 import com.example.rez.model.dashboard.Table
@@ -30,9 +31,15 @@ import com.example.rez.util.visible
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
+import java.util.Locale
+
+
+
 
 
 class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -41,6 +48,7 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
     private val binding get() = _binding!!
     private val rezViewModel: RezViewModel by activityViewModels()
     private  var tableID: Int = 0
+    private lateinit var msg:String
 
     var day = 0
     var month = 0
@@ -57,7 +65,6 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
     var savedSeconds = 0
 
     private lateinit var date : String
-    private lateinit var secondDate : String
     private lateinit var time : String
 
     @Inject
@@ -79,14 +86,14 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.proceedTv.setOnClickListener {
-//            val action = TableDetailsDirections.actionTableDetailsToProceedToBooking()
-//            findNavController().navigate(action)
+        binding.proceedTv.button.text = "Proceed to booking"
+
+        setUpAbout()
+
+        binding.proceedTv.submit.setOnClickListener {
             pickDate()
         }
-       // binding.aboutTextView.text = obj[1].description
-      //  binding.aboutTextView.text = sharedPreferences.getString("tableid", "tableid")
-        setUpAbout()
+
     }
 
     private fun setUpAbout(){
@@ -96,14 +103,18 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
         rezViewModel.getProfileTableResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             when(it) {
                 is Resource.Success -> {
+                    binding.proceedTv.button.text = "Proceed to booking"
                     if (it.value.status){
                         binding.aboutTextView.text = it.value.data.description
                     } else {
-                        it.value.message?.let { it1 ->
+                        it.value.message.let { it1 ->
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> {
+                    binding.proceedTv.button.text = "Proceed to booking"
+                    handleApiError(it)
+                }
             }
 
         })
@@ -112,11 +123,16 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
 
     private fun pickDate() {
         getDateTimeCalender()
-        DatePickerDialog(requireContext(), this, year, month, day).show()
+
+        //Set yesterday time milliseconds as date pickers minimum date
+        val datePickerDialog = DatePickerDialog(requireContext(), this, year, month, day)
+        datePickerDialog.datePicker.minDate = System.currentTimeMillis()
+        datePickerDialog.show()
     }
 
     private fun getDateTimeCalender() {
         val cal : Calendar = Calendar.getInstance()
+       // cal.add(Calendar.DATE, -1)
         day = cal.get(Calendar.DAY_OF_MONTH)
         month = cal.get(Calendar.MONDAY)
         year = cal.get(Calendar.YEAR)
@@ -126,36 +142,59 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
     }
 
 
-
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         savedDay = p3
         savedMonth = p2 + 1
         savedYear = p1
         if (savedMonth < 10){
-            date = "$savedYear-0$savedMonth-$savedDay"
+            if (savedDay < 10){
+                date = "$savedYear-0$savedMonth-0$savedDay"
+            } else{
+                date = "$savedYear-0$savedMonth-$savedDay"
+            }
         } else {
-            date = "$savedYear-$savedMonth-$savedDay"
+            if (savedDay < 10){
+                date = "$savedYear-$savedMonth-0$savedDay"
+            } else{
+                date = "$savedYear-$savedMonth-$savedDay"
+            }
         }
         getDateTimeCalender()
-        TimePickerDialog(requireContext(), this, hour, minutes, false).show()
+        TimePickerDialog(requireContext(),this, hour, minutes, false).show()
     }
+
 
     override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
         savedHour = p1
         savedMinutes = p2
-   //     val formatter = SimpleDateFormat("HH:mm:ss")
-        if (savedHour <= 12){
+        if (savedHour < 10){
             if (savedMinutes < 10){
                 time = "0$savedHour:0$savedMinutes"
             }else{
                 time = "0$savedHour:$savedMinutes"
             }
         } else {
-            time = "$savedHour:$savedMinutes"
+            if (savedMinutes < 10){
+                time = "$savedHour:0$savedMinutes"
+            }else{
+                time = "$savedHour:$savedMinutes"
+            }
         }
 
-        bookTable()
 
+        val c = Calendar.getInstance().time
+        val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        val formattedDate = df.format(c)
+
+        // 2021-04-10 10:28:21.052
+        if (time <= formattedDate.substring(11, 16)) {
+            val msg = "Time must be a date after $time"
+            showToast(msg)
+        } else{
+            binding.proceedTv.progressBar.visibility = View.VISIBLE
+            //removeObservers()
+            bookTable()
+        }
     }
 
     private fun bookTable() {
@@ -165,12 +204,11 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
             time = time
         )
         rezViewModel.bookTable("Bearer ${sharedPreferences.getString("token", "token")}", bTable)
-        rezViewModel.bookTableResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            // binding.progressBar.visible(it is Resource.Loading)
+        rezViewModel.bookTableResponse.observe(viewLifecycleOwner){
+             binding.proceedTv.progressBar.visible(it is Resource.Loading)
+             binding.proceedTv.button.text = "Please wait..."
             when(it) {
                 is Resource.Success -> {
-                    if (it.value.status){
-                        lifecycleScope.launch {
                             val ref = it.value.data.reference
                             val amount = it.value.data.amount
                             sharedPreferences.edit().putString("ref", ref).apply()
@@ -178,20 +216,21 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
                             showToast("Proceed to make payment")
                             val action = TableDetailsDirections.actionTableDetailsToProceedToPayment(date, time)
                             findNavController().navigate(action)
-                        }
-                    } else {
-                        val msg = it.value.message
-                        showToast(msg)
-                    }
+                            //removeObservers()
                 }
                 is Resource.Failure -> {
-                    val msg = "Date must be a date after $date"
-                    showToast(msg)
-                    handleApiError(it) { bookTable() }
+                        val message = "No available slots for this table today"
+                        showToast(message)
+                    handleApiError(it) { bookTable()
+                    }
+                    //removeObservers()
                 }
             }
-        })
-
+        }
+        //removeObservers()
+    }
+    private fun removeObservers(){
+        rezViewModel.bookTableResponse.removeObservers(viewLifecycleOwner)
     }
     override fun onDestroy() {
         super.onDestroy()

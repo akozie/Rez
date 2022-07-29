@@ -25,8 +25,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:cardCornerRadius="5dp"
-            android:layout_centerVertical="true">
+            app:cardCornerRadius="5dp">
         <ImageView
             android:id="@+id/userImageIv"
             android:layout_width="60dp"
@@ -38,20 +37,19 @@
 
         <LinearLayout
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/userNameTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mobile_Number"
+                    android:text=" "
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="@color/black"
-                    android:textSize="15dp"
-                    android:textStyle="bold"/>
+                    android:textSize="15sp"/>
 
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -63,16 +61,15 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/calend"
-                    android:scaleType="fitXY"
-                    android:layout_centerVertical="true"/>
+                    android:scaleType="fitXY" />
 
                 <TextView
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:id="@+id/dateTv"
                     android:layout_weight="1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     android:textColor="#000"
                     android:text=""
                     android:gravity="start"
@@ -87,14 +84,14 @@
 
         <TextView
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:id="@+id/reviewMessageTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=""
             android:fontFamily="@font/poppins_medium"
             android:maxLines="3"
-            android:textSize="13dp"/>
+            android:textSize="13sp"/>
 
         </LinearLayout>
 

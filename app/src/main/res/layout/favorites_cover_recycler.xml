@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_10dp"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginEnd="@dimen/margin_10dp"
+        android:layout_marginStart="@dimen/margin_10dp"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp">
+
+                <ImageView
+                    android:id="@+id/fragment_cover_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+
+       </RelativeLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/favorites_cover_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Abuja"
+                    android:fontFamily="@font/poppins_light"
+                    android:maxLines="2"
+                    android:layout_weight="9.5"
+                    android:layout_gravity="start"
+                    android:gravity="start"
+                    android:padding="@dimen/padding_2dp"
+                    android:textSize="@dimen/text_size_17sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/favorites_cover_state_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:maxLines="2"
+                    android:layout_weight=".5"
+                    android:layout_gravity="end"
+                    android:gravity="start"
+                    android:textStyle="italic"
+                    android:drawablePadding="@dimen/padding_10dp"
+                    android:padding="@dimen/padding_2dp"
+                    android:textSize="@dimen/text_size_17sp"
+                    app:drawableStartCompat="@drawable/ic_favorite_24" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_light"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

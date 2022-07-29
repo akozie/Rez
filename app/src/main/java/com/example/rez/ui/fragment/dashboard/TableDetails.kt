@@ -11,22 +11,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.rez.R
 import com.example.rez.RezApp
 import com.example.rez.adapter.TableDetailsAdapter
 import com.example.rez.adapter.TableDetailsFragmentViewPagerAdapter
-import com.example.rez.adapter.TableDetailsViewPagerAdapter
-import com.example.rez.adapter.TopRecommendedAdapter
 import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentTableDetailsBinding
-import com.example.rez.model.dashboard.*
+import com.example.rez.model.dashboard.Table
 import com.example.rez.ui.GlideApp
 import com.example.rez.ui.RezViewModel
 import com.example.rez.util.handleApiError
@@ -77,8 +70,8 @@ class TableDetails : Fragment() {
 
     // get vendor profile table
     private fun setUpTable(){
-       val vendoID = sharedPreferences.getInt("vendorid", 0)
-        rezViewModel.getVendorProfileTable(vendoID, argsId, "Bearer ${sharedPreferences.getString("token", "token")}")
+       val vendorID = sharedPreferences.getInt("vendorid", 0)
+        rezViewModel.getVendorProfileTable(vendorID, argsId, "Bearer ${sharedPreferences.getString("token", "token")}")
         rezViewModel.getProfileTableResponse.observe(viewLifecycleOwner, Observer {
             binding.progressBar.visible(it is Resource.Loading)
             when(it) {
@@ -90,7 +83,7 @@ class TableDetails : Fragment() {
                         if (tableList.image != null){
                             GlideApp.with(requireContext()).load(tableList.image).into(binding.hotelImageIv)
                         } else{
-                            GlideApp.with(requireContext()).load(R.drawable.restaurant).into(binding.hotelImageIv)
+                            GlideApp.with(requireContext()).load(R.drawable.table_image).into(binding.hotelImageIv)
                         }
                         binding.tabNameTv.text = tableList.name
                         sharedPreferences.edit().putString("tablename", tableList.name).apply()

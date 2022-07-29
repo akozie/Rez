@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.rez.R
 import com.example.rez.databinding.NearRestaurantAdapterBinding
 import com.example.rez.model.dashboard.NearbyVendor
 import com.example.rez.repository.AuthRepository
@@ -39,7 +40,11 @@ class NearRestaurantAdapter(private var nearRestaurantList: List<NearbyVendor>, 
         holder.itemView.apply {
             with(holder){
                 with(nearRestaurantList[position]){
-                    Glide.with(context).load(avatar).into(hotelImage)
+                    if (avatar == null){
+                        Glide.with(context).load(R.drawable.table_image).into(hotelImage)
+                    } else {
+                        Glide.with(context).load(avatar).into(hotelImage)
+                    }
                     hotelName.text = company_name
                     if (average_rating.toInt() == 0){
                         ratingTv.rating = "2".toFloat()

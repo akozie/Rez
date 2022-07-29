@@ -41,7 +41,7 @@ class TableAdapter(private var tableList: List<Table>, var tableClickListener: O
                         if (image != null){
                             GlideApp.with(context).load(image).into(tableCategoryImage)
                         }else if (image == null){
-                            GlideApp.with(context).load(R.drawable.restaurant).into(tableCategoryImage)
+                            GlideApp.with(context).load(R.drawable.table_img).into(tableCategoryImage)
                         }
                         capacity.text = max_people.toString()
                         pricee.text = price

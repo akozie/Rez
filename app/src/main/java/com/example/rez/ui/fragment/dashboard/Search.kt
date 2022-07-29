@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rez.RezApp
 import com.example.rez.databinding.FragmentSearchBinding
 import com.example.rez.model.authentication.response.ResultX
@@ -20,34 +18,18 @@ import com.example.rez.ui.RezViewModel
 import com.example.rez.util.visible
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import android.os.Handler
-import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import com.example.rez.adapter.BookingPagingStateAdapter
-import com.example.rez.adapter.SearchPagingAdapter
-import com.example.rez.ui.fragment.ProfileManagementDialogFragments
+import com.example.rez.adapter.paging.BookingPagingStateAdapter
+import com.example.rez.adapter.paging.SearchPagingAdapter
 import com.example.rez.util.showToast
 import kotlinx.coroutines.flow.collectLatest
 import android.view.KeyEvent
-
-import android.widget.TextView
-
-import android.widget.TextView.OnEditorActionListener
-import android.widget.Toast
-
-import android.R
-
-import android.widget.EditText
-
-
-
-
-
-
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.rez.model.dashboard.RecommendedVendor
+import com.example.rez.model.dashboard.SearchModel
 
 
 class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
@@ -57,9 +39,15 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
     private val rezViewModel: RezViewModel by activityViewModels()
     private lateinit var searchAdapter: SearchPagingAdapter
     private lateinit var loaderStateAdapter: BookingPagingStateAdapter
-    private var noOfPersons: String? = null
     private var priceTo: String? = null
     private val PRICEFROM: Int = 0
+    private var args: SearchModel? = null
+    private var stateID: Int = 0
+    private var restaurantID: Int = 0
+    private lateinit var noOfPersons: String
+    private lateinit var searchText: String
+    private var isLoaded = false
+
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -82,45 +70,43 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             isEnabled = false
+
             // enable or disable the backpress
         }
-
+        args = arguments?.getParcelable("SEARCHMODEL")
+        stateID = 1
+        restaurantID = args?.typeID!!
+        noOfPersons = "5"
         setRv()
-        //accountFilterDialog()
+
+        searchText = binding.searchRestaurantsTextView.text.toString().trim()
+
+            if (searchText.isNotEmpty()){
+                loadData()
+            }else{
+                searchText = args!!.searchText.toString()
+                loadData()
+                searchText = binding.searchRestaurantsTextView.text.toString().trim()
+            }
 
         binding.btnRetry.setOnClickListener {
             searchAdapter.retry()
         }
 
 
+//        binding.search.setOnClickListener {
+//            val searchText = binding.restaurantText.text.toString().trim()
+//            if (searchText.isNullOrEmpty()){
+//                showToast("You must type in a search text")
+//            }else if (searchText.length <= 2){
+//                showToast("Search text too short")
+//            }else{
+//                loadData()
+//            }
+//        }
 
-//        binding.searchRestaurants.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//
-//            }
-//
-//            override fun afterTextChanged(editable: Editable?) {
-//
-//                    val handler =  Handler()
-//                    handler.postDelayed( Runnable() {
-//                        run() {
-//                            //Write whatever to want to do after delay specified (3 sec)
-//                            if (noOfPersons.isNullOrEmpty() || priceTo.isNullOrEmpty()){
-//                                loadData(editable.toString(), 0, PRICEFROM, 0,"Bearer ${sharedPreferences.getString("token", "token")}")
-//                            } else{
-//                                loadData(editable.toString(), noOfPersons!!.toInt(), PRICEFROM, priceTo!!.toInt(),"Bearer ${sharedPreferences.getString("token", "token")}")
-//                            }
-//                            Log.d("Handler", "Running Handler");
-//                        }
-//                    }, 3000)
-//            }
-//        })
 
-            binding.searchRestaurants.addTextChangedListener(object : TextWatcher {
+            binding.searchRestaurantsTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -130,17 +116,14 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
             }
 
             override fun afterTextChanged(editable: Editable?) {
-                binding.searchRestaurants.setOnKeyListener(object : View.OnKeyListener {
+                binding.searchRestaurantsTextView.setOnKeyListener(object : View.OnKeyListener {
                     override fun onKey(p0: View?, p1: Int, p2: KeyEvent?): Boolean {
                         if(p2?.action == KeyEvent.ACTION_DOWN && p1 == KeyEvent.KEYCODE_ENTER){
-                            //do stuff
-                                    //Write whatever to want to do after delay specified (3 sec)
-                                    if (noOfPersons.isNullOrEmpty() || priceTo.isNullOrEmpty()){
-                                        loadData(editable.toString(), 0, PRICEFROM, 0,"Bearer ${sharedPreferences.getString("token", "token")}")
-                                    } else{
-                                        loadData(editable.toString(), noOfPersons!!.toInt(), PRICEFROM, priceTo!!.toInt(),"Bearer ${sharedPreferences.getString("token", "token")}")
-                                    }
-                                    Log.d("Handler", "Running Handler")
+                                if (editable?.length!! <= 2){
+                                    showToast("Text length must be greater than 2")
+                                } else{
+                                    loadData()
+                                }
                             return true;
                         }
                         return false;
@@ -157,7 +140,7 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
 
     private fun setRv() {
         searchAdapter = SearchPagingAdapter(this)
-        binding.searchRecyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.searchRecyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.searchRecyclerview.adapter = searchAdapter
         loaderStateAdapter = BookingPagingStateAdapter { searchAdapter.retry() }
         binding.searchRecyclerview.adapter = searchAdapter.withLoadStateFooter(
@@ -184,16 +167,14 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
         }
     }
 
-    private fun loadData(search: String, noOfPersons: Int, priceFrom: Int, priceTo: Int, token: String) {
+    private fun loadData() {
         lifecycleScope.launch {
-            if (search.isNullOrEmpty()){
-                // showToast("Enter name of restaurant")
-            } else{
-                rezViewModel.search(search, noOfPersons, priceFrom, priceTo, token).collectLatest {
+                rezViewModel.search(searchText, null, null, null, null , null,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
                     binding.progressBar.visible(false)
                     searchAdapter.submitData(viewLifecycleOwner.lifecycle, it)
-                }
-            }
+                    binding.searchLayout.visibility = View.GONE
+                    binding.appBarLayout.visibility = View.VISIBLE
+           }
         }
     }
 
@@ -201,5 +182,4 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
         super.onDestroy()
         _binding = null
     }
-
 }

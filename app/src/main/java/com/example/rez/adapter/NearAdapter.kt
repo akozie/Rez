@@ -23,7 +23,7 @@ class NearAdapter(private var nearByList: List<NearbyVendor>, val onNearClickLis
         val categoryTv = binding.categoryTv
         val hotelNameTv = binding.hotelNameTv
 //        val addressTv = binding.addressTv
-        val ratingTv = binding.ratingBar
+      //  val ratingTv = binding.ratingBar
 //        val distanceTv = binding.distanceTv
         // val cardView = binding.cardView
 
@@ -44,7 +44,7 @@ class NearAdapter(private var nearByList: List<NearbyVendor>, val onNearClickLis
                         Glide.with(context).load(R.drawable.restaurant).into(hotelImageIv)
                     }
                     hotelNameTv.text = company_name
-                    ratingTv.rating = average_rating
+                    //ratingTv.rating = average_rating
                     categoryTv.text = category_name
                     if (total_tables == 1){
                         tableQtyTv.text = total_tables.toString() + " table"

@@ -5,11 +5,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Booking(
-    var booked_for: String,
-    var confirmed_payment: Boolean,
+    val booked_for: String,
+    val confirmed_payment: Boolean,
     val created_at: String,
-    var id: Int,
-    var status: String,
-    var table: Table,
+    val id: Int,
+    val status: String,
+    val table: Table,
     val vendor: Vendor
 ) : Parcelable

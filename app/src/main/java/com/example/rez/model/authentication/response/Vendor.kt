@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Vendor(
-    var id: Int,
-    var name: String
+    var id: Int?,
+    var name: String?
 ) : Parcelable

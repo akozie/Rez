@@ -36,9 +36,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FacebookAuthCredential
-import com.google.firebase.auth.FacebookAuthProvider
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -84,6 +81,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         rezViewModel = (activity as MainActivity).rezViewModel
 
+        binding.loginTv.button.text = "LOGIN"
+
         googleSignInButton = binding.googleTv
         facebookSignInButton  = binding.facebookTv
         googleSignInClient()
@@ -107,7 +106,7 @@ class LoginFragment : Fragment() {
             }
         })
 
-        binding.register.setOnClickListener {
+        binding.signupLayout.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToRegistrationFragment()
             findNavController().navigate(action)
         }
@@ -118,15 +117,19 @@ class LoginFragment : Fragment() {
         }
 
         rezViewModel.loginResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.visible(it is Resource.Loading)
+            binding.loginTv.progressBar.visible(it is Resource.Loading)
+            binding.loginTv.button.text = "Please wait..."
             when (it) {
                 is Resource.Success -> {
+                    binding.loginTv.button.text = "LOGIN"
                     if (it.value.status) {
                         lifecycleScope.launch {
+                            val uName = it.value.data.first_name
                             val uEmail = binding.edtUserEmail.text.toString().trim()
                             val token: String? = it.value.data.token
                             val user = sharedPreferences.edit().putString("token", token).commit()
                             sharedPreferences.edit().putString("email", uEmail).commit()
+                            sharedPreferences.edit().putString("name", uName).commit()
                             Log.i("TOK", user.toString())
                             val message = it.value.message
                             showToast(message)
@@ -144,21 +147,24 @@ class LoginFragment : Fragment() {
                     }
 
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> {
+                    binding.loginTv.button.text = "LOGIN"
+                    handleApiError(it)
+                }
             }
         })
 
         binding.edtUserEmail.addTextChangedListener {
             val email = binding.edtUserEmail.text.toString().trim()
-            binding.loginTv.enable(email.isNotEmpty() && it.toString().isNotEmpty())
+            binding.loginTv.submit.enable(email.isNotEmpty() && it.toString().isNotEmpty())
         }
 
-        binding.loginTv.setOnClickListener {
+        binding.loginTv.submit.setOnClickListener {
             if (binding.edtUserEmail.text!!.isEmpty() || binding.edtPass.text!!.isEmpty()) {
                 val message = "All inputs are required"
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             } else {
-                binding.loginTv.enable(true)
+                binding.loginTv.submit.enable(true)
                 login()
             }
         }
@@ -288,13 +294,17 @@ class LoginFragment : Fragment() {
             val googleRequest = FacebookRequest(it)
             rezViewModel.loginWithGoogle(googleRequest) // make the google login request
             rezViewModel.loginGoogleResponse.observe(viewLifecycleOwner, Observer {
-                binding.progressBar.visible(it is Resource.Loading) // hide progress bar after the response
+                binding.loginTv.progressBar.visible(it is Resource.Loading) // hide progress bar after the response
+                binding.loginTv.button.text = "Please wait..."
                 when (it) {
                     is Resource.Success -> {
+                        binding.loginTv.button.text = "LOGIN"
                         if (it.value.status) {
                             lifecycleScope.launch {
+                                val uName = it.value.data.first_name
                                 val uEmail = it.value.data.email
                                 val token: String? = it.value.data.token
+                                sharedPreferences.edit().putString("name", uName).commit()
                                 sharedPreferences.edit().putString("token", token).commit()
                                 sharedPreferences.edit().putString("email", uEmail).commit() //save the user's email
                                 startActivity(
@@ -313,7 +323,10 @@ class LoginFragment : Fragment() {
                         }
 
                     }
-                    is Resource.Failure ->  handleApiError(it) // handle error
+                    is Resource.Failure ->  {
+                        binding.loginTv.button.text = "LOGIN"
+                        handleApiError(it)
+                    } // handle error
                 }
             })
         }
@@ -326,13 +339,17 @@ class LoginFragment : Fragment() {
             val facebookRequest = FacebookRequest(accessToken.token)
             rezViewModel.loginWithFacebook(facebookRequest) // make the facebook login request
             rezViewModel.loginWithFacebookResponse.observe(viewLifecycleOwner, Observer {
-                binding.progressBar.visible(it is Resource.Loading) // hide progress bar after the response
+                binding.loginTv.progressBar.visible(it is Resource.Loading) // hide progress bar after the response
+                binding.loginTv.button.text = "Please wait..."
                 when (it) {
                     is Resource.Success -> {
+                        binding.loginTv.button.text = "LOGIN"
                         if (it.value.status) {
                             lifecycleScope.launch {
+                                val uName = it.value.data.first_name
                                 val uEmail = it.value.data.email
                                 val token: String? = it.value.data.token
+                                sharedPreferences.edit().putString("name", uName).commit()
                                 sharedPreferences.edit().putString("token", token).commit()
                                 sharedPreferences.edit().putString("email", uEmail).commit() //save the user's email
                                 startActivity(
@@ -350,7 +367,10 @@ class LoginFragment : Fragment() {
                             it.value.message?.let { it1 -> showToast(it1) } // show the user the message
                         }
                     }
-                    is Resource.Failure ->  handleApiError(it) // handle error
+                    is Resource.Failure ->  {
+                        binding.loginTv.button.text = "LOGIN"
+                        handleApiError(it)
+                    } // handle error
                 }
             })
         }

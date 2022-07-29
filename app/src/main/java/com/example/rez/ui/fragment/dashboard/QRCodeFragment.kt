@@ -97,7 +97,11 @@ class QRCodeFragment : Fragment() {
     }
 
     private fun setUpQRCode(){
-        rezViewModel.getEachBooking(token = "Bearer ${sharedPreferences.getString("token", "token")}", args!!.id)
+        args!!.id?.let {
+            rezViewModel.getEachBooking(token = "Bearer ${sharedPreferences.getString("token", "token")}",
+                it
+            )
+        }
         rezViewModel.eachBookingResponse.observe(viewLifecycleOwner, Observer {
             binding.progressBar.visible(it is Resource.Loading)
             when(it) {

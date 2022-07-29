@@ -1,5 +1,6 @@
 package com.example.rez.ui.fragment.authentication
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,12 +13,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.rez.R
+import com.example.rez.RezApp
 import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentForgotPasswordBinding
 import com.example.rez.model.authentication.request.ForgotPasswordRequest
 import com.example.rez.ui.RezViewModel
 import com.example.rez.util.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class ForgotPasswordFragment : Fragment() {
 
@@ -25,6 +28,13 @@ class ForgotPasswordFragment : Fragment() {
     private val binding get() = _binding!!
     private val rezViewModel: RezViewModel by activityViewModels()
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (requireActivity().application as RezApp).localComponent?.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,48 +48,47 @@ class ForgotPasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.progressBar.visible(false)
+        binding.submitBtn.progressBar.visible(false)
 
-        rezViewModel.forgotPasswordResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.visible(it is Resource.Loading)
-            when(it) {
-                is Resource.Success -> {
-                    lifecycleScope.launch {
-                        //val message = it.value.message
-                        val ref = it.value.data.reference
-                        //Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                        val action =
-                            ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToResetPasswordFragment(ref)
-                        findNavController().navigate(action)
-                    }}
-                is Resource.Failure -> handleApiError(it)
-            }
-        })
-
-
-        binding.submitBtn.setOnClickListener {
+        binding.submitBtn.submit.setOnClickListener {
             forgotPassword()
         }
     }
 
     private fun forgotPassword() {
         val email = binding.emailTextView.text.toString().trim()
-
+        sharedPreferences.edit().putString("email", email).commit()
 
         when {
             email.isEmpty() -> {
                 Toast.makeText(requireContext(), R.string.all_email_cant_be_empty, Toast.LENGTH_SHORT).show()
             }
-//            !ValidationObject.validateEmail(email) -> {
-//                Toast.makeText(requireContext(), R.string.all_invalid_email, Toast.LENGTH_SHORT).show()
-//
-//            }
             else -> {
                 if (validateSignUpFieldsOnTextChange()) {
                     val forgotPasswordUser = ForgotPasswordRequest(
                         email = email
                     )
                     rezViewModel.forgotPassword(forgotPasswordUser)
+                    rezViewModel.forgotPasswordResponse.observe(viewLifecycleOwner, Observer {
+                        binding.submitBtn.progressBar.visible(it is Resource.Loading)
+                        binding.submitBtn.button.text = "Please wait..."
+                        when(it) {
+                            is Resource.Success -> {
+                                binding.submitBtn.button.text = "Submit"
+                                lifecycleScope.launch {
+                                    //val message = it.value.message
+                                    val ref = it.value.data.reference
+                                    //Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                                    val action =
+                                        ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToResetPasswordFragment(ref)
+                                    findNavController().navigate(action)
+                                }}
+                            is Resource.Failure -> {
+                                binding.submitBtn.button.text = "Submit"
+                                handleApiError(it)
+                            }
+                        }
+                    })
                 }
             }
         }

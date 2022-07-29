@@ -22,21 +22,15 @@ android:orientation="vertical">
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/hotelImageIv"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="210dp"-->
-<!--            android:scaleType="fitXY" />-->
-
         <ImageView
             android:visibility="gone"
             android:id="@+id/unLikeIv"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/ic_no_fav" />
 
         <ImageView
@@ -45,24 +39,24 @@ android:orientation="vertical">
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/ic_fav" />
 
         <TextView
             android:id="@+id/tableQtyTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/rectangle_box_button_orange"
             android:padding="6dp"
             android:text=""
             android:textColor="@color/white"
-            android:textSize="10dp"
+            android:textSize="11sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -74,62 +68,76 @@ android:orientation="vertical">
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/hotelNameTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="start"
-                    android:text=""
-                    android:padding="@dimen/padding_10dp"
-                    android:background="@drawable/test_cursor_white"
-                    android:textColor="@color/black"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/categoryTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/rectangle_box_button_pinc"
-                    android:gravity="start"
-                    android:padding="6dp"
-                    android:text=""
-                    android:textColor="@color/white"
-                    android:textSize="10dp"
-                    android:textStyle="bold" />
+                  <TextView
+                      android:id="@+id/hotelNameTv"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:background="@drawable/test_cursor_white"
+                      android:gravity="start"
+                      android:padding="@dimen/padding_10dp"
+                      android:text=""
+                      android:textColor="@color/black"
+                      android:textSize="15sp"
+                      android:textStyle="bold" />
 
-            </LinearLayout>
+                  <TextView
+                      android:id="@+id/categoryTv"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:layout_marginStart="5dp"
+                      android:background="@drawable/rectangle_box_button_pinc"
+                      android:gravity="start"
+                      android:padding="6dp"
+                      android:text=""
+                      android:textColor="@color/white"
+                      android:textSize="11sp"
+                      android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:orientation="horizontal">
+              </LinearLayout>
 
-                <TextView
-                    android:id="@+id/addressTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="2"
-                    android:layout_gravity="end"
-                    android:textSize="10dp"
-                    android:padding="@dimen/padding_10dp"
-                    android:background="@drawable/test_cursor_white"
-                    android:drawablePadding="5dp"
-                    android:text="manish patiadr"
-                    android:textColor="@color/pink"
-                    android:gravity="end"
-                    android:drawableLeft="@drawable/ic_baseline_location_on_24"/>
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="end"
+                  android:layout_marginBottom="4dp"
+                  android:gravity="end"
+                  android:orientation="horizontal"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintTop_toTopOf="parent">
 
-            </LinearLayout>
+                  <TextView
+                      android:id="@+id/addressTv"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="end"
+                      android:background="@drawable/test_cursor_white"
+                      android:drawablePadding="5dp"
+                      android:gravity="end"
+                      android:fontFamily="@font/poppins_light"
+                      android:maxLines="2"
+                      android:padding="@dimen/padding_10dp"
+                      android:text="manish patiadr"
+                      android:textColor="@color/pink"
+                      android:textSize="11sp"
+                      app:drawableLeftCompat="@drawable/ic_baseline_location_on_24" />
+
+              </LinearLayout>
+          </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -178,25 +186,12 @@ android:orientation="vertical">
 
         <TextView
             android:layout_weight="1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Tables Details"
+            android:text="Table Details"
+            android:fontFamily="@font/poppins_light"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="15dp" />
-        <TextView
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/saveText"
-            android:text="22" />
-
-        <TextView
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/priceText"
-            android:text="22" />
+            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -205,6 +200,16 @@ android:orientation="vertical">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tableListRecycler" />
+
+    <TextView
+        android:id="@+id/empty"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_80dp"
+        android:layout_gravity="center_horizontal"
+        android:text="No table yet" />
 
     <ProgressBar
         android:id="@+id/progressBar"

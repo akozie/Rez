@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.rez.R
 import com.example.rez.api.Resource
 import com.example.rez.ui.fragment.authentication.LoginFragment
+import com.example.rez.ui.fragment.authentication.RegistrationFragment
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileOutputStream

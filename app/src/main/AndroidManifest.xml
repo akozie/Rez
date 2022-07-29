@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.rez">
 
     <uses-permission android:name="android.hardware.location.gps" />
@@ -41,6 +42,8 @@
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
@@ -55,19 +58,28 @@
 
         <activity
             android:name=".ui.fragment.dashboard.GoogleActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="false"
             android:label="@string/title_activity_google"
             android:theme="@style/Theme.Rez.NoActionBar" />
         <activity
             android:name=".ui.activity.MainActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:noHistory="true"
             android:exported="true" />
         <activity
             android:name=".ui.activity.DashboardActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="true" />
         <activity
             android:name=".ui.activity.LandingActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="true"
             android:theme="@style/RezSplashTheme">
             <intent-filter>

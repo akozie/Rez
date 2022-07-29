@@ -39,8 +39,8 @@
         android:label="Favorites"
         tools:layout="@layout/fragment_favorites" >
         <argument
-            android:name="NEARDATA"
-            app:argType="com.example.rez.model.dashboard.SuggestionAndNearData" />
+            android:name="FAVDATA"
+            app:argType="com.example.rez.model.dashboard.Favorite" />
         <action
             android:id="@+id/action_favorites_to_favoriteDetailsFragment"
             app:destination="@id/favoriteDetailsFragment" />
@@ -50,9 +50,6 @@
         android:name="com.example.rez.ui.fragment.dashboard.Home"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_home2_to_favorites"
-            app:destination="@id/favorites" />
         <action
             android:id="@+id/action_home2_to_reservation"
             app:destination="@id/reservation" />
@@ -80,12 +77,25 @@
         <action
             android:id="@+id/action_home2_to_search"
             app:destination="@id/search" />
+        <action
+            android:id="@+id/action_home2_to_favoritesCover"
+            app:destination="@id/favoritesCover" />
+        <action
+            android:id="@+id/action_home2_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
+        <action
+            android:id="@+id/action_home2_to_successFragment"
+            app:destination="@id/successFragment" />
     </fragment>
     <fragment
         android:id="@+id/myProfile"
         android:name="com.example.rez.ui.fragment.dashboard.MyProfile"
         android:label="My profile"
-        tools:layout="@layout/fragment_my_profile" />
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_myProfile_to_successFragment"
+            app:destination="@id/successFragment" />
+    </fragment>
     <fragment
         android:id="@+id/reservation"
         android:name="com.example.rez.ui.fragment.dashboard.Reservation"
@@ -102,7 +112,11 @@
         android:id="@+id/changePassword"
         android:name="com.example.rez.ui.fragment.dashboard.ChangePassword"
         android:label="Change password"
-        tools:layout="@layout/fragment_change_password" />
+        tools:layout="@layout/fragment_change_password" >
+        <action
+            android:id="@+id/action_changePassword_to_settings2"
+            app:destination="@id/settings2" />
+    </fragment>
     <fragment
         android:id="@+id/topRecommended"
         android:name="com.example.rez.ui.fragment.dashboard.TopRecommended"
@@ -215,6 +229,9 @@
         <argument
             android:name="TABLE"
             app:argType="com.example.rez.model.dashboard.Table" />
+        <action
+            android:id="@+id/action_aboutFragment_to_proceedToPayment"
+            app:destination="@id/proceedToPayment" />
     </fragment>
     <fragment
         android:id="@+id/search"
@@ -224,6 +241,9 @@
         <action
             android:id="@+id/action_search_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <argument
+            android:name="SEARCHMODEL"
+            app:argType="com.example.rez.model.dashboard.SearchModel" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -276,5 +296,28 @@
             android:name="QRCODE"
             app:argType="com.example.rez.model.authentication.response.Booking"
             app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesCover"
+        android:name="com.example.rez.ui.fragment.dashboard.FavoritesCover"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites_cover" >
+        <action
+            android:id="@+id/action_favoritesCover_to_favorites"
+            app:destination="@id/favorites" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.NotificationFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/complaintsFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.ComplaintsFragment"
+        android:label="Complaints"
+        tools:layout="@layout/fragment_complaints" >
+        <action
+            android:id="@+id/action_complaintsFragment_to_home2"
+            app:destination="@id/home2" />
     </fragment>
 </navigation>

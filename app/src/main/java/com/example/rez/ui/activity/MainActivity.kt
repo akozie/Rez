@@ -13,6 +13,8 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.rez.R
 import com.example.rez.RezApp
 import com.example.rez.repository.AuthRepository
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         val rezRepository = AuthRepository()
         val viewModelProviderFactory = RezViewModelProviderFactory(application, rezRepository)
         rezViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RezViewModel::class.java)
+
 
 
     }

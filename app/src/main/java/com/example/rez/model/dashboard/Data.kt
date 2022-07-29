@@ -15,8 +15,9 @@ data class Data(
     val lat: Double,
     val lga: String,
     val lng: Double,
+    val state: State,
     val opened: Boolean,
-    val ratings: String,
-    val state: String,
-    val tables: List<Table>
+    val ratings: Float,
+    val tables: List<Table>,
+    val favourite: Boolean,
 ) : Parcelable

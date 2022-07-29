@@ -8,24 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rez.RezApp
-import com.example.rez.adapter.BookingPagingAdapter
-import com.example.rez.adapter.BookingPagingStateAdapter
-import com.example.rez.adapter.FavoritesPagingAdapter
+import com.example.rez.adapter.paging.BookingPagingStateAdapter
+import com.example.rez.adapter.paging.FavoritesPagingAdapter
 import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentFavoritesBinding
 import com.example.rez.model.authentication.response.Favourite
+import com.example.rez.model.dashboard.Favorite
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.util.handleApiError
-import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -39,6 +35,7 @@ class Favorites : Fragment(), FavoritesPagingAdapter.OnClickFavoritesItemClickLi
     private lateinit var favoritesAdapter: FavoritesPagingAdapter
     private lateinit var rezViewModel: RezViewModel
     private lateinit var loaderStateAdapter: BookingPagingStateAdapter
+    private var args: Favorite? = null
 
 
     @Inject
@@ -61,6 +58,7 @@ class Favorites : Fragment(), FavoritesPagingAdapter.OnClickFavoritesItemClickLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        args = arguments?.getParcelable("FAVDATA")
         setRv()
         loadData()
 
@@ -81,18 +79,18 @@ class Favorites : Fragment(), FavoritesPagingAdapter.OnClickFavoritesItemClickLi
     }
 
     private fun registerObservers(like: ImageView) {
-        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
+        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner) {
             binding.progressBar.visible(it is Resource.Loading)
-            when(it) {
+            when (it) {
                 is Resource.Success -> {
-                    if (like.isVisible){
+                    if (like.isVisible) {
                         loadData()
                     }
 
                 }
                 is Resource.Failure -> handleApiError(it)
             }
-        })
+        }
     }
 
 
@@ -121,20 +119,23 @@ class Favorites : Fragment(), FavoritesPagingAdapter.OnClickFavoritesItemClickLi
                     emptyText.isVisible = false
                 }
             }
-
         }
     }
 
     private fun loadData() {
+        val stateID = args!!.id
         lifecycleScope.launch {
-        rezViewModel.getFavorites("Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
+        rezViewModel.getFavoritesState("Bearer ${sharedPreferences.getString("token", "token")}", stateID).collectLatest {
             binding.progressBar.visible(false)
             //   Log.d("BOOKINGSSS", it.toString())
             favoritesAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
-            }
 
         }
+
+        }
+
+
 
     override fun onDestroy() {
         super.onDestroy()

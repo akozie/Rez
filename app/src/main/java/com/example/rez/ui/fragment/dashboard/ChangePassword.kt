@@ -1,5 +1,6 @@
 package com.example.rez.ui.fragment.dashboard
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.rez.R
 import com.example.rez.RezApp
 import com.example.rez.api.Resource
@@ -17,8 +19,10 @@ import com.example.rez.databinding.FragmentChangePasswordBinding
 import com.example.rez.model.authentication.request.ChangePasswordRequest
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
+import com.example.rez.ui.activity.MainActivity
 import com.example.rez.util.enable
 import com.example.rez.util.handleApiError
+import com.example.rez.util.visible
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -50,32 +54,38 @@ class ChangePassword : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         rezViewModel = (activity as DashboardActivity).rezViewModel
 
-
+        binding.changePassTv.button.text = "Change Password"
         rezViewModel.changePasswordResponse.observe(viewLifecycleOwner, Observer {
-           // binding.progressBar.visible(it is Resource.Loading)
+            binding.changePassTv.progressBar.visible(it is Resource.Loading)
+            binding.changePassTv.button.text = "Please wait..."
             when(it) {
                 is Resource.Success -> {
+                    binding.changePassTv.button.text = "Change Password"
                     if (it.value.status){
                         lifecycleScope.launch {
                             val message = it.value.message
                             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(requireContext(), MainActivity::class.java))
                         }
                     } else {
                         val message = it.value.message
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                        val action = ChangePasswordDirections.actionChangePasswordToSettings2()
+                        findNavController().navigate(action)
                     }
-
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> {
+                    binding.changePassTv.button.text = "Change Password"
+                    handleApiError(it)
+                }
             }
         })
-
-        binding.changePassTv.setOnClickListener {
+        binding.changePassTv.submit.setOnClickListener {
             if (binding.currentPassEt.text!!.isEmpty() || binding.newPassEt.text!!.isEmpty()) {
                 val message = "All inputs are required"
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             } else {
-                binding.changePassTv.enable(true)
+                binding.changePassTv.submit.enable(true)
                 changePassword()
             }
         }
@@ -121,7 +131,6 @@ class ChangePassword : Fragment() {
                 }
             }
         }
-
 
         return isValidated
     }

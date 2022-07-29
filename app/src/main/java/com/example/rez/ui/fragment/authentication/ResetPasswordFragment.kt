@@ -21,10 +21,8 @@ import com.example.rez.databinding.FragmentResetPasswordBinding
 import com.example.rez.model.authentication.request.ForgotPasswordRequest
 import com.example.rez.model.authentication.request.ResPasswordRequest
 import com.example.rez.ui.RezViewModel
-import com.example.rez.util.ValidationObject
-import com.example.rez.util.enable
+import com.example.rez.util.*
 import com.example.rez.util.handleApiError
-import com.example.rez.util.visible
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -56,13 +54,15 @@ class ResetPasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.progressBar.visible(false)
-        binding.resetSubmitBtn.enable(false)
+        binding.resetSubmitBtn.progressBar.visible(false)
+        binding.resetSubmitBtn.submit.enable(false)
 
         rezViewModel.resetPasswordResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.visible(it is Resource.Loading)
+            binding.resetSubmitBtn.progressBar.visible(it is Resource.Loading)
+            binding.resetSubmitBtn.button.text = "Please wait.."
             when(it) {
                 is Resource.Success -> {
+                    binding.resetSubmitBtn.button.text = "Submit"
                     lifecycleScope.launch {
                         val message = it.value.message
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -70,29 +70,38 @@ class ResetPasswordFragment : Fragment() {
                             ResetPasswordFragmentDirections.actionResetPasswordFragmentToLoginFragment()
                         findNavController().navigate(action)
                     }}
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> {
+                    binding.resetSubmitBtn.button.text = "Submit"
+                    showToast("Enter the correct code")
+                    handleApiError(it)
+                }
             }
         })
 
         rezViewModel.forgotPasswordResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.visible(it is Resource.Loading)
+            binding.resetSubmitBtn.progressBar.visible(it is Resource.Loading)
+            binding.resetSubmitBtn.button.text = "Please wait.."
             when(it) {
                 is Resource.Success -> {
+                    binding.resetSubmitBtn.button.text = "Submit"
                     lifecycleScope.launch {
                         val message = it.value.message
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                     }}
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> {
+                    binding.resetSubmitBtn.button.text = "Submit"
+                    handleApiError(it)
+                }
             }
         })
 
 
         binding.edtPass.addTextChangedListener {
             val email = binding.edtPass.text.toString().trim()
-            binding.resetSubmitBtn.enable(email.isNotEmpty() && it.toString().isNotEmpty())
+            binding.resetSubmitBtn.submit.enable(email.isNotEmpty() && it.toString().isNotEmpty())
         }
 
-        binding.resetSubmitBtn.setOnClickListener {
+        binding.resetSubmitBtn.submit.setOnClickListener {
             resetPassword()
         }
 
@@ -107,10 +116,6 @@ class ResetPasswordFragment : Fragment() {
         when {
             email.isEmpty() -> {
                 Toast.makeText(requireContext(), R.string.all_email_cant_be_empty, Toast.LENGTH_SHORT).show()
-            }
-            !ValidationObject.validateEmail(email) -> {
-                Toast.makeText(requireContext(), R.string.all_invalid_email, Toast.LENGTH_SHORT).show()
-
             }
             else -> {
                 if (validateSignUpFieldsOnTextChange()) {

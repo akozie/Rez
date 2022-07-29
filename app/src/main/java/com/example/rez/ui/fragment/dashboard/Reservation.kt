@@ -1,24 +1,23 @@
 package com.example.rez.ui.fragment.dashboard
 
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.rez.R
 import com.example.rez.RezApp
-import com.example.rez.adapter.BookingPagingAdapter
-import com.example.rez.adapter.BookingPagingStateAdapter
-import com.example.rez.databinding.FragmentBookingHistoryBinding
+import com.example.rez.adapter.paging.BookingPagingAdapter
+import com.example.rez.adapter.paging.BookingPagingStateAdapter
 import com.example.rez.databinding.FragmentReservationBinding
 import com.example.rez.model.authentication.response.Booking
 import com.example.rez.ui.RezViewModel
@@ -99,16 +98,15 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
     }
 
     private fun loadData() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            // rezViewModel.getBookings("Bearer ${sharedPreferences.getString("token", "token")}")
-            rezViewModel.getBookings("Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {pagingData ->
-                binding.progressBar.visible(false)
-                //   Log.d("BOOKINGSSS", it.toString())
-                bookingAdapter.submitData(pagingData)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    rezViewModel.getBookings("Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {pagingData ->
+                        binding.progressBar.visible(false)
+                        //   Log.d("BOOKINGSSS", it.toString())
+                        bookingAdapter.submitData(pagingData)
+                    }
             }
-
         }
-
     }
 
     override fun onDestroyView() {
@@ -116,9 +114,8 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
         _binding = null
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBookingItemClick(booking: Booking) {
-        if (LocalDateTime.now().toString() < booking.booked_for ){
+        if (LocalDateTime.now().toString() < booking.booked_for){
             val action = ReservationDirections.actionReservationToQRCodeFragment(booking)
             findNavController().navigate(action)
         }else {
@@ -126,4 +123,9 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
             findNavController().navigate(action)
         }
     }
+
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        outState.putParcelableArrayList("message_list", ArrayList<? Parcelable> messageList )
+//    }
 }

@@ -12,6 +12,14 @@ import retrofit2.Response
 import retrofit2.http.*
 interface AuthApi {
 
+//    @GET("states")
+//    suspend fun getVendorStates(
+//    ): StateResponse
+
+    @GET("vendor/categories")
+    suspend fun getVendorCategories(
+    ): GetVendorCategoryResponse
+
     @PUT("user/vendorProfile/{vendorProfileID}/rate")
     suspend fun addVendorRating(
         @Header("Authorization") token: String,
@@ -45,6 +53,12 @@ interface AuthApi {
         @Query("page") page: Int,
         ): Response<BookingsHistoryResponse>
 
+    @GET("user/notifications")
+    suspend fun getNotification(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        ): Response<NotificationResponse>
+
     @GET("user/bookings/{bookingID}")
     suspend fun getEachBooking(
         @Header("Authorization") token: String,
@@ -75,9 +89,11 @@ interface AuthApi {
     @GET("user/home/search")
     suspend fun search(
         @Query("q") q: String,
-        @Query("no_persons") no_persons: Int,
-        @Query("price_from") price_from: Int,
-        @Query("price_to") price_to: Int,
+        @Query("no_persons") no_persons: String?,
+        @Query("price_from") price_from: Int?,
+        @Query("price_to") price_to: Int?,
+        @Query("state_id") state_id: Int?,
+        @Query("type") type: Int?,
         @Header("Authorization") token: String,
         @Query("page") page: Int,
         ): Response<SearchResponse>
@@ -92,7 +108,13 @@ interface AuthApi {
     @GET("user/favourites")
     suspend fun getFavorites(
         @Header("Authorization") token: String,
-        @Query("page") page: Int,
+        ): FavoritesCoverResponse
+
+    @GET("user/favourites/{stateID}")
+    suspend fun getFavoritesState(
+        @Header("Authorization") token: String,
+        @Path("stateID") stateID:Int,
+        @Query("page") page: Int
         ): Response<GetFavoritesResponse>
 
     @PUT("user/favourites/{vendorID}")
@@ -132,7 +154,7 @@ interface AuthApi {
     @POST("user/auth/register")
     suspend fun register(
         @Body user: RegisterRequest
-    ): RegResponse
+    ): Response<RegResponse>
 
     @POST("user/auth/login")
     suspend fun login(
@@ -154,6 +176,12 @@ interface AuthApi {
         @Body user: ChangePasswordRequest,
         @Header("Authorization") token: String
     ): ChangePasswordResponse
+
+    @POST("user/complaints")
+    suspend fun complaints(
+        @Body user: ComplaintRequest,
+        @Header("Authorization") token: String
+    ): GeneralResponse
 
 
 }

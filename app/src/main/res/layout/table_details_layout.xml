@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:gravity="start"
             android:textStyle="bold"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textColor="@color/black"/>
 
         <LinearLayout
@@ -41,41 +41,41 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/people2"
+                android:src="@drawable/ic_people_icon"
                 android:scaleType="fitXY" />
 
             <TextView
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="For"
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:textStyle="bold"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/tabCapacityTv"
-                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:textStyle="bold"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:gravity="start"
                 android:text="People"
                 android:textColor="@color/black"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

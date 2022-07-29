@@ -8,7 +8,7 @@
         android:title="Home" />
 
     <item
-        android:id="@+id/favorites"
+        android:id="@+id/favoritesCover"
         android:enabled="true"
         android:icon="@drawable/ic_like_icon"
         android:title="Favorites" />
@@ -16,8 +16,14 @@
     <item
         android:id="@+id/reservation"
         android:enabled="true"
-        android:icon="@drawable/ic_reservation"
+        android:icon="@drawable/ic_reserved_icon"
         android:title="Reservations" />
+
+    <item
+        android:id="@+id/complaintsFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_bx_support"
+        android:title="Support" />
 
     <item
         android:id="@+id/myProfile"

@@ -2,37 +2,25 @@ package com.example.rez.ui.fragment.dashboard
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rez.RezApp
-import com.example.rez.adapter.BookingPagingAdapter
-import com.example.rez.adapter.BookingPagingStateAdapter
-import com.example.rez.api.Resource
+import com.example.rez.adapter.paging.BookingPagingAdapter
+import com.example.rez.adapter.paging.BookingPagingStateAdapter
 import com.example.rez.databinding.FragmentBookingHistoryBinding
 import com.example.rez.model.authentication.response.Booking
-import com.example.rez.model.authentication.response.Vendor
 import com.example.rez.ui.RezViewModel
-import com.example.rez.util.handleApiError
 import com.example.rez.util.visible
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 import javax.inject.Inject
 
 

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_20dp"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/poppins_light"
         android:text="Change Password"
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/imageView"

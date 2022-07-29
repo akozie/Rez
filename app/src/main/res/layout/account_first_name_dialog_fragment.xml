@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_18dp"
         android:layout_marginTop="@dimen/margin_34dp"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/poppins_medium"
         android:text="@string/first_name"
         android:textColor="@color/blue"
         android:textSize="@dimen/text_size_16sp"

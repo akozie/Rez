@@ -17,7 +17,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
     android:id="@+id/card_view"
     android:visibility="visible"
     android:layout_width="match_parent"
-    android:layout_height="320dp"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="10dp">
 
     <LinearLayout
@@ -42,7 +42,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                     android:id="@+id/tableImageIv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/no_image"
+                    android:src="@drawable/table_image"
                     android:scaleType="fitXY" />
 
             </androidx.cardview.widget.CardView>
@@ -54,8 +54,8 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                 android:orientation="horizontal">
             <LinearLayout
                 android:layout_weight="1"
-                android:layout_marginLeft="8dp"
-                android:layout_width="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:gravity="start"
@@ -67,6 +67,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="2am"
+                    android:fontFamily="@font/poppins_light"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textStyle="bold"
@@ -89,13 +90,14 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                         android:layout_gravity="start"
                         android:gravity="center_vertical"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_light"
                         android:drawablePadding="3dp"
-                        android:drawableLeft="@drawable/table_name2"
-                        android:textColor="@color/gray_dark"/>
+                        android:textColor="@color/gray_dark"
+                        app:drawableLeftCompat="@drawable/table_name2" />
 
                     <TextView
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -103,13 +105,14 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                         android:layout_gravity="start"
                         android:gravity="center_vertical"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:fontFamily="@font/poppins_light"
+                        android:textSize="11sp"
                         android:drawablePadding="3dp"
-                        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
-                        android:textColor="@color/gray_dark"/>
+                        android:textColor="@color/gray_dark"
+                        app:drawableLeftCompat="@drawable/ic_baseline_calendar_today_24" />
 
                     <TextView
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -117,10 +120,10 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                         android:layout_gravity="start"
                         android:gravity="center_vertical"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="11sp"
                         android:drawablePadding="3dp"
-                        android:drawableLeft="@drawable/clock2"
-                        android:textColor="@color/gray_dark"/>
+                        android:textColor="@color/gray_dark"
+                        app:drawableLeftCompat="@drawable/clock2" />
 
 
                 </LinearLayout>
@@ -144,7 +147,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                         android:text="Table Name"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/poppins_medium"/>
 
                     <TextView
                         android:id="@+id/dateTv"
@@ -156,12 +159,12 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                         android:layout_gravity="start"
                         android:gravity="center_vertical"
                         android:textStyle="bold"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"/>
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_medium"/>
 
                     <TextView
                         android:id="@+id/timeTv"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -169,8 +172,8 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                         android:layout_gravity="start"
                         android:gravity="center_vertical"
                         android:textStyle="bold"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"/>
+                        android:textSize="11sp"
+                        android:fontFamily="@font/poppins_medium"/>
 
 
                 </LinearLayout>
@@ -187,11 +190,11 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                         android:text="Your Request is Accepted"
                         android:layout_gravity="start"
                         android:gravity="center_vertical"
-                        android:textStyle="bold"
-                        android:textSize="11dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textSize="12sp"
                         android:drawablePadding="5dp"
-                        android:drawableLeft="@drawable/round_right_mark2"
-                        android:textColor="@color/green"/>
+                        android:textColor="@color/green"
+                        app:drawableLeftCompat="@drawable/round_right_mark2" />
 
                     <TextView
                         android:visibility="gone"
@@ -263,7 +266,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_10dp"
-        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_light"
         android:textSize="@dimen/text_size_15sp"
         android:text="Add review" />
 
@@ -274,6 +277,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
         android:background="@color/grey"
         android:textSize="@dimen/text_size_15sp"
         android:paddingTop="@dimen/padding_5dp"
+        android:fontFamily="@font/poppins_light"
         android:paddingStart="@dimen/padding_10dp"
         android:gravity="top"
         android:layout_height="@dimen/margin_80dp"
@@ -288,35 +292,51 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
         android:stepSize="0.1"
         android:layout_gravity="center"/>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <include
+            android:id="@+id/table_review_btn"
+            style="@style/LoginFragmentButtonStyle"
+            layout="@layout/custom_button"
+            android:layout_marginStart="@dimen/margin_10dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="@dimen/margin_10dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16sp"
+            app:cornerRadius="@dimen/margin_5dp"
+            android:layout_marginBottom="@dimen/margin_20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/table_review_btn"
-        style="@style/LoginFragmentButtonStyle"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/blue"
-        android:text="Submit review"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_16sp"
-        app:cornerRadius="@dimen/margin_5dp"
-        app:iconGravity="textStart"
-        app:iconSize="@dimen/padding_24dp"
-        android:layout_marginStart="@dimen/margin_10dp"
-        android:layout_marginEnd="@dimen/margin_10dp"
-        app:iconTintMode="multiply"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />
+        <!--    <ProgressBar-->
+<!--        android:id="@+id/progress_bar"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content" />-->
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/table_review_btn"-->
+<!--        style="@style/LoginFragmentButtonStyle"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:backgroundTint="@color/blue"-->
+<!--        android:text="Submit review"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="@dimen/text_size_16sp"-->
+<!--        app:cornerRadius="@dimen/margin_5dp"-->
+<!--        android:layout_marginStart="@dimen/margin_10dp"-->
+<!--        android:layout_marginEnd="@dimen/margin_10dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />-->
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Rate Vendor"
+        android:fontFamily="@font/poppins_light"
         android:layout_margin="@dimen/margin_10dp"
         android:layout_marginTop="@dimen/margin_20dp"
         android:textColor="@color/black"
@@ -329,23 +349,40 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_10dp" />
 
-        <com.google.android.material.button.MaterialButton
-        android:id="@+id/vendor_rating_btn"
-        style="@style/LoginFragmentButtonStyle"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/blue"
-        android:text="Submit rating"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_16sp"
-        app:cornerRadius="@dimen/margin_5dp"
-        app:iconGravity="textStart"
-        app:iconSize="@dimen/padding_24dp"
-        android:layout_marginStart="@dimen/margin_10dp"
-        android:layout_marginEnd="@dimen/margin_10dp"
-        app:iconTintMode="multiply"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />
+        <include
+            android:id="@+id/vendor_rating_btn"
+            style="@style/LoginFragmentButtonStyle"
+            layout="@layout/custom_button"
+            android:layout_marginStart="@dimen/margin_10dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="@dimen/margin_10dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16sp"
+            app:cornerRadius="@dimen/margin_5dp"
+            app:iconGravity="textStart"
+            app:iconSize="@dimen/padding_24dp"
+            app:iconTintMode="multiply"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--        <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/vendor_rating_btn"-->
+<!--        style="@style/LoginFragmentButtonStyle"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:backgroundTint="@color/blue"-->
+<!--        android:text="Submit rating"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="@dimen/text_size_16sp"-->
+<!--        app:cornerRadius="@dimen/margin_5dp"-->
+<!--        android:layout_marginStart="@dimen/margin_10dp"-->
+<!--        android:layout_marginEnd="@dimen/margin_10dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />-->
 
 </LinearLayout>
 </androidx.core.widget.NestedScrollView>

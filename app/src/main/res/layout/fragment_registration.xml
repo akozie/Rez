@@ -24,7 +24,7 @@ android:orientation="vertical">
         android:layout_alignParentStart="true"
         android:layout_marginStart="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_20dp"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/poppins_medium"
         android:src="@drawable/app_icon"
         android:text="SIGN-UP"
         android:textColor="@color/blue"
@@ -92,58 +92,80 @@ android:orientation="vertical">
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_18dp"
+                android:layout_marginEnd="@dimen/margin_18dp"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/init_phone_number"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TILedt_autocomplete"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_20dp"
-                    android:fontFamily="@font/poppins_light"
-                    android:gravity="center"
-                    android:text="+234"
-                    android:layout_marginTop="@dimen/margin_8dp"
-                    android:textColor="@color/blue"
-                    android:textSize="@dimen/text_size_13sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/TILedt_mobile"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/TILedt_mobile" />
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxStrokeColor="@color/white"
+                    app:endIconDrawable="@drawable/choose_category_arrow_down"
+                    app:endIconTint="@color/grey_light">
 
+                    <AutoCompleteTextView
+                        android:id="@+id/init_phone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:backgroundTint="@color/white"
+                        android:layout_marginStart="@dimen/margin_20dp"
+                        android:fontFamily="@font/poppins_light"
+                        android:text="+1"
+                        android:inputType="none"
+                        android:textColor="@color/blue"
+                        android:textColorHint="@color/blue"
+                        android:textCursorDrawable="@color/white"
+                        android:textSize="@dimen/text_size_13sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/TILedt_mobile"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/TILedt_mobile" />
+
+
+
+                </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TILedt_mobile"
                     style="@style/EditTextLayoutStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:ignore="MissingConstraints">
+                    android:layout_height="wrap_content">
 
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edt_user_mobile"
-                            style="@style/SignUpScreenEditTextField"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/phone_number"
-                            android:inputType="phone"
-                            android:maxLength="11"
-                            android:layout_marginStart="@dimen/margin_45dp"
-                            android:paddingStart="@dimen/padding_5dp"
-                            android:paddingEnd="@dimen/padding_0dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/init_phone_number"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/init_phone_number"
-                            app:layout_constraintTop_toTopOf="@+id/init_phone_number" />
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_user_mobile"
+                        style="@style/SignUpScreenEditTextField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/phone_number"
+                        android:inputType="phone"
+                        android:maxLength="16"
+                        android:layout_marginStart="@dimen/margin_1dp"
+                        android:layout_marginEnd="@dimen/margin_1dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/init_phone_number"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/init_phone_number"
+                        app:layout_constraintTop_toTopOf="@+id/init_phone_number" />
 
-                    <View
-                        style="@style/LoginFragmentDividerViewStyle"
-                        android:id="@+id/login_screen_fragment_email_address_divider_view" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
+            </LinearLayout>
+
+
+
+            <View
+                style="@style/LoginFragmentDividerViewStyle"
+                android:layout_marginStart="@dimen/margin_28dp"
+                android:layout_marginEnd="@dimen/margin_28dp"
+                android:id="@+id/login_screen_fragment_email_address_divider_view" />
 
 
 
@@ -178,7 +200,7 @@ android:orientation="vertical">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@color/blue">
+                app:passwordToggleTint="@color/gray_dark">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_pass"
@@ -203,7 +225,7 @@ android:orientation="vertical">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@color/blue">
+                app:passwordToggleTint="@color/gray_dark">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_confirm_pass"
@@ -221,20 +243,40 @@ android:orientation="vertical">
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/signUpTv"
-                style="@style/SignUpScreenSignUpButton"
-                android:text="@string/all_sign_up"
+            <include
+                android:id="@+id/loginTv"
+                style="@style/LoginFragmentButtonStyle"
+                layout="@layout/custom_button"
+                android:layout_marginStart="@dimen/margin_10dp"
+                android:layout_marginTop="55dp"
+                android:layout_marginEnd="@dimen/margin_10dp"
+                android:backgroundTint="@color/blue"
+                android:text="@string/login_screen_fragment_login_button_text_view"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16sp"
+                app:cornerRadius="@dimen/margin_5dp"
+                app:iconGravity="textStart"
+                app:iconSize="@dimen/padding_24dp"
+                app:iconTintMode="multiply"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_55dp" />
+                android:layout_height="match_parent" />
+
+<!--            <ProgressBar-->
+<!--                android:id="@+id/progressBar"-->
+<!--                style="?android:attr/progressBarStyle"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content" />-->
+
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/signUpTv"-->
+<!--                style="@style/SignUpScreenSignUpButton"-->
+<!--                android:text="@string/all_sign_up"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="@dimen/margin_55dp" />-->
 
 
             <LinearLayout
@@ -298,17 +340,14 @@ android:orientation="vertical">
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/facebookTv"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
+                    android:layout_height="0dp"
                     android:layout_marginStart="@dimen/margin_10dp"
                     android:layout_marginEnd="@dimen/margin_18dp"
                     android:background="@drawable/rectangle_box_button_blue"
-                    android:gravity="center"
-                    android:text="Facebook"
                     android:drawableStart="@drawable/ic_icons8_facebook"
                     android:textColor="@color/white"
-                    android:textSize="17dp"
-                    android:textStyle="bold"
+                    android:textSize="17sp"
+                    android:paddingTop="@dimen/padding_10dp"
                     app:layout_constraintBottom_toBottomOf="@+id/googleTv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/guideline5"

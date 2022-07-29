@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.rez.R
 import com.example.rez.databinding.SuggestionAdapterBinding
 import com.example.rez.model.dashboard.SuggestedVendor
 import com.example.rez.util.visible
@@ -20,8 +21,6 @@ class SuggestionRestaurantAdapter(private var suggestionRestaurantList: List<Sug
         val category = binding.categoryTv
         val hotelName = binding.hotelNameTv
         val topRating = binding.ratingBar
-       // val suggestedDistance = binding.distanceTv
-        // val cardView = binding.cardView
 
     }
 
@@ -34,7 +33,11 @@ class SuggestionRestaurantAdapter(private var suggestionRestaurantList: List<Sug
         holder.itemView.apply {
             with(holder){
                 with(suggestionRestaurantList[position]){
-                    Glide.with(context).load(avatar).into(hotelImageIv)
+                    if (avatar == null){
+                        Glide.with(context).load(R.drawable.table_image).into(hotelImageIv)
+                    } else {
+                        Glide.with(context).load(avatar).into(hotelImageIv)
+                    }
                     hotelName.text = company_name
                     category.text = category_name
                     if (average_rating.toInt() == 0){

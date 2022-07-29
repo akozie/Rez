@@ -23,7 +23,7 @@ class SuggestionAndNearAdapter(private var suggestionList: List<SuggestedVendor>
         val category = binding.categoryTv
         val hotelName = binding.hotelNameTv
       //  val addressTv = binding.addressTv
-        val ratingTv = binding.ratingBar
+        //val ratingTv = binding.ratingBar
      //   val distanceTv = binding.distanceTv
         // val cardView = binding.cardView
 
@@ -44,7 +44,7 @@ class SuggestionAndNearAdapter(private var suggestionList: List<SuggestedVendor>
                         Glide.with(context).load(R.drawable.restaurant).into(hotelImage)
                     }
                     hotelName.text = company_name
-                    ratingTv.rating = average_rating
+                   // ratingTv.rating = average_rating
                     category.text = category_name
                     if (total_tables == 1){
                         tableQty.text = total_tables.toString() + " table"

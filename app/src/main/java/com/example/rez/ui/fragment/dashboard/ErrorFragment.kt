@@ -1,5 +1,6 @@
 package com.example.rez.ui.fragment.dashboard
 
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -8,19 +9,29 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.example.rez.R
+import com.example.rez.RezApp
 import com.example.rez.databinding.FragmentErrorBinding
 import com.example.rez.databinding.FragmentSuccessBinding
+import javax.inject.Inject
 
 
 class ErrorFragment : DialogFragment() {
 
     private var _binding: FragmentErrorBinding? = null
     private val binding get() = _binding!!
+    private lateinit var argsDate: String
+    private lateinit var argsTime: String
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_DeviceDefault_Light_Dialog_MinWidth)
+        (requireActivity().application as RezApp).localComponent?.inject(this)
+        setStyle(STYLE_NO_TITLE, android.R.style.Theme_DeviceDefault_Light_Dialog_MinWidth)
+
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,8 +51,12 @@ class ErrorFragment : DialogFragment() {
 
             dialog!!.show()
 
+            argsDate = arguments?.getString("INTVAL")!!
+            argsTime = arguments?.getString("INTVALUE")!!
+
             binding.okTv.setOnClickListener {
-                dialog!!.dismiss()
+                val action = ErrorFragmentDirections.actionErrorFragmentToProceedToPayment(argsDate, argsTime)
+                findNavController().navigate(action)
             }
         }
     }

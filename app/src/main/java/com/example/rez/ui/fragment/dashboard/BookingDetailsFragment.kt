@@ -57,21 +57,23 @@ class BookingDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.tableReviewBtn.button.text = "Submit review"
+
         args = arguments?.getParcelable("BOOKINGS")
         setTopData()
         addTableReview()
         addVendorReview()
 
-        binding.vendorRatingBtn.setOnClickListener {
+        binding.vendorRatingBtn.submit.setOnClickListener {
                 addVendorReviewCheck()
         }
 
-        binding.tableReviewBtn.setOnClickListener {
+        binding.tableReviewBtn.submit.setOnClickListener {
             if (binding.tableReviewText.text!!.isEmpty() || binding.tableReviewRating.rating.equals(0)) {
                 val message = "Table review and table rating is required"
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             } else {
-                binding.tableReviewBtn.enable(true)
+                binding.tableReviewBtn.submit.enable(true)
                 addTableReviewCheck()
             }
         }
@@ -94,7 +96,10 @@ class BookingDetailsFragment : Fragment() {
                         rating = formatedRating,
                         review = tableReviewText
                     )
-                rezViewModel.addTableReview(token = "Bearer ${sharedPreferences.getString("token", "token")}", newTableReview, args!!.vendor.id, args?.table!!.id)
+                args!!.vendor.id?.let {
+                    rezViewModel.addTableReview(token = "Bearer ${sharedPreferences.getString("token", "token")}", newTableReview,
+                        it, args?.table!!.id)
+                }
             }
         }
     }
@@ -110,14 +115,16 @@ class BookingDetailsFragment : Fragment() {
             else -> {
                 if (vendorFormattedReviewRating > 0) {
                     val newRating = RateVendorRequest(rating = vendorFormattedReviewRating)
-                    rezViewModel.addVendorRating(
-                        token = "Bearer ${
-                            sharedPreferences.getString(
-                                "token",
-                                "token"
-                            )
-                        }", newRating, args!!.vendor.id
-                    )
+                    args!!.vendor.id?.let {
+                        rezViewModel.addVendorRating(
+                            token = "Bearer ${
+                                sharedPreferences.getString(
+                                    "token",
+                                    "token"
+                                )
+                            }", newRating, it
+                        )
+                    }
                 }
             }
         }
@@ -150,34 +157,44 @@ class BookingDetailsFragment : Fragment() {
 
     private fun addTableReview(){
         rezViewModel.addTableReviewResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.visible(it is Resource.Loading)
+            binding.tableReviewBtn.progressBar.visible(it is Resource.Loading)
+            binding.tableReviewBtn.button.text = "Please wait..."
             when(it) {
                 is Resource.Success -> {
+                    binding.tableReviewBtn.button.text = "Submit review"
                     if (it.value.status){
                         showToast("Successful, thank you for submitting review")
                     } else {
-                        it.value.message?.let { it1 ->
+                        it.value.message.let { it1 ->
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it) { addTableReview() }
+                is Resource.Failure -> {
+                    binding.tableReviewBtn.button.text = "Submit review"
+                    handleApiError(it) { addTableReview() }
+                }
             }
         })
     }
 
     private fun addVendorReview(){
         rezViewModel.addVendorReviewResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.visible(it is Resource.Loading)
+            binding.tableReviewBtn.progressBar.visible(it is Resource.Loading)
+            binding.tableReviewBtn.button.text = "Please wait..."
             when(it) {
                 is Resource.Success -> {
+                    binding.tableReviewBtn.button.text = "Submit review"
                     if (it.value.status){
                         showToast(it.value.message)
                     } else {
-                        it.value.message?.let { it1 ->
+                        it.value.message.let { it1 ->
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it) { addVendorReview() }
+                is Resource.Failure -> {
+                    binding.tableReviewBtn.button.text = "Submit review"
+                    handleApiError(it) { addVendorReview() }
+                }
             }
         })
     }

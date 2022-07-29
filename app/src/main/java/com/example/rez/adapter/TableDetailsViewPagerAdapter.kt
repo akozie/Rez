@@ -30,8 +30,12 @@ class TableDetailsViewPagerAdapter(private var context: Context, private var tab
         val view = LayoutInflater.from(context).inflate(R.layout.tab_details_layout, null)
 
         val imageView: ImageView = view.findViewById(R.id.tab_details_fragment_image)
-        val position = tableDetailsDataList[position]
-        Glide.with(context).load(position.image_url).into(imageView)
+        val current = tableDetailsDataList[position]
+        if (current.image_url != null){
+            Glide.with(context).load(current.image_url).into(imageView)
+        } else {
+            Glide.with(context).load(R.drawable.table_image).into(imageView)
+        }
         container.addView(view)
         return view
     }

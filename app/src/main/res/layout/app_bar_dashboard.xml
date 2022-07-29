@@ -26,39 +26,52 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/dashboard_activity_toolbar_search_view"
-                android:layout_width="0dp"
+                android:id="@+id/hi_text"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:hint="Search"
-                android:textColorHint="@color/grey1"
+                android:text="Hi, "
+                android:fontFamily="@font/poppins_light"
+                android:visibility="gone"
+                android:textColor="@color/white"
                 android:queryBackground="@android:color/transparent"
-                android:backgroundTint="@color/blue"
-                android:drawablePadding="10dp"
                 android:textSize="18sp"
-                android:drawableStart="@drawable/ic_baseline_search_pink"
                 app:layout_anchorGravity="center"
-                app:layout_constraintEnd_toStartOf="@+id/dashboard_activity_toolbar_profile_image_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/dashboard_activity_toolbar_search_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="30dp"
+                android:backgroundTint="@color/blue"
+                android:fontFamily="@font/poppins_light"
+                android:text=" "
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_anchorGravity="center"
+                app:layout_constraintEnd_toStartOf="@+id/dashboard_activity_notification_icon"
+                app:layout_constraintStart_toEndOf="@+id/hi_text"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                android:id="@+id/dashboard_activity_toolbar_profile_image_view"-->
-<!--                android:layout_width="@dimen/margin_25dp"-->
-<!--                android:layout_height="@dimen/margin_25dp"-->
-<!--                android:layout_marginEnd="@dimen/margin_10dp"-->
-<!--                android:foregroundGravity="center"-->
-<!--                android:src="@drawable/bell3x"-->
-<!--                app:layout_constraintBottom_toBottomOf="@+id/dashboard_activity_toolbar_search_view"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/dashboard_activity_notification_icon"
+                android:layout_width="@dimen/margin_30dp"
+                android:layout_height="@dimen/margin_25dp"
+                android:layout_marginEnd="@dimen/margin_10dp"
+                android:foregroundGravity="center"
+                android:src="@drawable/bell3x"
+                app:layout_constraintBottom_toBottomOf="@+id/dashboard_activity_toolbar_search_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <TextView
                 android:id="@+id/dashboard_activity_toolbar_fragment_name_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
+                android:fontFamily="@font/poppins_light"
                 android:text="@string/app_name"
                 android:textColor="@color/purple"
                 android:textSize="@dimen/text_size_20sp"

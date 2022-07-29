@@ -15,7 +15,8 @@ import java.io.IOException
 
 class FavoritePagingSource(
     private val authApi: AuthApi,
-    val token: String
+    val token: String,
+    private val stateId: Int
 ) : PagingSource<Int, Favourite>() {
     override fun getRefreshKey(state: PagingState<Int, Favourite>): Int? {
         return null
@@ -25,7 +26,7 @@ class FavoritePagingSource(
         val currentPage = params.key ?: 1
 
         return try {
-            val response = authApi.getFavorites(token, currentPage)
+            val response = authApi.getFavoritesState(token, stateId, currentPage)
             val bookings = response.body()?.data?.favourites!!.toList()
 
 

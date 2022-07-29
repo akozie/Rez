@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.rez.R
 import com.example.rez.databinding.TableDetailsLayoutBinding
 import com.example.rez.databinding.TopRecommendedAdapterBinding
 import com.example.rez.model.dashboard.*
@@ -33,7 +34,11 @@ class TableDetailsAdapter( private var tableList:List<DataX>): RecyclerView.Adap
                   //  hotelName.text = t
                     tablePrice.text = price
                     capacity.text = max_people.toString()
-                    Glide.with(context).load(image).into(hotelImage)
+                    if (image == null){
+                        Glide.with(context).load(R.drawable.table_image).into(hotelImage)
+                    } else {
+                        Glide.with(context).load(image).into(hotelImage)
+                    }
                    // hotelImage.setImageResource(restaurantImage!!)
                 }
             }

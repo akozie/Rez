@@ -43,6 +43,7 @@ import android.provider.MediaStore
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.asLiveData
+import androidx.navigation.fragment.findNavController
 import com.example.rez.ui.GlideApp
 import com.example.rez.ui.MyGlideAppGlideModule
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -77,7 +78,7 @@ class MyProfile : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentMyProfileBinding.inflate(inflater, container, false)
         rezViewModel = (activity as DashboardActivity).rezViewModel
-          binding.progressBar.visibility = View.VISIBLE
+          binding.saveBtn.progressBar.visibility = View.VISIBLE
 
         //GET USER PROFILE
 
@@ -86,11 +87,11 @@ class MyProfile : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.saveBtn.button.text = "Update Profile"
         /*Dialog fragment functions*/
         accountFirstNameEditDialog()
         accountLastNameDialogFragment()
-        accountEmailEditDialog()
+        //accountEmailEditDialog()
         accountPhoneEditDialog()
 
         getProfile()
@@ -107,33 +108,40 @@ class MyProfile : Fragment() {
             Manifest.permission.READ_EXTERNAL_STORAGE.checkForPermission(NAME, READ_IMAGE_STORAGE)
         }
 
-        binding.progressBar.visible(false)
+        binding.saveBtn.progressBar.visible(false)
        // binding.saveBtn.enable(false)
 
         rezViewModel.updateProfileResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.visible(it is Resource.Loading)
+            binding.saveBtn.progressBar.visible(it is Resource.Loading)
+            binding.saveBtn.button.text =  "Please wait.."
             when(it) {
                 is Resource.Success -> {
+                    binding.saveBtn.button.text = "Update Profile"
                     if (it.value.status){
                         lifecycleScope.launch {
                             val message = it.value.message
                             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                            val action = MyProfileDirections.actionMyProfileToSuccessFragment()
+                            findNavController().navigate(action)
                         }
                     } else {
                         it.value.message.let { it1 ->
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it) { updateProfile() }
+                is Resource.Failure -> {
+                    binding.saveBtn.button.text = "Update Profile"
+                    handleApiError(it) { updateProfile() }
+                }
             }
         })
 
-        binding.saveBtn.setOnClickListener {
+        binding.saveBtn.submit.setOnClickListener {
             if (binding.firstNameEt.text!!.isEmpty()) {
                 val message = "All inputs are required"
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             } else {
-                binding.saveBtn.enable(true)
+                binding.saveBtn.submit.enable(true)
                 updateProfile()
             }
         }
@@ -173,23 +181,32 @@ class MyProfile : Fragment() {
     private fun getProfile() {
         rezViewModel.getProfile(token = "Bearer ${sharedPreferences.getString("token", "token")}")
         rezViewModel.getProfileResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.visible(it is Resource.Loading)
-            when(it) {
+            binding.saveBtn.progressBar.visible(it is Resource.Loading)
+            binding.saveBtn.button.text = "Please wait..."
+                when(it) {
                 is Resource.Success -> {
+                    binding.saveBtn.button.text = "Update Profile"
                     if (it.value.status){
                         lifecycleScope.launch {
                             binding.firstNameEt.text = it.value.data.first_name
                             binding.lastNameEt.text = it.value.data.last_name
                             binding.userEmailEt.text = sharedPreferences.getString("email", "email")
                             binding.mobileNoEt.text = it.value.data.phone?.substring(4)
-                            GlideApp.with(requireContext()).load(it.value.data.avatar).into(binding.customerImageIv)
+                            if (it.value.data.avatar == null){
+                                GlideApp.with(requireContext()).load(R.drawable.chairman_image).into(binding.customerImageIv)
+                            }else {
+                                GlideApp.with(requireContext()).load(it.value.data.avatar).into(binding.customerImageIv)
+                            }
                         }
                     } else {
-                        it.value.message?.let { it1 ->
+                        it.value.message.let { it1 ->
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it) { getProfile() }
+                is Resource.Failure -> {
+                    binding.saveBtn.button.text = "Update Profile"
+                    handleApiError(it) { getProfile() }
+                }
             }
         })
 
@@ -278,9 +295,11 @@ class MyProfile : Fragment() {
         /*Handling the response from the retrofit*/
         rezViewModel.uploadImageResponse.observe(
             viewLifecycleOwner, Observer {
-                binding.progressBar.visible(it is Resource.Loading)
-                when(it) {
+                binding.saveBtn.progressBar.visible(it is Resource.Loading)
+                binding.saveBtn.button.text = "Please wait..."
+                    when(it) {
                     is Resource.Success -> {
+                        binding.saveBtn.button.text = "Update Profile"
                         if (it.value.status){
                             lifecycleScope.launch {
                                 val message = it.value.message
@@ -288,11 +307,14 @@ class MyProfile : Fragment() {
                                 GlideApp.with(requireContext()).load(uri).into(binding.customerImageIv)
                             }
                         } else {
-                            it.value.message?.let { it1 ->
+                            it.value.message.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it)
+                    is Resource.Failure -> {
+                        binding.saveBtn.button.text = "Update Profile"
+                        handleApiError(it)
+                    }
                 }
             }
         )
@@ -348,30 +370,30 @@ class MyProfile : Fragment() {
     }
 
     // Email Dialog
-    private fun accountEmailEditDialog() {
-        // when other name name value is clicked
-        childFragmentManager.setFragmentResultListener(
-            ACCOUNT_EMAIL_REQUEST_KEY,
-            requireActivity()
-        ) { key, bundle ->
-            // collect input values from dialog fragment and update the otherName text of user
-            val otherName = bundle.getString(ACCOUNT_EMAIL_BUNDLE_KEY)
-            binding.userEmailEt.text = otherName
-        }
-
-        // when last Name name value is clicked
-        binding.userEmailEt.setOnClickListener {
-            val email =
-                binding.userEmailEt.text.toString()
-            val bundle = bundleOf(CURRENT_EMAIL_BUNDLE_KEY to email)
-            createProfileDialogFragment(
-                R.layout.account_email_dialog_fragment,
-                bundle
-            ).show(
-                childFragmentManager, MyProfile::class.java.simpleName
-            )
-        }
-    }
+//    private fun accountEmailEditDialog() {
+//        // when other name name value is clicked
+//        childFragmentManager.setFragmentResultListener(
+//            ACCOUNT_EMAIL_REQUEST_KEY,
+//            requireActivity()
+//        ) { key, bundle ->
+//            // collect input values from dialog fragment and update the otherName text of user
+//            val otherName = bundle.getString(ACCOUNT_EMAIL_BUNDLE_KEY)
+//            binding.userEmailEt.text = otherName
+//        }
+//
+//        // when last Name name value is clicked
+//        binding.userEmailEt.setOnClickListener {
+//            val email =
+//                binding.userEmailEt.text.toString()
+//            val bundle = bundleOf(CURRENT_EMAIL_BUNDLE_KEY to email)
+//            createProfileDialogFragment(
+//                R.layout.account_email_dialog_fragment,
+//                bundle
+//            ).show(
+//                childFragmentManager, MyProfile::class.java.simpleName
+//            )
+//        }
+//    }
 
     private fun accountPhoneEditDialog() {
         // when other name name value is clicked
@@ -397,6 +419,32 @@ class MyProfile : Fragment() {
             )
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        rezViewModel.getProfileResponse.observe(viewLifecycleOwner, Observer {
+            binding.saveBtn.progressBar.visible(it is Resource.Loading)
+            when(it) {
+                is Resource.Success -> {
+                    if (it.value.status){
+                        lifecycleScope.launch {
+                            binding.firstNameEt.text = it.value.data.first_name
+                            binding.lastNameEt.text = it.value.data.last_name
+                            binding.userEmailEt.text = sharedPreferences.getString("email", "email")
+                            binding.mobileNoEt.text = it.value.data.phone?.substring(4)
+                            GlideApp.with(requireContext()).load(it.value.data.avatar).into(binding.customerImageIv)
+                        }
+                    } else {
+                        it.value.message?.let { it1 ->
+                            Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
+                    }
+                }
+                is Resource.Failure -> handleApiError(it) { getProfile() }
+            }
+        })
+
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

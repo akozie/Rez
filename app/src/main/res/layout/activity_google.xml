@@ -26,6 +26,7 @@ tools:context=".ui.fragment.dashboard.GoogleActivity">
     android:layout_marginEnd="15dp"
     android:src="@drawable/ic_traffic"
     app:backgroundTint="@color/white"
+    android:visibility="gone"
     app:fabCustomSize="40dp"
     app:tint="@color/itemTextColor" />
 
@@ -60,9 +61,9 @@ tools:context=".ui.fragment.dashboard.GoogleActivity">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_light"
                 android:layout_toEndOf="@+id/imgStartLocation"
-                android:textColor="@color/quantum_black_hint_text"
-                android:textStyle="bold" />
+                android:textColor="@color/quantum_black_hint_text"/>
 
             <TextView
                 android:id="@+id/txtStartLocation"
@@ -74,8 +75,8 @@ tools:context=".ui.fragment.dashboard.GoogleActivity">
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="From"
-                android:textColor="@color/quantum_black_text"
-                android:textStyle="bold" />
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/quantum_black_text" />
 
             <View
                 android:id="@+id/view"
@@ -104,8 +105,8 @@ tools:context=".ui.fragment.dashboard.GoogleActivity">
                 android:layout_marginTop="10dp"
                 android:layout_toEndOf="@+id/imgEndLocation"
                 android:text="To"
-                android:textColor="@color/quantum_black_text"
-                android:textStyle="bold" />
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/quantum_black_text" />
 
             <TextView
                 android:id="@+id/txtEndLocation"
@@ -117,7 +118,7 @@ tools:context=".ui.fragment.dashboard.GoogleActivity">
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/quantum_black_text"
-                android:textStyle="bold" />
+                android:fontFamily="@font/poppins_light"/>
 
         </RelativeLayout>
 
@@ -149,6 +150,7 @@ tools:context=".ui.fragment.dashboard.GoogleActivity">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
+                android:visibility="gone"
                 android:text="Driving"
                 android:textColor="@color/white"
                 app:checkedIconEnabled="true"
