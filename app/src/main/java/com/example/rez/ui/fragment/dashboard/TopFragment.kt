@@ -134,11 +134,11 @@ private fun setTopData() {
         binding.ratingBar.rating = args?.average_rating!!
     }
     if (args?.total_tables == 0){
-        binding.tableQtyTv.text =  "0 table"
+        binding.tableQtyTv.text =  "0 Table"
     } else if (args?.total_tables == 1){
-            binding.tableQtyTv.text =  "1 table"
+            binding.tableQtyTv.text =  "1 Table"
         }else{
-            binding.tableQtyTv.text = args?.total_tables.toString() + " tables"
+            binding.tableQtyTv.text = args?.total_tables.toString() + " Tables"
         }
         if (args?.liked_by_user == true){
             binding.likeIv.visible(true)

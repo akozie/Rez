@@ -20,8 +20,6 @@ import com.example.rez.adapter.PhoneAdapter
 import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentRegistrationBinding
 import com.example.rez.model.authentication.genresponse.RegResponse
-import com.example.rez.model.authentication.genresponse.RegistrationErrorData
-import com.example.rez.model.authentication.genresponse.RegistrationSuccessData
 import com.example.rez.model.authentication.request.FacebookRequest
 import com.example.rez.model.authentication.request.RegisterRequest
 import com.example.rez.model.authentication.response.CountryCodes
@@ -71,7 +69,6 @@ class RegistrationFragment : Fragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (requireActivity().application as RezApp).localComponent?.inject(this)
@@ -89,14 +86,13 @@ class RegistrationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.loginTv.button.text = "SIGNUP"
-        phoneNumberText = binding.initPhoneNumber.text.toString().trim()+binding.edtUserMobile.text.toString().trim()
-        val phoneNumber = binding.initPhoneNumber
-        val countryCode = arrayListOf("+1", "+20", "+212", "+213", "+216", "+218", "+220", "+221", "+222", "+223", "+224", "+225", "+226", "+227", "+228", "+229", "+230", "+231", "+232", "+233", "+234", "+235", "+236", "+237", "+238", "+239", "+240", "+241", "+242", "+243", "+244", "+245", "+246", "+248", "+249", "+250", "+251", "+252", "+253", "+254", "+255", "+256", "+257", "+258", "+260", "+261", "+262", "+262", "+263", "+264", "+265", "+266", "+267", "+268", "+269", "+27", "+290", "+291", "+297", "+298", "+299", "+30", "+31", "+32", "+33", "+34", "+345", "+350", "+351", "+352", "+353", "+354", "+355", "+356", "+358", "+359", "+36", "+370", "+371", "+372", "+373", "+374", "+375", "+376", "+377", "+378", "+379", "+380", "+381", "+382", "+385", "+386", "+387", "+389", "+39", "+40", "+41", "+420", "+421", "+423", "+43", "+44", "+45", "+46", "+47", "+48", "+49", "+500", "+501", "+502", "+503", "+504", "+505", "+506", "+507", "+508", "+509", "+51", "+52", "+53", "+537", "+54", "+55", "+56", "+57", "+58", "+590", "+591", "+593", "+594", "+595", "+596", "+597", "+598", "+599", "+60", "+61", "+62", "+63", "+64", "+65", "+66", "+670", "+672", "+673", "+674", "+675", "+676", "+677", "+678", "+679", "+680", "+681", "+682", "+683", "+685", "+686", "+687", "+688", "+689", "+690", "+691", "+692", "+7", "+77", "+81", "+82", "+84", "+850", "+852", "+853", "+855", "+856", "+86", "+872", "+880", "+886", "+90", "+91", "+92", "+93", "+94", "+95", "+960", "+961", "+962", "+963", "+964", "+965", "+966", "+967", "+968", "+970", "+971", "+972", "+973", "+974", "+975", "+976", "+977", "+98", "+992", "+993", "+994", "+995", "+996", "+998")
-        country = arrayListOf()
-        val phoneAdapter = PhoneAdapter(countryCode, requireContext(),
-            android.R.layout.simple_dropdown_item_1line)
-        phoneNumber.setAdapter(phoneAdapter)
-
+//        phoneNumberText = binding.initPhoneNumber.text.toString().trim()+binding.edtUserMobile.text.toString().trim()
+//        val phoneNumber = binding.initPhoneNumber
+//        val countryCode = arrayListOf("+1", "+20", "+212", "+213", "+216", "+218", "+220", "+221", "+222", "+223", "+224", "+225", "+226", "+227", "+228", "+229", "+230", "+231", "+232", "+233", "+234", "+235", "+236", "+237", "+238", "+239", "+240", "+241", "+242", "+243", "+244", "+245", "+246", "+248", "+249", "+250", "+251", "+252", "+253", "+254", "+255", "+256", "+257", "+258", "+260", "+261", "+262", "+262", "+263", "+264", "+265", "+266", "+267", "+268", "+269", "+27", "+290", "+291", "+297", "+298", "+299", "+30", "+31", "+32", "+33", "+34", "+345", "+350", "+351", "+352", "+353", "+354", "+355", "+356", "+358", "+359", "+36", "+370", "+371", "+372", "+373", "+374", "+375", "+376", "+377", "+378", "+379", "+380", "+381", "+382", "+385", "+386", "+387", "+389", "+39", "+40", "+41", "+420", "+421", "+423", "+43", "+44", "+45", "+46", "+47", "+48", "+49", "+500", "+501", "+502", "+503", "+504", "+505", "+506", "+507", "+508", "+509", "+51", "+52", "+53", "+537", "+54", "+55", "+56", "+57", "+58", "+590", "+591", "+593", "+594", "+595", "+596", "+597", "+598", "+599", "+60", "+61", "+62", "+63", "+64", "+65", "+66", "+670", "+672", "+673", "+674", "+675", "+676", "+677", "+678", "+679", "+680", "+681", "+682", "+683", "+685", "+686", "+687", "+688", "+689", "+690", "+691", "+692", "+7", "+77", "+81", "+82", "+84", "+850", "+852", "+853", "+855", "+856", "+86", "+872", "+880", "+886", "+90", "+91", "+92", "+93", "+94", "+95", "+960", "+961", "+962", "+963", "+964", "+965", "+966", "+967", "+968", "+970", "+971", "+972", "+973", "+974", "+975", "+976", "+977", "+98", "+992", "+993", "+994", "+995", "+996", "+998")
+//        country = arrayListOf()
+//        val phoneAdapter = PhoneAdapter(countryCode, requireContext(),
+//            android.R.layout.simple_dropdown_item_1line)
+//        phoneNumber.setAdapter(phoneAdapter)
 
         rezViewModel.phoneNumber.observe(viewLifecycleOwner){
             validatePhoneNumber(it)
@@ -128,7 +124,6 @@ class RegistrationFragment : Fragment() {
             }
         })
 
-
         binding.signIn.setOnClickListener {
             val action = RegistrationFragmentDirections.actionRegistrationFragmentToLoginFragment()
             findNavController().navigate(action)
@@ -137,48 +132,6 @@ class RegistrationFragment : Fragment() {
         binding.loginTv.progressBar.visible(false)
        // binding.signUpTv.enable(false)
 
-        rezViewModel.registerResp.observe(viewLifecycleOwner, Observer {
-            binding.loginTv.progressBar.visible(it is Resource.Loading)
-            binding.loginTv.button.text = "Please wait.."
-            when(it) {
-                is Resource.Success -> {
-                    binding.loginTv.button.text = "SIGNUP"
-                    if (it.value.body()?.status == true){
-                        val data = it.value.body()?.data
-                        val uEmail = binding.edtUserEmail.text.toString().trim()
-                        val token: String? = data?.token
-                        sharedPreferences.edit().putString("token", token).commit() // save user's token
-                        sharedPreferences.edit().putString("email", uEmail).commit() // save user's email
-
-                        val message = it.value.body()?.message!!
-                        startActivity(
-                            Intent(
-                                requireContext(),
-                                DashboardActivity::class.java
-                            )
-                        )
-                        requireActivity().finish()
-                        showToast(message)
-                    } else {
-                        val message = it.value.body()?.message!!
-                        showToast(message)
-                    }
-                }
-                is Resource.Failure -> {
-                    binding.loginTv.button.text = "SIGNUP"
-                    handleApiError(it)
-                    val error = it.value as RegResponse
-
-                    if (error.errors?.phone?.isNotEmpty() == true){
-                        val phoneErrors = error.errors.phone[0]
-                        showToast(phoneErrors)
-                    }else if (error.errors?.email?.isNotEmpty() == true ){
-                        val emailErrors = error.errors.email[0]
-                        showToast(emailErrors)
-                    }
-                }
-            }
-        })
 
 
 //        rezViewModel.registerResp.observe(viewLifecycleOwner, Observer {
@@ -305,6 +258,50 @@ class RegistrationFragment : Fragment() {
                         password_confirmation = confirmPassword
                     )
                     rezViewModel.register(newRegisterUser)
+                    rezViewModel.regResponse.observe(viewLifecycleOwner, Observer {
+                        binding.loginTv.progressBar.visible(it is Resource.Loading)
+                        binding.loginTv.button.text = "Please wait.."
+                        when(it) {
+                            is Resource.Success -> {
+                                binding.loginTv.button.text = "SIGNUP"
+                                if (it.value.status){
+                                    val data = it.value.data
+                                    val uEmail = binding.edtUserEmail.text.toString().trim()
+                                    val token: String = data.token
+                                    val uName: String = data.first_name
+                                    sharedPreferences.edit().putString("name", uName).commit()
+                                    sharedPreferences.edit().putString("token", token).commit() // save user's token
+                                    sharedPreferences.edit().putString("email", uEmail).commit() // save user's email
+
+                                    val message = it.value.message
+                                    startActivity(
+                                        Intent(
+                                            requireContext(),
+                                            DashboardActivity::class.java
+                                        )
+                                    )
+                                    requireActivity().finish()
+                                    showToast(message)
+                                } else {
+                                    val message = it.value.message
+                                    showToast(message)
+                                }
+                            }
+                            is Resource.Failure -> {
+                                binding.loginTv.button.text = "SIGNUP"
+                                handleApiError(it)
+//                     val error = it.value as RegResponse
+//                    if (error.errors?.phone?.isNotEmpty() == true){
+//                        val phoneErrors = error.errors.phone[0]
+//                        showToast(phoneErrors)
+//                    }else if (error.errors?.email?.isNotEmpty() == true ){
+//                        val emailErrors = error.errors.email[0]
+//                        showToast(emailErrors)
+//                    }
+                            }
+                        }
+                    })
+
                 }
             }
         }
@@ -348,11 +345,11 @@ class RegistrationFragment : Fragment() {
                         getString(R.string.all_email_cant_be_empty)
                     isValidated = false
                 }
-                !validateEmail(binding.edtUserEmail.text.toString().trim()) -> {
-                    binding.TILedtEmail.error =
-                        getString(R.string.all_invalid_email)
-                    isValidated = false
-                }
+//                !validateEmail(binding.edtUserEmail.text.toString().trim()) -> {
+//                    binding.TILedtEmail.error =
+//                        getString(R.string.all_invalid_email)
+//                    isValidated = false
+//                }
                 else -> {
                     binding.TILedtEmail.error = null
                     isValidated = true
@@ -360,22 +357,22 @@ class RegistrationFragment : Fragment() {
             }
         }
 //        binding.edtUserMobile.doOnTextChanged { charSequence, _, _, _ ->
-////            when {
-////                binding.edtUserMobile.text.toString().trim().isEmpty() -> {
-////                    binding.TILedtMobile.error =
-////                        getString(R.string.all_phone_number_is_required)
-////                    isValidated = false
-////                }
-////                !phoneNumberText.isValidPhoneNumber() -> {
-////                    binding.TILedtMobile.error =
-////                        getString(R.string.invalid_phone_number)
-////                    isValidated = false
-////                }
-////                else -> {
-////                    binding.TILedtMobile.error = null
-////                    isValidated = true
-////                }
-////            }
+//            when {
+//                binding.edtUserMobile.text.toString().trim().isEmpty() -> {
+//                    binding.TILedtMobile.error =
+//                        getString(R.string.all_phone_number_is_required)
+//                    isValidated = false
+//                }
+//                !phoneNumberText.isValidPhoneNumber() -> {
+//                    binding.TILedtMobile.error =
+//                        getString(R.string.invalid_phone_number)
+//                    isValidated = false
+//                }
+//                else -> {
+//                    binding.TILedtMobile.error = null
+//                    isValidated = true
+//                }
+//            }
 //            rezViewModel.updatePhoneNumber(charSequence.toString())
 //        }
 
@@ -476,6 +473,8 @@ class RegistrationFragment : Fragment() {
                             lifecycleScope.launch {
                                 val uEmail = it.value.data.email
                                 val token: String? = it.value.data.token
+                                val uName: String? = it.value.data.first_name
+                                sharedPreferences.edit().putString("name", uName).commit()
                                 sharedPreferences.edit().putString("token", token).commit()
                                 sharedPreferences.edit().putString("email", uEmail).commit() //save the user's email
                                 startActivity(
@@ -519,6 +518,8 @@ class RegistrationFragment : Fragment() {
                             lifecycleScope.launch {
                                 val uEmail = it.value.data.email
                                 val token: String? = it.value.data.token
+                                val uName: String? = it.value.data.first_name
+                                sharedPreferences.edit().putString("name", uName).commit()
                                 sharedPreferences.edit().putString("token", token).commit()
                                 sharedPreferences.edit().putString("email", uEmail).commit() //save the user's email
                                 startActivity(
@@ -544,6 +545,7 @@ class RegistrationFragment : Fragment() {
             })
         }
     }
+
     private fun validatePhoneNumber(phoneNumber:String){
         when{
             !phoneNumber.isValidPhoneNumber() ->{

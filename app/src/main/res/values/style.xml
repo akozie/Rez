@@ -123,8 +123,7 @@
 
     <style name="SignUpScreenEditTextField">
             <item name="android:textColor">@color/blue</item>
-            <item name="android:textColorHint">@color/blue</item>
-            <item name="fontFamily">@font/poppins_light</item>
+            <item name="android:textColorHint">@color/grey1</item>
             <item name="android:textSize">@dimen/text_size_13sp</item>
             <item name="android:ems">10</item>
     </style>
@@ -154,6 +153,17 @@
     <style name="EditTextLayoutStyle">
         <item name="android:layout_marginStart">@dimen/margin_18dp</item>
         <item name="android:layout_marginEnd">@dimen/margin_18dp</item>
+        <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="android:textColorHint">@color/blue</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxBackgroundMode">none</item>
+        <item name="boxStrokeColor">@color/blue</item>
+        <item name="hintTextColor">@color/blue</item>
+        <item name="errorEnabled">true</item>
+        <item name="errorTextColor">@color/pink</item>
+    </style>
+
+    <style name="EditTextPhoneNumberStyle">
         <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Small</item>
         <item name="android:textColorHint">@color/blue</item>
         <item name="boxBackgroundColor">@color/white</item>

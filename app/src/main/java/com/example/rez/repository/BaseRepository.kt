@@ -4,7 +4,6 @@ package com.example.rez.repository
 import android.util.Log
 import com.example.rez.api.Resource
 import com.example.rez.model.authentication.genresponse.RegResponse
-import com.example.rez.model.authentication.genresponse.RegistrationErrorData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -21,10 +20,10 @@ abstract class BaseRepository {
             } catch (throwable: Throwable){
                 when(throwable){
                     is HttpException -> {
-                        Resource.Failure(false, throwable.code(), throwable.response()?.errorBody())
+                        Resource.Failure(false, throwable.code(),)
                     }else -> {
                     //Log.d("FAILURE", throwable.localizedMessage)
-                    Resource.Failure(true, null, throwable.localizedMessage)
+                    Resource.Failure(true, null, )
                 }
                 }
             }

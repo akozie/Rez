@@ -55,31 +55,6 @@ class ComplaintsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        rezViewModel.complaintResponse.observe(viewLifecycleOwner, Observer {
-            binding.submit.progressBar.visible(it is Resource.Loading)
-            binding.submit.button.text = "Please wait..."
-            when(it) {
-                is Resource.Success -> {
-                    binding.submit.button.text = "Submit"
-                    if (it.value.status){
-                        lifecycleScope.launch {
-                            val message = it.value.message
-                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                            val action = ComplaintsFragmentDirections.actionComplaintsFragmentToHome2()
-                            findNavController().navigate(action)
-                        }
-                    } else {
-                        val message = it.value.message
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-                is Resource.Failure -> {
-                    binding.submit.button.text = "Submit"
-                    handleApiError(it)
-                }
-            }
-        })
         binding.submit.submit.setOnClickListener {
             if (binding.subject.text!!.isEmpty() || binding.message.text!!.isEmpty()) {
                 val message = "All inputs are required"
@@ -89,6 +64,7 @@ class ComplaintsFragment : Fragment() {
                 complaint()
             }
         }
+
     }
 
     private fun complaint() {
@@ -109,6 +85,31 @@ class ComplaintsFragment : Fragment() {
                         message = message
                     )
                     rezViewModel.complaints(newUser, token = "Bearer ${sharedPreferences.getString("token", "token")}")
+                rezViewModel.complaintResponse.observe(viewLifecycleOwner, Observer {
+                    binding.submit.progressBar.visible(it is Resource.Loading)
+                    binding.submit.button.text = "Please wait..."
+                    when(it) {
+                        is Resource.Success -> {
+                            binding.submit.button.text = "Submit"
+                            if (it.value.status){
+                                lifecycleScope.launch {
+                                    val message = it.value.message
+                                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                                    val action = ComplaintsFragmentDirections.actionComplaintsFragmentToHome2()
+                                    findNavController().navigate(action)
+                                }
+                            } else {
+                                val message = it.value.message
+                                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        is Resource.Failure -> {
+                            binding.submit.button.text = "Submit"
+                            handleApiError(it)
+                        }
+                    }
+                })
+
                 }
             }
         }

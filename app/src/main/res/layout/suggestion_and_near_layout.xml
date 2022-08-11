@@ -107,8 +107,6 @@
                 android:maxLines="2"
                 android:layout_gravity="center"
                 android:gravity="start"
-                android:fontFamily="@font/poppins_light"
-                android:textSize="11sp"
                 android:textColor="@color/black"/>
 
         </LinearLayout>

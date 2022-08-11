@@ -55,16 +55,15 @@ android:orientation="vertical">
                     style="@style/SignUpScreenEditTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:hint="@string/first_name"
                     android:layout_gravity="center"
+                    android:hint="@string/first_name"
+                    android:inputType="text"
                     android:paddingStart="@dimen/padding_5dp"
                     android:paddingEnd="@dimen/padding_0dp" />
 
                 <View
-                    style="@style/LoginFragmentDividerViewStyle"
                     android:id="@+id/login_screen_fragment_email_address_bottom_divider_view"
-                     />
+                    style="@style/LoginFragmentDividerViewStyle" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,15 +79,14 @@ android:orientation="vertical">
                     style="@style/SignUpScreenEditTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
                     android:hint="@string/last_name"
+                    android:inputType="text"
                     android:paddingStart="@dimen/padding_5dp"
                     android:paddingEnd="@dimen/padding_0dp" />
 
                 <View
-                    style="@style/LoginFragmentDividerViewStyle"
                     android:id="@+id/login_screen_email_address_bottom_divider_view"
-                   />
+                    style="@style/LoginFragmentDividerViewStyle" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,58 +95,53 @@ android:orientation="vertical">
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_18dp"
                 android:layout_marginEnd="@dimen/margin_18dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TILedt_autocomplete"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    app:boxBackgroundColor="@color/white"
-                    app:boxStrokeColor="@color/white"
-                    app:endIconDrawable="@drawable/choose_category_arrow_down"
-                    app:endIconTint="@color/grey_light">
+                    style="@style/EditTextPhoneNumberStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    app:hintEnabled="false">
 
-                    <AutoCompleteTextView
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/init_phone_number"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="@color/white"
                         android:backgroundTint="@color/white"
-                        android:layout_marginStart="@dimen/margin_20dp"
                         android:fontFamily="@font/poppins_light"
-                        android:text="+1"
-                        android:inputType="none"
+                        android:hint="+234"
+                        android:inputType="phone"
+                        android:maxLength="4"
                         android:textColor="@color/blue"
-                        android:textColorHint="@color/blue"
-                        android:textCursorDrawable="@color/white"
+                        android:textColorHint="@color/gray_dark"
                         android:textSize="@dimen/text_size_13sp"
                         app:layout_constraintBottom_toBottomOf="@+id/TILedt_mobile"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/TILedt_mobile" />
 
-
-
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TILedt_mobile"
-                    style="@style/EditTextLayoutStyle"
+                    style="@style/EditTextPhoneNumberStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edt_user_mobile"
                         style="@style/SignUpScreenEditTextField"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_1dp"
+                        android:layout_marginEnd="@dimen/margin_1dp"
                         android:hint="@string/phone_number"
                         android:inputType="phone"
                         android:maxLength="16"
-                        android:layout_marginStart="@dimen/margin_1dp"
-                        android:layout_marginEnd="@dimen/margin_1dp"
                         app:layout_constraintBottom_toBottomOf="@+id/init_phone_number"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/init_phone_number"
@@ -160,15 +153,11 @@ android:orientation="vertical">
             </LinearLayout>
 
 
-
             <View
+                android:id="@+id/login_screen_fragment_email_address_divider_view"
                 style="@style/LoginFragmentDividerViewStyle"
                 android:layout_marginStart="@dimen/margin_28dp"
-                android:layout_marginEnd="@dimen/margin_28dp"
-                android:id="@+id/login_screen_fragment_email_address_divider_view" />
-
-
-
+                android:layout_marginEnd="@dimen/margin_28dp" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -182,17 +171,16 @@ android:orientation="vertical">
                     style="@style/SignUpScreenEditTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
                     android:hint="@string/email_address"
+                    android:inputType="textEmailAddress"
                     android:paddingStart="@dimen/padding_5dp"
                     android:paddingEnd="@dimen/padding_0dp" />
 
                 <View
-                    style="@style/LoginFragmentDividerViewStyle"
-                    android:id="@+id/login_screen_fragment_email_bottom_divider_view" />
+                    android:id="@+id/login_screen_fragment_email_bottom_divider_view"
+                    style="@style/LoginFragmentDividerViewStyle" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/TILedt_pass"
@@ -213,8 +201,8 @@ android:orientation="vertical">
                     android:paddingEnd="@dimen/padding_0dp" />
 
                 <View
-                    style="@style/LoginFragmentDividerViewStyle"
-                    android:id="@+id/login_fragment_email_address_bottom_divider_view" />
+                    android:id="@+id/login_fragment_email_address_bottom_divider_view"
+                    style="@style/LoginFragmentDividerViewStyle" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -238,8 +226,8 @@ android:orientation="vertical">
                     android:paddingEnd="@dimen/padding_0dp" />
 
                 <View
-                    style="@style/LoginFragmentDividerViewStyle"
-                    android:id="@+id/login_email_address_bottom_divider_view" />
+                    android:id="@+id/login_email_address_bottom_divider_view"
+                    style="@style/LoginFragmentDividerViewStyle" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -247,6 +235,8 @@ android:orientation="vertical">
                 android:id="@+id/loginTv"
                 style="@style/LoginFragmentButtonStyle"
                 layout="@layout/custom_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/margin_10dp"
                 android:layout_marginTop="55dp"
                 android:layout_marginEnd="@dimen/margin_10dp"
@@ -260,23 +250,21 @@ android:orientation="vertical">
                 app:iconTintMode="multiply"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />
 
-<!--            <ProgressBar-->
-<!--                android:id="@+id/progressBar"-->
-<!--                style="?android:attr/progressBarStyle"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content" />-->
+            <!--            <ProgressBar-->
+            <!--                android:id="@+id/progressBar"-->
+            <!--                style="?android:attr/progressBarStyle"-->
+            <!--                android:layout_gravity="center"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content" />-->
 
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/signUpTv"-->
-<!--                style="@style/SignUpScreenSignUpButton"-->
-<!--                android:text="@string/all_sign_up"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="@dimen/margin_55dp" />-->
+            <!--            <com.google.android.material.button.MaterialButton-->
+            <!--                android:id="@+id/signUpTv"-->
+            <!--                style="@style/SignUpScreenSignUpButton"-->
+            <!--                android:text="@string/all_sign_up"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="@dimen/margin_55dp" />-->
 
 
             <LinearLayout
@@ -345,9 +333,9 @@ android:orientation="vertical">
                     android:layout_marginEnd="@dimen/margin_18dp"
                     android:background="@drawable/rectangle_box_button_blue"
                     android:drawableStart="@drawable/ic_icons8_facebook"
+                    android:paddingTop="@dimen/padding_10dp"
                     android:textColor="@color/white"
                     android:textSize="17sp"
-                    android:paddingTop="@dimen/padding_10dp"
                     app:layout_constraintBottom_toBottomOf="@+id/googleTv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/guideline5"

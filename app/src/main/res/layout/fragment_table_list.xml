@@ -86,14 +86,12 @@ android:orientation="vertical">
                     android:id="@+id/hotelNameTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:background="@drawable/test_cursor_white"
-                    android:fontFamily="@font/poppins_light"
                     android:gravity="start"
                     android:padding="@dimen/padding_10dp"
                     android:text=""
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -193,7 +191,6 @@ android:orientation="vertical">
             android:layout_height="wrap_content"
             android:text="Table Details"
             android:textColor="@color/black"
-            android:fontFamily="@font/poppins_light"
             android:textSize="15sp" />
 
 <!--        <ImageView-->

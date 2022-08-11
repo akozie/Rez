@@ -484,9 +484,7 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                 }
             }
         }
-
     }
-
 
 
     override fun onTopItemClick(topModel: RecommendedVendor) {
@@ -494,8 +492,8 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
         findNavController().navigate(action)
     }
 
-//    override fun onResume() {
-//        super.onResume()
+//    override fun onStart() {
+//        super.onStart()
 //        rezViewModel.getHomeResponse.observe(
 //            viewLifecycleOwner, Observer {
 //             //   binding.progressBar.visible(it is Resource.Loading)
@@ -516,9 +514,9 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
 //                                topRestaurants()
 //                                suggestionRestaurants()
 //                                if (nearList.isEmpty()){
-//                                    binding.nearRestRecycler.visible(false)
-//                                    binding.nearLayout.visible(false)
-//                                    binding.nearView.visible(false)
+//                                    binding?.nearRestRecycler?.visible(false)
+//                                    binding?.nearLayout?.visible(false)
+//                                    binding?.nearView?.visible(false)
 //                                }else if(nearList.isNotEmpty()) {
 //                                    nearRestaurants()
 //                                }

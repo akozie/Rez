@@ -68,9 +68,9 @@ class SuggestFragment : Fragment(), OnTableClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         args = arguments?.getParcelable("SUGGESTIONDATA")
-         setList()
-        setSuggestionData()
         sharedPreferences.edit().putInt("vendorid", args!!.id).apply()
+        setList()
+        setSuggestionData()
 
         binding.likeIv.setOnClickListener {
             registerObservers()
@@ -123,11 +123,11 @@ class SuggestFragment : Fragment(), OnTableClickListener {
             binding.ratingBar.rating = args?.average_rating!!
         }
         if (args?.total_tables.toString().isEmpty()){
-            binding.tableQtyTv.text = "0 table"
+            binding.tableQtyTv.text = "0 Table"
         }else  if (args?.total_tables == 1){
-                binding.tableQtyTv.text = "1 table"
+                binding.tableQtyTv.text = "1 Table"
             }else{
-                binding.tableQtyTv.text = args?.total_tables.toString() + " tables"
+                binding.tableQtyTv.text = args?.total_tables.toString() + " Tables"
             }
             if (args?.liked_by_user == true){
                 binding.likeIv.visible(true)
@@ -151,15 +151,17 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                             if (tableList.isEmpty()){
                                 binding.tableListRecycler.visibility = View.GONE
                                 binding.empty.visibility = View.VISIBLE
+                            }else{
+                                tableAdapter = TableAdapter(tableList, this)
+                                binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                                binding.tableListRecycler.adapter = tableAdapter
                             }
                             tableDetailsDataList = it.value.data.images
                             if (tableDetailsDataList.isEmpty()){
                                 tableDetailsDataList = listOf(Image("", 1, "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
+                            }else{
+                                setTableDetailsViewPagerAdapter()
                             }
-                            tableAdapter = TableAdapter(tableList, this)
-                            binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                            binding.tableListRecycler.adapter = tableAdapter
-                            setTableDetailsViewPagerAdapter()
                         } else {
                             it.value.message?.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
@@ -169,12 +171,13 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                 }
             }
         )
+        //removeObserverFromVendorTable()
     }
 
     private fun registerObservers() {
-        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
+        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner) {
             binding.progressBar.visible(it is Resource.Loading)
-            when(it) {
+            when (it) {
                 is Resource.Success -> {
                     if (binding.unLikeIv.isVisible) {
                         showToast("Added Successfully to favorites")
@@ -182,7 +185,7 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                         binding.likeIv.visibility = View.VISIBLE
                         binding.unLikeIv.visibility = View.INVISIBLE
                         removeObserver()
-                    } else if(!binding.unLikeIv.isVisible){
+                    } else if (!binding.unLikeIv.isVisible) {
                         showToast("Removed Successfully from favorites")
                         //rezViewModel.favoriteResponse = 0
                         binding.likeIv.visibility = View.INVISIBLE
@@ -192,11 +195,15 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                 }
                 is Resource.Failure -> handleApiError(it)
             }
-        })
+        }
     }
 
     private fun removeObserver() {
         rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)
+    }
+
+    private fun removeObserverFromVendorTable() {
+        rezViewModel.getVendorTableResponse.removeObservers(viewLifecycleOwner)
     }
 
     override fun onTableItemClick(tableModel: Table) {

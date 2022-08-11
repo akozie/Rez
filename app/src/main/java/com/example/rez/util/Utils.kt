@@ -63,7 +63,10 @@ fun Fragment.handleApiError(
         failure.isNetworkError -> requireView().snackbar("Please check your internet connection", retry)
         failure.errorCode == 400 -> {
             if (this is LoginFragment) {
-                requireView().snackbar("You have entered incorrect username and password")
+                requireView().snackbar("You have entered incorrect email or password")
+            }
+            if (this is RegistrationFragment) {
+                requireView().snackbar("You have entered incorrect email or phone number")
             }
         }
         else -> {

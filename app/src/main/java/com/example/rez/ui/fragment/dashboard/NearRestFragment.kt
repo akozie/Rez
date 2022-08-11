@@ -133,11 +133,11 @@ class NearRestFragment : Fragment(), OnTableClickListener {
         binding.categoryTv.text = args?.category_name
             binding.addressTv.text = "%.5f".format(args?.distance) +"km"
         if (args?.total_tables.toString().isEmpty()){
-            binding.tableQtyTv.text = "0 table"
+            binding.tableQtyTv.text = "0 Table"
         } else if (args?.total_tables == 1){
-                binding.tableQtyTv.text = "1 table"
+                binding.tableQtyTv.text = "1 Table"
             }else{
-                binding.tableQtyTv.text = args?.total_tables.toString() + " tables"
+                binding.tableQtyTv.text = args?.total_tables.toString() + " Tables"
             }
         if (args?.liked_by_user == true){
                 binding.likeIv.visible(true)

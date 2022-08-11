@@ -46,9 +46,9 @@ class SuggestionRestaurantAdapter(private var suggestionRestaurantList: List<Sug
                         topRating.rating = average_rating
                     }
                     if (total_tables == 1 || total_tables == 0){
-                        tableQty.text = total_tables.toString() + " table"
+                        tableQty.text = total_tables.toString() + " Table"
                     }else{
-                        tableQty.text = total_tables.toString() + " tables"
+                        tableQty.text = total_tables.toString() + " Tables"
                     }
                     if (liked_by_user){
                         like.visible(true)

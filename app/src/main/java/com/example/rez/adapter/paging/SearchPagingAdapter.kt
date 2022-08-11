@@ -2,6 +2,7 @@ package com.example.rez.adapter.paging
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.example.rez.R
 import com.example.rez.databinding.SearchAdapterBinding
 import com.example.rez.model.authentication.response.ResultX
+import com.example.rez.model.dashboard.SuggestedVendor
+import com.example.rez.util.visible
 
 class SearchPagingAdapter(private val onClickListener : OnSearchClickListener): PagingDataAdapter<ResultX, SearchPagingAdapter.BookingMyViewHolder>(
     differCallback
@@ -19,7 +22,8 @@ class SearchPagingAdapter(private val onClickListener : OnSearchClickListener): 
         var hotelImage = binding.hotelImageIv
         var hotelName = binding.hotelNameTv
         var hotelRatingBar = binding.ratingBar
-
+//        val unLike = binding.unLikeIv
+//        val like = binding.likeIv
     }
 
     companion object{
@@ -54,9 +58,22 @@ class SearchPagingAdapter(private val onClickListener : OnSearchClickListener): 
                         }else{
                             Glide.with(context).load(current.avatar).into(holder.hotelImage)
                         }
+//                        if (current.liked_by_user){
+//                            like.visible(true)
+//                            unLike.visible(false)
+//                        }else{
+//                            like.visible(false)
+//                            unLike.visible(true)
+//                        }
                         // hotelImage.setImageResource(restaurantImage!!)
                     }
                 }
+//            holder.unLike.setOnClickListener {
+//                onClickListener.likeUnlike(suggestionRestaurantList[position].id.toString(), holder.like, holder.unLike)
+//            }
+//            holder.like.setOnClickListener {
+//                onClickListener.likeUnlike(likeUnlike[position].id.toString(), holder.like, holder.unLike)
+//            }
             holder.itemView.setOnClickListener {
                 if (current != null) {
                     onClickListener.onEachSearchClick(current)

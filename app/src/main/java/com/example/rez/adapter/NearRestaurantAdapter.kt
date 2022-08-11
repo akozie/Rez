@@ -52,11 +52,11 @@ class NearRestaurantAdapter(private var nearRestaurantList: List<NearbyVendor>, 
                         ratingTv.rating = average_rating
                     }
                     category.text = category_name
-                    nearDistance.text = "%.5f".format(distance) +"km"
+                    nearDistance.text = "%.2f".format(distance) +"km"
                     if (total_tables == 1 || total_tables == 0){
-                        tableQty.text = total_tables.toString() + " table"
+                        tableQty.text = total_tables.toString() + " Table"
                     }else{
-                        tableQty.text = total_tables.toString() + " tables"
+                        tableQty.text = total_tables.toString() + " Tables"
                     }
                     if (liked_by_user){
                         like.visible(true)

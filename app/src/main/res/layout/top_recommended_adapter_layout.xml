@@ -56,7 +56,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="@dimen/padding_5dp"
-                    android:fontFamily="@font/poppins_light"
+                    android:textStyle="bold"
                     android:text="HIIII" />
 
 

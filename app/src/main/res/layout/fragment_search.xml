@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/margin_30dp"
     tools:context=".ui.fragment.dashboard.Search">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -35,9 +36,11 @@
                     android:hint="Type here to search"
                     android:iconifiedByDefault="false"
                     android:gravity="start|center"
+                    android:drawablePadding="@dimen/margin_5dp"
                     android:queryBackground="@android:color/transparent"
                     android:searchIcon="@drawable/ic_baseline_search_pink"
                     android:textColor="@color/white"
+                    android:drawableLeft="@drawable/ic_baseline_search_pink"
                     android:textColorHint="@color/grey1"
                     android:singleLine="true"
                     android:textSize="@dimen/text_size_15sp"
@@ -55,78 +58,78 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/search_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/rectangle_outbox_blue"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/search_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginTop="@dimen/margin_10dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:background="@drawable/rectangle_outbox_blue"-->
+<!--        android:orientation="vertical"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@color/blue" />
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="3dp"-->
+<!--            android:background="@color/blue" />-->
 
-        <EditText
-            android:id="@+id/restaurant_text"
-            android:layout_width="match_parent"
-            android:layout_height="53dp"
-            android:background="@color/white"
-            android:drawableLeft="@drawable/ic_baseline_search_pink"
-            android:drawablePadding="@dimen/padding_21dp"
-            android:gravity="center_vertical"
-            android:hint="Search for restaurant"
-            android:maxLines="1"
-            android:paddingStart="@dimen/padding_20dp"
-            android:singleLine="true"
-            android:textColorHint="@color/gray_dark"
-            android:textSize="@dimen/text_size_16sp" />
+<!--        <EditText-->
+<!--            android:id="@+id/restaurant_text"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="53dp"-->
+<!--            android:background="@color/white"-->
+<!--            android:drawableLeft="@drawable/ic_baseline_search_pink"-->
+<!--            android:drawablePadding="@dimen/padding_21dp"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:hint="Search for restaurant"-->
+<!--            android:maxLines="1"-->
+<!--            android:paddingStart="@dimen/padding_20dp"-->
+<!--            android:singleLine="true"-->
+<!--            android:textColorHint="@color/gray_dark"-->
+<!--            android:textSize="@dimen/text_size_16sp" />-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@color/blue" />
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="3dp"-->
+<!--            android:background="@color/blue" />-->
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_select_state"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            app:backgroundTint="@color/white"
-            app:endIconDrawable="@drawable/ic_arrow_down_24"
-            app:endIconTint="@color/grey_light"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/fragment_select_state"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="55dp"-->
+<!--            app:backgroundTint="@color/white"-->
+<!--            app:endIconDrawable="@drawable/ic_arrow_down_24"-->
+<!--            app:endIconTint="@color/grey_light"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent">-->
 
-            <AutoCompleteTextView
-                android:id="@+id/select_venue"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/poppins_light"
-                android:inputType="none"
-                android:text="Select venue"
-                android:textColor="@android:color/background_dark"
-                android:textCursorDrawable="@color/grey_light"
-                android:theme="@style/Autocomplete"
-                app:backgroundTint="@color/white" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <AutoCompleteTextView-->
+<!--                android:id="@+id/select_venue"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:fontFamily="@font/poppins_light"-->
+<!--                android:inputType="none"-->
+<!--                android:text="Select venue"-->
+<!--                android:textColor="@android:color/background_dark"-->
+<!--                android:textCursorDrawable="@color/grey_light"-->
+<!--                android:theme="@style/Autocomplete"-->
+<!--                app:backgroundTint="@color/white" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-        <Button
-            android:id="@+id/search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/rectangle_outbox_blue"
-            android:text="SEARCH"
-            android:textSize="@dimen/text_size_16sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+<!--        <Button-->
+<!--            android:id="@+id/search"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@drawable/rectangle_outbox_blue"-->
+<!--            android:text="SEARCH"-->
+<!--            android:textSize="@dimen/text_size_16sp"-->
+<!--            android:textStyle="bold" />-->
+<!--    </LinearLayout>-->
 
 
     <ProgressBar
@@ -177,6 +180,7 @@
         android:layout_marginStart="@dimen/margin_5dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="@dimen/margin_5dp"
+        android:layout_marginBottom="@dimen/margin_30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />

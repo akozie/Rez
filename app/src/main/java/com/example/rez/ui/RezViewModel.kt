@@ -17,10 +17,8 @@ import com.example.rez.model.dashboard.*
 import com.example.rez.model.direction.DirectionResponseModel
 import com.example.rez.model.paging.*
 import com.example.rez.repository.AuthRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class RezViewModel(
     app: Application,
@@ -103,13 +101,17 @@ class RezViewModel(
     val forgotPasswordResponse: LiveData<Resource<ForPasswordResponse>>
         get() = _forgotPasswordResponse
 
-//    private val _registerResponse: MutableLiveData<Resource<Map<String, Any>>> = MutableLiveData()
-//    val registerResponse: LiveData<Resource<Map<String, Any>>>
+//    private val _registerResponse: MutableLiveData<Resource<RegResponse>> = MutableLiveData()
+//    val registerResponse: LiveData<Resource<RegResponse>>
 //        get() = _registerResponse
 
-    private val _registerResp: MutableLiveData<Resource<Response<RegResponse>>> = MutableLiveData()
-    val registerResp: LiveData<Resource<Response<RegResponse>>>
-        get() = _registerResp
+    private val _regResponse: MutableLiveData<Resource<RegResponse>> = MutableLiveData()
+    val regResponse: LiveData<Resource<RegResponse>>
+        get() = _regResponse
+
+//    private val _registerResp: MutableLiveData<Resource<RegResponse>> = MutableLiveData()
+//    val registerResp: LiveData<Resource<RegResponse>>
+//        get() = _registerResp
 
     private val _loginResponse: MutableLiveData<Resource<LoginResponse>> = MutableLiveData()
     val loginResponse: LiveData<Resource<LoginResponse>>
@@ -307,11 +309,16 @@ class RezViewModel(
 //        _registerResponse.value = rezRepository.register(user)
 //    }
 
-
-    fun register(user: RegisterRequest) = viewModelScope.launch {
-        _registerResp.value = Resource.Loading
-       // _registerResp.value  = rezRepository.register(user)
+    fun register( user : RegisterRequest) = viewModelScope.launch {
+        _regResponse.value = Resource.Loading
+        _regResponse.value = rezRepository.register(user)
     }
+
+
+//    fun register(user: RegisterRequest) = viewModelScope.launch {
+//        _registerResp.value = Resource.Loading
+//        _registerResp.value  = rezRepository.register(user)
+//    }
 
     fun login( user: LoginRequest
     ) = viewModelScope.launch {

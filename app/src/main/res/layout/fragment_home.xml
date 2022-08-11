@@ -6,6 +6,7 @@
     android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/margin_30dp"
     tools:context=".ui.fragment.dashboard.Home">
 
 <LinearLayout
@@ -43,7 +44,8 @@
             <EditText
                 android:id="@+id/restaurant_text"
                 android:layout_width="match_parent"
-                android:layout_height="53dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_10dp"
                 android:drawableLeft="@drawable/ic_baseline_search_pink"
                 android:hint="Search for restaurant"
                 android:gravity="center_vertical"
@@ -64,10 +66,11 @@
                 android:id="@+id/fragment_select_state"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="wrap_content"
                 app:endIconDrawable="@drawable/ic_arrow_down_24"
                 app:endIconTint="@color/grey_light"
                 app:backgroundTint="@color/white"
+                app:boxStrokeWidth="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -79,36 +82,15 @@
                     android:theme="@style/Autocomplete"
                     android:inputType="none"
                     android:text="Select venue"
-                    android:fontFamily="@font/poppins_light"
+                    android:gravity="center_vertical"
                     android:textColor="@android:color/background_dark"
                     android:textCursorDrawable="@color/grey_light" />
             </com.google.android.material.textfield.TextInputLayout>
-<!--            <AutoCompleteTextView-->
-<!--                android:id="@+id/select_state"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:paddingEnd="@dimen/padding_10dp"-->
-<!--                android:drawableRight="@drawable/ic_arrow_down_24"-->
-<!--                android:hint="Select state"-->
-<!--                android:inputType="none"-->
-<!--                android:gravity="fill"-->
-<!--                android:textSize="@dimen/text_size_17sp"-->
-<!--                android:drawablePadding="@dimen/padding_21dp"-->
-<!--                android:paddingStart="@dimen/padding_30dp"-->
-<!--                android:textColorHint="@color/gray_dark"-->
-<!--                android:background="@color/white"/>-->
-
-<!--            <View-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:background="@color/blue"-->
-<!--                android:layout_height="3dp"/>-->
-
             <Button
                 android:id="@+id/search"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="SEARCH"
-                android:textSize="@dimen/text_size_16sp"
                 android:textStyle="bold"
                 android:background="@drawable/rectangle_outbox_blue"/>
         </LinearLayout>
@@ -137,17 +119,16 @@
                         android:layout_height="wrap_content"
                         android:text="Top Recommended"
                         android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:fontFamily="@font/poppins_light"/>
+                        android:textSize="15sp"/>
 
                     <TextView
                         android:id="@+id/seeAllTopRecommTv"
-                        android:layout_width="@dimen/margin_65dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:drawablePadding="@dimen/margin_10dp"
                         android:text="See all"
                         android:textColor="@color/pink"
-                        android:fontFamily="@font/poppins_light"
                         android:textSize="15sp"
                         app:drawableRightCompat="@drawable/ic_next_pink" />
 
@@ -190,18 +171,16 @@
                         android:text="Near Restaurant"
                         android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:fontFamily="@font/poppins_light"
                         />
 
                     <TextView
                         android:id="@+id/seeAllNearRestTv"
-                        android:layout_width="@dimen/margin_65dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="20dp"
-                        android:text="See all"
+                        android:layout_marginEnd="5dp"
+                        android:drawablePadding="@dimen/margin_10dp"                        android:text="See all"
                         android:textColor="@color/pink"
                         android:textSize="15sp"
-                        android:fontFamily="@font/poppins_light"
                         app:drawableRightCompat="@drawable/ic_next_pink" />
 
                 </LinearLayout>
@@ -250,18 +229,16 @@
                         android:text="Suggestion For You"
                         android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:fontFamily="@font/poppins_light"
                         />
 
                     <TextView
                         android:id="@+id/seeAllSuggestionTv"
-                        android:layout_marginEnd="20dp"
-                        android:layout_width="@dimen/margin_65dp"
-                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:drawablePadding="@dimen/margin_10dp"                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="See all"
                         android:textColor="@color/pink"
                         android:textSize="15sp"
-                        android:fontFamily="@font/poppins_light"
                         app:drawableRightCompat="@drawable/ic_next_pink" />
 
                 </LinearLayout>

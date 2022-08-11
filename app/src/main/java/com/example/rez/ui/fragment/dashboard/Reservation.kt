@@ -3,6 +3,7 @@ package com.example.rez.ui.fragment.dashboard
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +22,13 @@ import com.example.rez.adapter.paging.BookingPagingStateAdapter
 import com.example.rez.databinding.FragmentReservationBinding
 import com.example.rez.model.authentication.response.Booking
 import com.example.rez.ui.RezViewModel
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
 
 
@@ -55,6 +59,7 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.progressBar.visible(true)
 
         setRv()
         loadData()
@@ -115,17 +120,21 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
     }
 
     override fun onBookingItemClick(booking: Booking) {
-        if (LocalDateTime.now().toString() < booking.booked_for){
+        val c = Calendar.getInstance().time
+        val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        val formattedDate = df.format(c)
+        val currentTime = formattedDate.substring(0,19)
+//        println(currentTime) //2022-08-08 12:32:58.139
+//        println(currentTime) //2022-08-08 13:00:00
+//        Log.d("CHECKKKKKK", currentTime)
+        if (currentTime < booking.booked_for){
             val action = ReservationDirections.actionReservationToQRCodeFragment(booking)
             findNavController().navigate(action)
         }else {
             val action = ReservationDirections.actionReservationToBookingDetailsFragment(booking)
             findNavController().navigate(action)
         }
+
     }
 
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        outState.putParcelableArrayList("message_list", ArrayList<? Parcelable> messageList )
-//    }
 }

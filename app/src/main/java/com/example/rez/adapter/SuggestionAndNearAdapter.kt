@@ -46,10 +46,10 @@ class SuggestionAndNearAdapter(private var suggestionList: List<SuggestedVendor>
                     hotelName.text = company_name
                    // ratingTv.rating = average_rating
                     category.text = category_name
-                    if (total_tables == 1){
-                        tableQty.text = total_tables.toString() + " table"
+                    if (total_tables == 1 || total_tables ==0){
+                        tableQty.text = total_tables.toString() + " Table"
                     }else{
-                        tableQty.text = total_tables.toString() + " tables"
+                        tableQty.text = total_tables.toString() + " Tables"
                     }
                     if (liked_by_user){
                         like.visible(true)

@@ -19,13 +19,35 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="140dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/hotelImageIv"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:scaleType="fitXY" />
+
+<!--            <ImageView-->
+<!--                android:id="@+id/unLikeIv"-->
+<!--                android:layout_width="35dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:visibility="visible"-->
+<!--                android:layout_alignParentTop="true"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                android:src="@drawable/ic_no_fav" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/likeIv"-->
+<!--                android:layout_width="35dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:layout_alignParentTop="true"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                android:src="@drawable/ic_fav"-->
+<!--                android:visibility="invisible" />-->
 
 <!--            <TextView-->
 <!--                android:id="@+id/tableQtyTv"-->
@@ -85,10 +107,9 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:maxLines="2"
-                android:fontFamily="@font/poppins_light"
                 android:layout_gravity="center"
                 android:gravity="start"
-                android:textSize="16sp"
+                android:textStyle="bold"
                 android:textColor="@color/black"/>
 
 

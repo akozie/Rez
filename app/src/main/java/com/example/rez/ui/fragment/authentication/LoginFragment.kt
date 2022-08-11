@@ -116,44 +116,6 @@ class LoginFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        rezViewModel.loginResponse.observe(viewLifecycleOwner, Observer {
-            binding.loginTv.progressBar.visible(it is Resource.Loading)
-            binding.loginTv.button.text = "Please wait..."
-            when (it) {
-                is Resource.Success -> {
-                    binding.loginTv.button.text = "LOGIN"
-                    if (it.value.status) {
-                        lifecycleScope.launch {
-                            val uName = it.value.data.first_name
-                            val uEmail = binding.edtUserEmail.text.toString().trim()
-                            val token: String? = it.value.data.token
-                            val user = sharedPreferences.edit().putString("token", token).commit()
-                            sharedPreferences.edit().putString("email", uEmail).commit()
-                            sharedPreferences.edit().putString("name", uName).commit()
-                            Log.i("TOK", user.toString())
-                            val message = it.value.message
-                            showToast(message)
-                            startActivity(
-                                Intent(
-                                    requireContext(),
-                                    DashboardActivity::class.java
-                                )
-                            )
-                            requireActivity().finish()
-                        }
-                    } else {
-                        it.value.message?.let { it1 -> showToast(it1) }
-
-                    }
-
-                }
-                is Resource.Failure -> {
-                    binding.loginTv.button.text = "LOGIN"
-                    handleApiError(it)
-                }
-            }
-        })
-
         binding.edtUserEmail.addTextChangedListener {
             val email = binding.edtUserEmail.text.toString().trim()
             binding.loginTv.submit.enable(email.isNotEmpty() && it.toString().isNotEmpty())
@@ -185,11 +147,11 @@ class LoginFragment : Fragment() {
                     getString(R.string.all_email_cant_be_empty)
 
             }
-            !validateEmail(email) -> {
-                binding.TILedtUserEmail.error =
-                    getString(R.string.all_invalid_email)
-
-            }
+//            !validateEmail(email) -> {
+//                binding.TILedtUserEmail.error =
+//                    getString(R.string.all_invalid_email)
+//
+//            }
             password.isEmpty() -> {
                 binding.TILedtPass.error =
                     getString(R.string.all_password_is_required)
@@ -202,6 +164,44 @@ class LoginFragment : Fragment() {
                         password = password
                     )
                     rezViewModel.login(newUser)
+                    rezViewModel.loginResponse.observe(viewLifecycleOwner, Observer {
+                        binding.loginTv.progressBar.visible(it is Resource.Loading)
+                        binding.loginTv.button.text = "Please wait..."
+                        when (it) {
+                            is Resource.Success -> {
+                                binding.loginTv.button.text = "LOGIN"
+                                if (it.value.status) {
+                                    lifecycleScope.launch {
+                                        val uName = it.value.data.first_name
+                                        val uEmail = binding.edtUserEmail.text.toString().trim()
+                                        val token: String? = it.value.data.token
+                                        val user = sharedPreferences.edit().putString("token", token).commit()
+                                        sharedPreferences.edit().putString("email", uEmail).commit()
+                                        sharedPreferences.edit().putString("name", uName).commit()
+                                        Log.i("TOK", user.toString())
+                                        val message = it.value.message
+                                        showToast(message)
+                                        startActivity(
+                                            Intent(
+                                                requireContext(),
+                                                DashboardActivity::class.java
+                                            )
+                                        )
+                                        requireActivity().finish()
+                                    }
+                                } else {
+                                    it.value.message?.let { it1 -> showToast(it1) }
+
+                                }
+
+                            }
+                            is Resource.Failure -> {
+                                binding.loginTv.button.text = "LOGIN"
+                                handleApiError(it)
+                            }
+                        }
+                    })
+
                 }
             }
         }

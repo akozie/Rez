@@ -105,9 +105,9 @@ class ResetPasswordFragment : Fragment() {
             resetPassword()
         }
 
-        binding.resendBtn.setOnClickListener {
-            resend()
-        }
+//        binding.resendBtn.setOnClickListener {
+//            resend()
+//        }
     }
 
     private fun resend() {

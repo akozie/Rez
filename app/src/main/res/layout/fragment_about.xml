@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.fragment.dashboard.AboutFragment"
+    android:layout_marginBottom="@dimen/margin_30dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

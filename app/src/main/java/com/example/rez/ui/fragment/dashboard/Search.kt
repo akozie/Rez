@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rez.RezApp
 import com.example.rez.databinding.FragmentSearchBinding
 import com.example.rez.model.authentication.response.ResultX
@@ -27,8 +26,8 @@ import com.example.rez.adapter.paging.SearchPagingAdapter
 import com.example.rez.util.showToast
 import kotlinx.coroutines.flow.collectLatest
 import android.view.KeyEvent
+import android.widget.ImageView
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.rez.model.dashboard.RecommendedVendor
 import com.example.rez.model.dashboard.SearchModel
 
 
@@ -45,7 +44,7 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
     private var stateID: Int = 0
     private var restaurantID: Int = 0
     private lateinit var noOfPersons: String
-    private lateinit var searchText: String
+    private lateinit var searchRestaurants: String
     private var isLoaded = false
 
 
@@ -79,15 +78,11 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
         noOfPersons = "5"
         setRv()
 
-        searchText = binding.searchRestaurantsTextView.text.toString().trim()
+        //searchRestaurants =  binding.searchRestaurantsTextView.text.toString()
 
-            if (searchText.isNotEmpty()){
-                loadData()
-            }else{
-                searchText = args!!.searchText.toString()
-                loadData()
-                searchText = binding.searchRestaurantsTextView.text.toString().trim()
-            }
+        searchRestaurants = args!!.searchText.toString()
+        loadData()
+
 
         binding.btnRetry.setOnClickListener {
             searchAdapter.retry()
@@ -122,6 +117,7 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
                                 if (editable?.length!! <= 2){
                                     showToast("Text length must be greater than 2")
                                 } else{
+                                    searchRestaurants = editable.toString()
                                     loadData()
                                 }
                             return true;
@@ -169,14 +165,19 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
 
     private fun loadData() {
         lifecycleScope.launch {
-                rezViewModel.search(searchText, null, null, null, null , null,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
+                rezViewModel.search(searchRestaurants, null, null, null, null , null,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
                     binding.progressBar.visible(false)
                     searchAdapter.submitData(viewLifecycleOwner.lifecycle, it)
-                    binding.searchLayout.visibility = View.GONE
+                    //binding.searchLayout.visibility = View.GONE
                     binding.appBarLayout.visibility = View.VISIBLE
            }
         }
     }
+
+//    override fun likeUnlike(id: String, like: ImageView, unLike: ImageView) {
+//        registerObservers(like, unLike)
+//        rezViewModel.addOrRemoveFavorites(id, "Bearer ${sharedPreferences.getString("token", "token")}")
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

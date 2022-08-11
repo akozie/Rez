@@ -15,6 +15,8 @@
         <entry key="app/src/main/res/drawable/google_icon.xml" value="0.30666666666666664" />
         <entry key="app/src/main/res/drawable/home_placeorder.xml" value="0.18854166666666666" />
         <entry key="app/src/main/res/drawable/ic_arrow_down_24.xml" value="0.29384615384615387" />
+        <entry key="app/src/main/res/drawable/ic_baseline_access_time_24.xml" value="0.238" />
+        <entry key="app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.238" />
         <entry key="app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.20625" />
         <entry key="app/src/main/res/drawable/ic_baseline_call_24.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.31145833333333334" />
@@ -104,9 +106,9 @@
         <entry key="app/src/main/res/layout/fragment_notification_message_list_layout.xml" value="0.20652173913043478" />
         <entry key="app/src/main/res/layout/fragment_o_t_p.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_proceed_to_booking.xml" value="0.14361702127659576" />
-        <entry key="app/src/main/res/layout/fragment_proceed_to_payment.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_proceed_to_payment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_q_r_code.xml" value="0.17255434782608695" />
-        <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.15833333333333333" />
+        <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_reservation.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_reset_password.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_review.xml" value="0.14387031408308004" />
@@ -136,7 +138,7 @@
         <entry key="app/src/main/res/layout/suggestion_and_near_layout.xml" value="0.15534420289855072" />
         <entry key="app/src/main/res/layout/tab_details_layout.xml" value="0.165" />
         <entry key="app/src/main/res/layout/table_details_layout.xml" value="0.20652173913043478" />
-        <entry key="app/src/main/res/layout/table_layout.xml" value="0.35185185185185186" />
+        <entry key="app/src/main/res/layout/table_layout.xml" value="0.2250879249706917" />
         <entry key="app/src/main/res/layout/top_recommended_adapter.xml" value="0.375" />
         <entry key="app/src/main/res/layout/top_recommended_adapter_layout.xml" value="0.16666666666666666" />
         <entry key="app/src/main/res/layout/welcome_slide1.xml" value="0.14361702127659576" />
@@ -158,7 +160,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.15833333333333333" />
+        <option name="scale" value="0.125" />
       </ProjectState>
     </option>
   </component>

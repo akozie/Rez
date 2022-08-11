@@ -46,10 +46,10 @@ class NearAdapter(private var nearByList: List<NearbyVendor>, val onNearClickLis
                     hotelNameTv.text = company_name
                     //ratingTv.rating = average_rating
                     categoryTv.text = category_name
-                    if (total_tables == 1){
-                        tableQtyTv.text = total_tables.toString() + " table"
+                    if (total_tables == 1 || total_tables ==0){
+                        tableQtyTv.text = total_tables.toString() + " Table"
                     }else{
-                        tableQtyTv.text = total_tables.toString() + " tables"
+                        tableQtyTv.text = total_tables.toString() + " Tables"
                     }
                     if (liked_by_user){
                         likeIv.visible(true)

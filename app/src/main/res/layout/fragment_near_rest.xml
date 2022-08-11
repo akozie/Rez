@@ -4,6 +4,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/margin_30dp"
 tools:context=".ui.fragment.dashboard.NearRestFragment"
 android:orientation="vertical">
 
@@ -90,7 +91,7 @@ android:orientation="vertical">
                       android:padding="@dimen/padding_10dp"
                       android:text=""
                       android:textColor="@color/black"
-                      android:textSize="15sp"
+                      android:textSize="14sp"
                       android:textStyle="bold" />
 
                   <TextView
@@ -127,8 +128,7 @@ android:orientation="vertical">
                       android:layout_gravity="end"
                       android:background="@drawable/test_cursor_white"
                       android:drawablePadding="5dp"
-                      android:gravity="end"
-                      android:fontFamily="@font/poppins_light"
+                      android:gravity="center_vertical"
                       android:maxLines="2"
                       android:padding="@dimen/padding_10dp"
                       android:text="manish patiadr"
@@ -189,7 +189,6 @@ android:orientation="vertical">
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Table Details"
-            android:fontFamily="@font/poppins_light"
             android:textColor="@color/black"
             android:textSize="15sp" />
 

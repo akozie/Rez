@@ -47,6 +47,7 @@ class ForgotPasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.submitBtn.button.text = "Submit"
 
         binding.submitBtn.progressBar.visible(false)
 

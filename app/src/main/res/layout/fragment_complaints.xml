@@ -4,6 +4,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/margin_30dp"
 tools:context=".ui.fragment.dashboard.ComplaintsFragment"
 android:orientation="vertical">
 
@@ -23,7 +24,7 @@ android:orientation="vertical">
     android:layout_marginRight="15dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fontFamily="@font/poppins_light"
+    android:textStyle="normal"
     android:text="Subject"
     android:textColor="@color/black"
     android:textSize="@dimen/text_size_15sp" />
@@ -33,6 +34,7 @@ android:orientation="vertical">
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:boxBackgroundMode="none"
+    app:hintEnabled="false"
     android:layout_marginRight="15dp"
     android:layout_marginLeft="15dp">
 
@@ -59,7 +61,7 @@ android:orientation="vertical">
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Message"
-    android:fontFamily="@font/poppins_light"
+    android:textStyle="normal"
     android:textColor="@color/black"
     android:textSize="@dimen/text_size_15sp" />
 
@@ -68,6 +70,7 @@ android:orientation="vertical">
     android:layout_width="match_parent"
     android:layout_height="150dp"
     app:boxBackgroundMode="none"
+    app:hintEnabled="false"
     android:layout_marginRight="15dp"
     android:layout_marginLeft="15dp">
 

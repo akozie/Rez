@@ -211,6 +211,7 @@ class DashboardActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.home2 -> {
                     bottomNavigationView.visibility = View.VISIBLE
+                    toolbarFragmentName.text = sharedPreferences.getString("username", "username")
                     searchview.visibility = View.VISIBLE
                     hiText.visibility = View.VISIBLE
                     toolbarFragmentName.visibility = View.GONE

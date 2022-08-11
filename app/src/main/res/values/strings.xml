@@ -65,7 +65,7 @@
     <string name="all_phone_number_is_required">Phone Number is required</string>
     <string name="all_invalid_email">Invalid Email</string>
     <string name="all_password_is_required">Password is Required</string>
-    <string name="valid_password_is_required">Password should be six characters</string>
+    <string name="valid_password_is_required">Password should be more than six characters</string>
     <string name="all_password_mismatch">Password Mismatch</string>
     <string name="null_all">null</string>
     <string name="skip">skip</string>

@@ -82,6 +82,7 @@ class SuggestionForYou : Fragment(), SuggestionAndNearAdapter.OnSuggestionItemCl
                             it.value.message?.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
+                        removeObserverFromSuggestion()
                     }
                     is Resource.Failure -> handleApiError(it)
                 }
@@ -108,9 +109,9 @@ class SuggestionForYou : Fragment(), SuggestionAndNearAdapter.OnSuggestionItemCl
     }
 
     private fun registerObservers(like: ImageView, unLike: ImageView) {
-        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
+        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner) {
             //binding.progressBar.visible(it is Resource.Loading)
-            when(it) {
+            when (it) {
                 is Resource.Success -> {
                     if (unLike.isVisible) {
                         showToast("Added Successfully to favorites")
@@ -118,7 +119,7 @@ class SuggestionForYou : Fragment(), SuggestionAndNearAdapter.OnSuggestionItemCl
                         like.visibility = View.VISIBLE
                         unLike.visibility = View.INVISIBLE
                         removeObserver()
-                    } else if(!unLike.isVisible){
+                    } else if (!unLike.isVisible) {
                         showToast("Removed Successfully from favorites")
                         //rezViewModel.favoriteResponse = 0
                         like.visibility = View.INVISIBLE
@@ -128,11 +129,15 @@ class SuggestionForYou : Fragment(), SuggestionAndNearAdapter.OnSuggestionItemCl
                 }
                 is Resource.Failure -> handleApiError(it)
             }
-        })
+        }
     }
 
     private fun removeObserver() {
         rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)
+    }
+
+    private fun removeObserverFromSuggestion() {
+        rezViewModel.getHomeResponse.removeObservers(viewLifecycleOwner)
     }
 
     override fun onDestroy() {

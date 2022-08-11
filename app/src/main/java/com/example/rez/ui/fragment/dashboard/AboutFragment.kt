@@ -181,14 +181,15 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
             }
         }
 
-
         val c = Calendar.getInstance().time
         val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
         val formattedDate = df.format(c)
+        val currentTime = formattedDate.substring(11, 16)
 
         // 2021-04-10 10:28:21.052
-        if (time <= formattedDate.substring(11, 16)) {
-            val msg = "Time must be a date after $time"
+        if (date == formattedDate.substring(0,10) && time <= currentTime) {
+            val msg = "Time must be a date after $currentTime"
+           // print(date)
             showToast(msg)
         } else{
             binding.proceedTv.progressBar.visibility = View.VISIBLE
@@ -209,7 +210,8 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
              binding.proceedTv.button.text = "Please wait..."
             when(it) {
                 is Resource.Success -> {
-                            val ref = it.value.data.reference
+                    binding.proceedTv.button.text = "Proceed to booking"
+                    val ref = it.value.data.reference
                             val amount = it.value.data.amount
                             sharedPreferences.edit().putString("ref", ref).apply()
                             sharedPreferences.edit().putString("amount", amount).apply()
@@ -219,10 +221,10 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
                             //removeObservers()
                 }
                 is Resource.Failure -> {
-                        val message = "No available slots for this table today"
+                    binding.proceedTv.button.text = "Proceed to booking"
+                    val message = "No available slots for this table today"
                         showToast(message)
-                    handleApiError(it) { bookTable()
-                    }
+                    handleApiError(it)
                     //removeObservers()
                 }
             }

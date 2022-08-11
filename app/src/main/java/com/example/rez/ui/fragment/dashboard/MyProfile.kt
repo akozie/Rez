@@ -111,30 +111,6 @@ class MyProfile : Fragment() {
         binding.saveBtn.progressBar.visible(false)
        // binding.saveBtn.enable(false)
 
-        rezViewModel.updateProfileResponse.observe(viewLifecycleOwner, Observer {
-            binding.saveBtn.progressBar.visible(it is Resource.Loading)
-            binding.saveBtn.button.text =  "Please wait.."
-            when(it) {
-                is Resource.Success -> {
-                    binding.saveBtn.button.text = "Update Profile"
-                    if (it.value.status){
-                        lifecycleScope.launch {
-                            val message = it.value.message
-                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                            val action = MyProfileDirections.actionMyProfileToSuccessFragment()
-                            findNavController().navigate(action)
-                        }
-                    } else {
-                        it.value.message.let { it1 ->
-                            Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
-                    }
-                }
-                is Resource.Failure -> {
-                    binding.saveBtn.button.text = "Update Profile"
-                    handleApiError(it) { updateProfile() }
-                }
-            }
-        })
 
         binding.saveBtn.submit.setOnClickListener {
             if (binding.firstNameEt.text!!.isEmpty()) {
@@ -158,10 +134,10 @@ class MyProfile : Fragment() {
                 Toast.makeText(requireContext(), R.string.all_email_cant_be_empty, Toast.LENGTH_SHORT).show()
 
             }
-            !ValidationObject.validateEmail(email) -> {
-                Toast.makeText(requireContext(), R.string.all_invalid_email, Toast.LENGTH_SHORT).show()
-
-            }
+//            !ValidationObject.validateEmail(email) -> {
+//                Toast.makeText(requireContext(), R.string.all_invalid_email, Toast.LENGTH_SHORT).show()
+//
+//            }
             firstName.isEmpty() -> {
                 Toast.makeText(requireContext(), "Name cannot be empty", Toast.LENGTH_SHORT).show()
             }
@@ -173,6 +149,30 @@ class MyProfile : Fragment() {
                         phone = phoneNumber
                     )
                 rezViewModel.updateProfile(newUser, token = "Bearer ${sharedPreferences.getString("token", "token")}")
+                rezViewModel.updateProfileResponse.observe(viewLifecycleOwner, Observer {
+                    binding.saveBtn.progressBar.visible(it is Resource.Loading)
+                    binding.saveBtn.button.text =  "Please wait.."
+                    when(it) {
+                        is Resource.Success -> {
+                            binding.saveBtn.button.text = "Update Profile"
+                            if (it.value.status){
+                                lifecycleScope.launch {
+                                    val message = it.value.message
+                                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                                    val action = MyProfileDirections.actionMyProfileToSuccessFragment()
+                                    findNavController().navigate(action)
+                                }
+                            } else {
+                                it.value.message.let { it1 ->
+                                    Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
+                            }
+                        }
+                        is Resource.Failure -> {
+                            binding.saveBtn.button.text = "Update Profile"
+                            handleApiError(it) { updateProfile() }
+                        }
+                    }
+                })
             }
         }
     }

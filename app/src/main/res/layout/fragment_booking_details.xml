@@ -5,6 +5,7 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 android:fillViewport="true"
+    android:layout_marginBottom="@dimen/margin_30dp"
 tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
 
     <LinearLayout
@@ -109,7 +110,8 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                         android:textSize="11sp"
                         android:drawablePadding="3dp"
                         android:textColor="@color/gray_dark"
-                        app:drawableLeftCompat="@drawable/ic_baseline_calendar_today_24" />
+                        android:drawableTint="@color/gray_dark"
+                        app:drawableLeftCompat="@drawable/ic_baseline_calendar_month_24" />
 
                     <TextView
                         android:layout_marginStart="5dp"
@@ -123,7 +125,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                         android:textSize="11sp"
                         android:drawablePadding="3dp"
                         android:textColor="@color/gray_dark"
-                        app:drawableLeftCompat="@drawable/clock2" />
+                        app:drawableLeftCompat="@drawable/ic_baseline_access_time_24" />
 
 
                 </LinearLayout>
@@ -353,6 +355,8 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
             android:id="@+id/vendor_rating_btn"
             style="@style/LoginFragmentButtonStyle"
             layout="@layout/custom_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_10dp"
             android:layout_marginTop="55dp"
             android:layout_marginEnd="@dimen/margin_10dp"
@@ -365,9 +369,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
             app:iconTintMode="multiply"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />
 
         <!--        <com.google.android.material.button.MaterialButton-->
 <!--        android:id="@+id/vendor_rating_btn"-->

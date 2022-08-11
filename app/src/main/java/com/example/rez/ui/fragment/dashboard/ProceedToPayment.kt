@@ -195,8 +195,8 @@ class ProceedToPayment : Fragment() {
                 val expiryYear = cardExpiryArray[1].toInt()
                 val card = Card(cardNumber, expiryMonth, expiryYear, cvv)
                 val charge = Charge()
-                //grandTotal += "0.05"
-                charge.amount = grandTotal.toInt()
+
+                charge.amount = grandTotal.toInt() * 100
                 charge.email = sharedPreferences.getString("email", "email")
                 charge.card = card
                 charge.reference =sharedPreferences.getString("ref", "ref")

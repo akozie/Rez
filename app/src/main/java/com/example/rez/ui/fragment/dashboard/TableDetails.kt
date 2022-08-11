@@ -61,7 +61,6 @@ class TableDetails : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         argsId = arguments?.getParcelable<Table>("TABLE")!!.id // get table id
         sharedPreferences.edit().putInt("tid", argsId).apply() // save table is
         setUpTable()
