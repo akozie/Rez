@@ -86,6 +86,9 @@
         <action
             android:id="@+id/action_home2_to_successFragment"
             app:destination="@id/successFragment" />
+        <action
+            android:id="@+id/action_home2_to_homeActivity"
+            app:destination="@id/homeActivity" />
     </fragment>
     <fragment
         android:id="@+id/myProfile"
@@ -107,6 +110,9 @@
         <action
             android:id="@+id/action_reservation_to_QRCodeFragment"
             app:destination="@id/QRCodeFragment" />
+        <action
+            android:id="@+id/action_reservation_to_proceedToPayment"
+            app:destination="@id/proceedToPayment" />
     </fragment>
     <fragment
         android:id="@+id/changePassword"
@@ -116,6 +122,9 @@
         <action
             android:id="@+id/action_changePassword_to_settings2"
             app:destination="@id/settings2" />
+        <action
+            android:id="@+id/action_changePassword_to_home2"
+            app:destination="@id/home2" />
     </fragment>
     <fragment
         android:id="@+id/topRecommended"
@@ -156,6 +165,9 @@
         <action
             android:id="@+id/action_topFragment_to_tableDetails"
             app:destination="@id/tableDetails" />
+        <action
+            android:id="@+id/action_topFragment_to_openingHoursFragment"
+            app:destination="@id/openingHoursFragment" />
     </fragment>
     <fragment
         android:id="@+id/suggestFragment"
@@ -168,6 +180,9 @@
         <action
             android:id="@+id/action_suggestFragment_to_tableDetails"
             app:destination="@id/tableDetails" />
+        <action
+            android:id="@+id/action_suggestFragment_to_openingHoursFragment"
+            app:destination="@id/openingHoursFragment" />
     </fragment>
     <fragment
         android:id="@+id/nearRestFragment"
@@ -180,6 +195,9 @@
         <action
             android:id="@+id/action_nearRestFragment_to_tableDetails"
             app:destination="@id/tableDetails" />
+        <action
+            android:id="@+id/action_nearRestFragment_to_openingHoursFragment"
+            app:destination="@id/openingHoursFragment" />
     </fragment>
     <fragment
         android:id="@+id/tableDetails"
@@ -256,6 +274,9 @@
         <argument
             android:name="RESULT"
             app:argType="com.example.rez.model.authentication.response.ResultX" />
+        <action
+            android:id="@+id/action_searchFragment_to_openingHoursFragment"
+            app:destination="@id/openingHoursFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoriteDetailsFragment"
@@ -268,6 +289,9 @@
         <argument
             android:name="FAVORITEDATA"
             app:argType="com.example.rez.model.authentication.response.Favourite" />
+        <action
+            android:id="@+id/action_favoriteDetailsFragment_to_openingHoursFragment"
+            app:destination="@id/openingHoursFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookingDetailsFragment"
@@ -320,4 +344,19 @@
             android:id="@+id/action_complaintsFragment_to_home2"
             app:destination="@id/home2" />
     </fragment>
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.example.rez.ui.fragment.dashboard.HomeActivity"
+        android:label="activity_home"
+        tools:layout="@layout/activity_home" />
+    <dialog
+        android:id="@+id/openingHoursFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.OpeningHoursFragment"
+        android:label=" "
+        tools:layout="@layout/fragment_opening_hours" >
+        <argument
+            android:name="OPENING"
+            app:argType="com.example.rez.model.dashboard.DataXXXXXXX"
+            app:nullable="true" />
+    </dialog>
 </navigation>

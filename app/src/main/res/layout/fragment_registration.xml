@@ -7,14 +7,14 @@ android:layout_height="match_parent"
 tools:context=".ui.fragment.authentication.RegistrationFragment"
 android:orientation="vertical">
 
-<ImageView
-    android:id="@+id/upImage"
-    android:layout_width="match_parent"
-    android:layout_height="110dp"
-    android:layout_alignParentTop="true"
-    android:layout_marginStart="40dp"
-    android:scaleType="fitXY"
-    android:src="@drawable/splash_up_im_new" />
+    <ImageView
+        android:id="@+id/upImage"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="40dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/splash_up_im_new" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/logo"
@@ -25,7 +25,6 @@ android:orientation="vertical">
         android:layout_marginStart="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_20dp"
         android:fontFamily="@font/poppins_medium"
-        android:src="@drawable/app_icon"
         android:text="SIGN-UP"
         android:textColor="@color/blue"
         android:textSize="@dimen/text_size_22sp" />
@@ -113,9 +112,8 @@ android:orientation="vertical">
                         android:background="@color/white"
                         android:backgroundTint="@color/white"
                         android:fontFamily="@font/poppins_light"
-                        android:hint="+234"
+                        android:hint="country code"
                         android:inputType="phone"
-                        android:maxLength="4"
                         android:textColor="@color/blue"
                         android:textColorHint="@color/gray_dark"
                         android:textSize="@dimen/text_size_13sp"

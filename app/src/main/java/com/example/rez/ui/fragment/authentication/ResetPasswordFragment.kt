@@ -53,6 +53,7 @@ class ResetPasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.resetSubmitBtn.button.text = "Please wait.."
 
         binding.resetSubmitBtn.progressBar.visible(false)
         binding.resetSubmitBtn.submit.enable(false)
@@ -137,6 +138,12 @@ class ResetPasswordFragment : Fragment() {
         val ref = args.reference!!
 
         when {
+            code.isEmpty() -> {
+                binding.TILedtCode.error =
+                    getString(R.string.all_otp_is_required)
+                binding.TILedtCode.errorIconDrawable = null
+
+            }
             password.isEmpty() -> {
                 binding.TILedtPass.error =
                     getString(R.string.all_password_is_required)
@@ -178,6 +185,20 @@ class ResetPasswordFragment : Fragment() {
     private fun validateSignUpFieldsOnTextChange(): Boolean {
         var isValidated = true
 
+        binding.edtCode.doOnTextChanged { _, _, _, _ ->
+            when {
+                binding.edtCode.text.toString().trim().isEmpty() -> {
+                    binding.TILedtCode.error =
+                        getString(R.string.all_otp_is_required)
+                    binding.TILedtCode.errorIconDrawable = null
+                    isValidated = false
+                }
+                else -> {
+                    binding.TILedtCode.error = null
+                    isValidated = true
+                }
+            }
+        }
         binding.edtPass.doOnTextChanged { _, _, _, _ ->
             when {
                 binding.edtPass.text.toString().trim().isEmpty() -> {
@@ -186,6 +207,9 @@ class ResetPasswordFragment : Fragment() {
                     binding.TILedtPass.errorIconDrawable = null
                     isValidated = false
                 }
+//                binding.edtPass.text.toString().trim().length > 6 -> {
+//                    isValidated = true
+//                }
                 else -> {
                     binding.TILedtPass.error = null
                     isValidated = true
@@ -218,9 +242,7 @@ class ResetPasswordFragment : Fragment() {
                 }
             }
         }
-
         return isValidated
     }
-
 
 }

@@ -24,12 +24,12 @@ class BookingPagingSource(
         return try {
             val response = authApi.getBookingsHistory(token, currentPage)
             val responseData = mutableListOf<Booking>()
-            val bookings = response.body()?.data?.bookings!!.toList()
+            val bookings = response.body()?.data?.bookings?.toList()
            // responseData.addAll(bookings)
 //            delay(5000)
 
             LoadResult.Page(
-                data = bookings,
+                data = bookings!!,
                 prevKey = if (currentPage == 1) null else currentPage - 1,
                 nextKey = if (bookings.isEmpty()) null else currentPage + 1
 //                nextKey = if (response.body()?.links?.to!! >= response.body()?.links?.from!!) null else currentPage + 1

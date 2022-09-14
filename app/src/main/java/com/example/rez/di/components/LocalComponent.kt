@@ -29,7 +29,6 @@ interface LocalComponent {
     fun inject(fragment: NearRestaurant)
     fun inject(fragment: NearRestFragment)
     fun inject(fragment: SuggestFragment)
-    fun inject(fragment: ErrorFragment)
     fun inject(fragment: TableDetails)
     fun inject(fragment: AboutFragment)
     fun inject(fragment: ReviewFragment)

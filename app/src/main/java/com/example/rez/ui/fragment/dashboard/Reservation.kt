@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,12 +17,15 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.rez.RezApp
 import com.example.rez.adapter.paging.BookingPagingAdapter
 import com.example.rez.adapter.paging.BookingPagingStateAdapter
+import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentReservationBinding
 import com.example.rez.model.authentication.response.Booking
 import com.example.rez.ui.RezViewModel
+import com.example.rez.util.handleApiError
 import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import kotlinx.coroutines.flow.collectLatest
@@ -39,6 +43,7 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
     private val rezViewModel: RezViewModel by activityViewModels()
     private lateinit var bookingAdapter: BookingPagingAdapter
     private lateinit var loaderStateAdapter: BookingPagingStateAdapter
+   // private  val booking: Booking = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -114,27 +119,69 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 
     override fun onBookingItemClick(booking: Booking) {
-        val c = Calendar.getInstance().time
-        val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
-        val formattedDate = df.format(c)
-        val currentTime = formattedDate.substring(0,19)
-//        println(currentTime) //2022-08-08 12:32:58.139
-//        println(currentTime) //2022-08-08 13:00:00
-//        Log.d("CHECKKKKKK", currentTime)
-        if (currentTime < booking.booked_for){
-            val action = ReservationDirections.actionReservationToQRCodeFragment(booking)
-            findNavController().navigate(action)
-        }else {
-            val action = ReservationDirections.actionReservationToBookingDetailsFragment(booking)
-            findNavController().navigate(action)
+        rezViewModel.getEachBooking(token = "Bearer ${sharedPreferences.getString("token", "token")}", booking.id)
+        rezViewModel.eachBookingResponse.observe(viewLifecycleOwner) {
+            //binding.progressBar.visible(it is Resource.Loading)
+            when (it) {
+                is Resource.Success -> {
+                    if (it.value.status) {
+                        val data = it.value.data
+                        if (data.confirmed_payment){
+                            if (data.status == "pending"){
+                                val message = "You will only be able to see more details when your booking has been accepted"
+                                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                                rezViewModel.cleanGetBookingResponse()
+                            }else{
+                                val c = Calendar.getInstance().time
+                                val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+                                val formattedDate = df.format(c)
+                                val currentTime = formattedDate.substring(0,19)
+                                //        println(currentTime) //2022-08-08 12:32:58.139
+                                //        println(currentTime) //2022-08-08 13:00:00
+                                //        Log.d("CHECKKKKKK", currentTime)
+                                if (currentTime < data.booked_for){
+                                    val action = ReservationDirections.actionReservationToQRCodeFragment(booking)
+                                    findNavController().navigate(action)
+                                }else {
+                                    val action = ReservationDirections.actionReservationToBookingDetailsFragment(booking)
+                                    findNavController().navigate(action)
+                                }
+                            }
+                            //showToast(data.status)
+                        }else{
+                            val ref = it.value.data.transactions.reference
+                            val amount = it.value.data.transactions.amount
+                            val date = it.value.data.booked_for.substring(0, 10)
+                            val time = it.value.data.booked_for.substring(11, 16)
+                            sharedPreferences.edit().putString("ref", ref).apply()
+                            sharedPreferences.edit().putString("amount", amount).apply()
+                            val action = ReservationDirections.actionReservationToProceedToPayment(date, time)
+                            findNavController().navigate(action)
+                            rezViewModel.cleanGetBookingResponse()
+                        }
+                        //binding.text = it.value.data.booking_reference
+                        //photo = it.value.data.qr_code
+                    } else {
+                        it.value.message.let { it1 ->
+                            Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                is Resource.Failure -> handleApiError(it)
+            }
         }
-
+        rezViewModel.cleanGetBookingResponse()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        rezViewModel.cleanGetBookingResponse()
+        _binding = null
+    }
 }

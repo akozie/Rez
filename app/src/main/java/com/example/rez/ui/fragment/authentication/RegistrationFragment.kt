@@ -272,8 +272,8 @@ class RegistrationFragment : Fragment() {
                                     sharedPreferences.edit().putString("name", uName).commit()
                                     sharedPreferences.edit().putString("token", token).commit() // save user's token
                                     sharedPreferences.edit().putString("email", uEmail).commit() // save user's email
-
                                     val message = it.value.message
+                                    showToast(message)
                                     startActivity(
                                         Intent(
                                             requireContext(),
@@ -281,7 +281,6 @@ class RegistrationFragment : Fragment() {
                                         )
                                     )
                                     requireActivity().finish()
-                                    showToast(message)
                                 } else {
                                     val message = it.value.message
                                     showToast(message)
@@ -290,14 +289,6 @@ class RegistrationFragment : Fragment() {
                             is Resource.Failure -> {
                                 binding.loginTv.button.text = "SIGNUP"
                                 handleApiError(it)
-//                     val error = it.value as RegResponse
-//                    if (error.errors?.phone?.isNotEmpty() == true){
-//                        val phoneErrors = error.errors.phone[0]
-//                        showToast(phoneErrors)
-//                    }else if (error.errors?.email?.isNotEmpty() == true ){
-//                        val emailErrors = error.errors.email[0]
-//                        showToast(emailErrors)
-//                    }
                             }
                         }
                     })

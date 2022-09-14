@@ -165,12 +165,22 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
 
     private fun loadData() {
         lifecycleScope.launch {
+            if (restaurantID == null){
                 rezViewModel.search(searchRestaurants, null, null, null, null , null,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
                     binding.progressBar.visible(false)
                     searchAdapter.submitData(viewLifecycleOwner.lifecycle, it)
                     //binding.searchLayout.visibility = View.GONE
                     binding.appBarLayout.visibility = View.VISIBLE
-           }
+                }
+            } else {
+                rezViewModel.search(searchRestaurants, null, null, null, null , restaurantID,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
+                    binding.progressBar.visible(false)
+                    searchAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+                    //binding.searchLayout.visibility = View.GONE
+                    binding.appBarLayout.visibility = View.VISIBLE
+                    restaurantID = 0
+                }
+            }
         }
     }
 

@@ -29,6 +29,7 @@ import com.example.rez.ui.RezViewModel
 import com.example.rez.util.handleApiError
 import com.example.rez.util.showToast
 import com.example.rez.util.visible
+import com.google.gson.Gson
 import com.viewpagerindicator.CirclePageIndicator
 import javax.inject.Inject
 
@@ -66,8 +67,11 @@ class SearchFragment : Fragment(), OnTableClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         args = arguments?.getParcelable("RESULT")
+        getOpeningHours()
         setList()
+        getTable()
         searchData()
+
         sharedPreferences.edit().putInt("vendorid", args!!.id).apply()
 
         binding.likeIv.setOnClickListener {
@@ -116,14 +120,40 @@ class SearchFragment : Fragment(), OnTableClickListener {
     private fun searchData() {
         binding.hotelNameTv.text = args?.company_name
         binding.hotelNameTv.text = args?.company_name
-        if (args?.ratings == 0){
-            binding.ratingBar.rating = "3".toFloat()
-        }else {
-            binding.ratingBar.rating = args?.ratings!!.toFloat()
-        }
+        binding.ratingBar.rating = args?.ratings!!.toFloat()
+
 
     }
 
+
+    private fun getTable() {
+        rezViewModel.getTable("Bearer ${sharedPreferences.getString("token", "token")}", args!!.id)
+        rezViewModel.getTablesResponse.observe(
+            viewLifecycleOwner, Observer {
+                binding.progressBar.visible(it is Resource.Loading)
+                when(it) {
+                    is Resource.Success -> {
+                        if (it.value.status){
+                            tableList = it.value.data.tables
+                            if (tableList.isEmpty()){
+                                binding.tableListRecycler.visibility = View.GONE
+                                binding.empty.visibility = View.VISIBLE
+                            }
+                            setTableList()
+                            val gson = Gson()
+                            val db = gson.toJson(tableList)
+                            sharedPreferences.edit().putString("tablelist", db).apply()
+
+                        } else {
+                            it.value.message.let { it1 ->
+                                Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
+                        }
+                    }
+                    is Resource.Failure -> handleApiError(it) { getTable() }
+                }
+            }
+        )
+    }
 
     private fun setList() {
         rezViewModel.getVendorTables(args!!.id, "Bearer ${sharedPreferences.getString("token", "token")}")
@@ -137,40 +167,57 @@ class SearchFragment : Fragment(), OnTableClickListener {
                             if (tableDetailsDataList.isEmpty()){
                                 tableDetailsDataList = listOf(Image("", 1, "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
                             }
-                            tableList = it.value.data.tables
-                            if (tableList.isEmpty()){
-                                binding.tableListRecycler.visibility = View.GONE
-                                binding.empty.visibility = View.VISIBLE
-                            }
-                            val favorite = it.value.data.favourite
-                            if (favorite){
-                                binding.likeIv.visible(true)
-                                binding.unLikeIv.visible(false)
-                            }else{
-                                binding.likeIv.visible(false)
-                                binding.unLikeIv.visible(true)
-                            }
-                            tableAdapter = TableAdapter(tableList, this)
-                            binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                            binding.tableListRecycler.adapter = tableAdapter
+                            //Log.d("TABLEDATALIST", tableDetailsDataList.toString())
+
                             setTableDetailsViewPagerAdapter()
-                            // setRecyclerview()
-                            //nearList = emptyList()
+
                         } else {
                             it.value.message?.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it)
+                    is Resource.Failure -> handleApiError(it) { setList() }
+                }
+            }
+        )
+    }
+
+    private fun setTableList() {
+        tableAdapter = TableAdapter(tableList, this)
+        binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.tableListRecycler.adapter = tableAdapter
+
+    }
+
+    private fun getOpeningHours() {
+        rezViewModel.getOpeningHours("Bearer ${sharedPreferences.getString("token", "token")}", args!!.id)
+        rezViewModel.getOpeningHoursResponse.observe(
+            viewLifecycleOwner, Observer {
+                binding.progressBar.visible(it is Resource.Loading)
+                when(it) {
+                    is Resource.Success -> {
+                        //
+                        val data = it.value.data
+                        if (data == null){
+                            binding.openingHours.visibility = View.GONE
+                        } else{
+                            binding.openingHours.visibility = View.VISIBLE
+                            binding.openingHours.setOnClickListener {
+                                val action = SearchFragmentDirections.actionSearchFragmentToOpeningHoursFragment(data)
+                                findNavController().navigate(action)
+                            }
+                        }
+                    }
+                    is Resource.Failure -> handleApiError(it) { getOpeningHours() }
                 }
             }
         )
     }
 
     private fun registerObservers() {
-        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner, {
+        rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner) {
             binding.progressBar.visible(it is Resource.Loading)
-            when(it) {
+            when (it) {
                 is Resource.Success -> {
                     if (binding.unLikeIv.isVisible) {
                         showToast("Added Successfully to favorites")
@@ -178,7 +225,7 @@ class SearchFragment : Fragment(), OnTableClickListener {
                         binding.likeIv.visibility = View.VISIBLE
                         binding.unLikeIv.visibility = View.INVISIBLE
                         removeObserver()
-                    } else if(!binding.unLikeIv.isVisible){
+                    } else if (!binding.unLikeIv.isVisible) {
                         showToast("Removed Successfully from favorites")
                         //rezViewModel.favoriteResponse = 0
                         binding.likeIv.visibility = View.INVISIBLE
@@ -188,7 +235,7 @@ class SearchFragment : Fragment(), OnTableClickListener {
                 }
                 is Resource.Failure -> handleApiError(it)
             }
-        })
+        }
     }
 
     private fun removeObserver() {
@@ -202,6 +249,7 @@ class SearchFragment : Fragment(), OnTableClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        rezViewModel.clean()
         _binding = null
     }
 }

@@ -12,6 +12,8 @@ import com.example.rez.model.authentication.response.Booking
 import com.example.rez.model.dashboard.Notification
 import com.example.rez.ui.GlideApp
 import com.example.rez.util.visible
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class NotificationPagingAdapter: PagingDataAdapter<Notification, NotificationPagingAdapter.NotificationMyViewHolder>(
     differCallback
@@ -36,7 +38,6 @@ class NotificationPagingAdapter: PagingDataAdapter<Notification, NotificationPag
         }
     }
 
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationMyViewHolder {
             val binding = NotificationLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return NotificationMyViewHolder(binding)
@@ -48,20 +49,21 @@ class NotificationPagingAdapter: PagingDataAdapter<Notification, NotificationPag
                     with(holder){
                         clientMessage.text = current?.message
                         messageDate.text = current?.created_at?.substring(0, 10)
-                        val newTime = current?.created_at?.substring(11, 16)
-                       // messageTime.text = newTime
-                        val calTime = newTime?.substring(0,2)?.toInt()
-                        val remainingTime = newTime?.substring(3,5)?.toInt()
-                        val new = 12 - calTime!!
-                        if (newTime != null) {
-                            if (newTime < 12.toString()){
-                                messageTime.text = newTime + " AM"
-                            }else if (new == 0){
-                                messageTime.text = "12$remainingTime PM"
-                            }else  if (new < 10){
-                                messageTime.text = "0$new$remainingTime PM"
+                        val localZonedDateTime = ZonedDateTime.parse(current?.created_at)
+                            .withZoneSameInstant(ZoneId.systemDefault()).toString()
+                        val firstMonText = localZonedDateTime.substring(11,16)
+                        if (firstMonText.substring(0, 2) < 12.toString()){
+                            messageTime.text = firstMonText + " AM"
+                        } else {
+                            val newTime = firstMonText.substring(0,2).toInt()
+                            val calculatedTime = newTime - 12
+                            val remainingTime = localZonedDateTime.substring(2,4)
+                            if (calculatedTime == 0){
+                                messageTime.text = "12:$remainingTime PM"
+                            }else if (calculatedTime < 10){
+                                messageTime.text = "0$calculatedTime:$remainingTime PM"
                             } else{
-                                messageTime.text = "$new$remainingTime PM"
+                                messageTime.text = "$calculatedTime:$remainingTime PM"
                             }
                         }
                     }

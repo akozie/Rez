@@ -127,7 +127,8 @@ class MyProfile : Fragment() {
         val firstName = binding.firstNameEt.text.toString().trim()
         val lastName = binding.lastNameEt.text.toString().trim()
         val email = binding.userEmailEt.text.toString().trim()
-        val phoneNumber = binding.phoneText.text.toString().trim() + binding.mobileNoEt.text.toString().trim()
+       // val phoneNumber = binding.phoneText.text.toString().trim() + binding.mobileNoEt.text.toString().trim()
+        val phoneNumber = binding.mobileNoEt.text.toString().trim()
 
         when {
             email.isEmpty() -> {
@@ -166,12 +167,15 @@ class MyProfile : Fragment() {
                                 it.value.message.let { it1 ->
                                     Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                             }
+                            //rezViewModel.cleanProfileResponse()
                         }
                         is Resource.Failure -> {
                             binding.saveBtn.button.text = "Update Profile"
+                            showToast("File is too Large")
                             handleApiError(it) { updateProfile() }
                         }
                     }
+                   // rezViewModel.cleanProfileResponse()
                 })
             }
         }
@@ -191,7 +195,8 @@ class MyProfile : Fragment() {
                             binding.firstNameEt.text = it.value.data.first_name
                             binding.lastNameEt.text = it.value.data.last_name
                             binding.userEmailEt.text = sharedPreferences.getString("email", "email")
-                            binding.mobileNoEt.text = it.value.data.phone?.substring(4)
+                            //binding.mobileNoEt.text = it.value.data.phone?.substring(4)
+                            binding.mobileNoEt.text = it.value.data.phone
                             if (it.value.data.avatar == null){
                                 GlideApp.with(requireContext()).load(R.drawable.chairman_image).into(binding.customerImageIv)
                             }else {
@@ -310,10 +315,12 @@ class MyProfile : Fragment() {
                             it.value.message.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
+                        //rezViewModel.cleanImageProfile()
                     }
                     is Resource.Failure -> {
                         binding.saveBtn.button.text = "Update Profile"
                         handleApiError(it)
+                        //rezViewModel.cleanImageProfile()
                     }
                 }
             }
@@ -420,34 +427,12 @@ class MyProfile : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        rezViewModel.getProfileResponse.observe(viewLifecycleOwner, Observer {
-            binding.saveBtn.progressBar.visible(it is Resource.Loading)
-            when(it) {
-                is Resource.Success -> {
-                    if (it.value.status){
-                        lifecycleScope.launch {
-                            binding.firstNameEt.text = it.value.data.first_name
-                            binding.lastNameEt.text = it.value.data.last_name
-                            binding.userEmailEt.text = sharedPreferences.getString("email", "email")
-                            binding.mobileNoEt.text = it.value.data.phone?.substring(4)
-                            GlideApp.with(requireContext()).load(it.value.data.avatar).into(binding.customerImageIv)
-                        }
-                    } else {
-                        it.value.message?.let { it1 ->
-                            Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
-                    }
-                }
-                is Resource.Failure -> handleApiError(it) { getProfile() }
-            }
-        })
-
-    }
 
 
     override fun onDestroy() {
         super.onDestroy()
+        rezViewModel.cleanImageProfile()
+        rezViewModel.cleanProfileResponse()
         _binding = null
     }
 

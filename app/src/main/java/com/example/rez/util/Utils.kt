@@ -19,6 +19,7 @@ import com.example.rez.R
 import com.example.rez.api.Resource
 import com.example.rez.ui.fragment.authentication.LoginFragment
 import com.example.rez.ui.fragment.authentication.RegistrationFragment
+import com.example.rez.ui.fragment.dashboard.AboutFragment
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileOutputStream
@@ -69,6 +70,16 @@ fun Fragment.handleApiError(
                 requireView().snackbar("You have entered incorrect email or phone number")
             }
         }
+//        failure.errorCode == 400 && failure.message == "No available slots for this table today" ->{
+//            if (this is AboutFragment){
+//                requireView().snackbar("No available slots for this table today")
+//            }
+//        }
+//        failure.errorCode == 400 && failure.message == "Restaurant is closed at this time" ->{
+//            if (this is AboutFragment){
+//                requireView().snackbar("Restaurant is closed at this time")
+//            }
+//        }
         else -> {
             requireView().snackbar("Bad request")
         }

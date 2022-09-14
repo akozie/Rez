@@ -46,11 +46,7 @@ class NearRestaurantAdapter(private var nearRestaurantList: List<NearbyVendor>, 
                         Glide.with(context).load(avatar).into(hotelImage)
                     }
                     hotelName.text = company_name
-                    if (average_rating.toInt() == 0){
-                        ratingTv.rating = "2".toFloat()
-                    }else {
-                        ratingTv.rating = average_rating
-                    }
+                    ratingTv.rating = average_rating
                     category.text = category_name
                     nearDistance.text = "%.2f".format(distance) +"km"
                     if (total_tables == 1 || total_tables == 0){

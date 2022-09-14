@@ -132,11 +132,10 @@ class ProceedToPayment : Fragment() {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
-            @RequiresApi(Build.VERSION_CODES.N)
             override fun afterTextChanged(s: Editable?) {
                 // Remove spacing char
                 // Remove spacing char
-                if (s!!.isNotEmpty() && s.length % 5 == 0 && s.length < 12) {
+                if (s!!.isNotEmpty() && s.length % 5 == 0 && s.length < 20) {
                     val c: Char = s[s.length - 1]
                     if (space == c) {
                         s.delete(s.length - 1, s.length)
@@ -150,7 +149,7 @@ class ProceedToPayment : Fragment() {
                     if (Character.isDigit(c) && TextUtils.split(
                             s.toString(),
                             java.lang.String.valueOf(space)
-                        ).size <= 3
+                        ).size <= 8
                     ) {
                         s.insert(s.length - 1, java.lang.String.valueOf(space))
                     }
@@ -196,10 +195,16 @@ class ProceedToPayment : Fragment() {
                 val card = Card(cardNumber, expiryMonth, expiryYear, cvv)
                 val charge = Charge()
 
-                charge.amount = grandTotal.toInt() * 100
+
+                val correctstring = grandTotal.split(".")
+                val new = correctstring[0]
+                val result = new.filter{ it.isDigit() }
+//                Log.d("PAYMENT", "${result.toInt() * 100}")
+//                println(result.toInt() * 100)
+                charge.amount = result.toInt() * 100
                 charge.email = sharedPreferences.getString("email", "email")
                 charge.card = card
-                charge.reference =sharedPreferences.getString("ref", "ref")
+                charge.reference = sharedPreferences.getString("ref", "ref")
                 PaystackSdk.chargeCard(requireActivity(), charge, object : Paystack.TransactionCallback {
                     override fun onSuccess(transaction: Transaction) {
                         binding.paymentTv.button.text =  "Proceed To Payment"
@@ -209,13 +214,14 @@ class ProceedToPayment : Fragment() {
                     }
                     override fun beforeValidate(transaction: Transaction) {
                         binding.paymentTv.progressBar.enable(true)
-                        Log.d("Main Activity", "beforeValidate: " + transaction.reference)
+                       // Log.d("Main Activity", "beforeValidate: " + transaction.reference)
                     }
                     override fun onError(error: Throwable, transaction: Transaction) {
                         binding.paymentTv.button.text =  "Proceed To Payment"
-                        Log.d("Main Activity", "onError: " + error.localizedMessage)
-                        val action = ProceedToPaymentDirections.actionProceedToPaymentToErrorFragment()
-                        findNavController().navigate(action)
+                        showToast("Failed transaction")
+                        //Log.d("Main Activity", "onError: " + error.localizedMessage)
+//                        val action = ProceedToPaymentDirections.actionProceedToPaymentToErrorFragment()
+//                        findNavController().navigate(action)
                     }
                 })
             }
@@ -224,6 +230,7 @@ class ProceedToPayment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        //rezViewModel.cleanGetBookingResponse()
         _binding = null
     }
 }

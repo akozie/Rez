@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,18 +20,16 @@ import android.widget.AdapterView
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rez.RezApp
 import com.example.rez.adapter.*
 import com.example.rez.api.Resource
@@ -44,9 +43,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.gson.Gson
-import kotlinx.coroutines.launch
-import java.io.Serializable
-import java.util.*
+import org.json.JSONObject
 import javax.inject.Inject
 
 
@@ -69,10 +66,11 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
     private lateinit var restaurantAdapter: CategoryAdapter
     private lateinit var searchRestaurants: AutoCompleteTextView
     private var restaurantID: Int = 0
-    private var latitude: Double  = 0.0
+    private var latitude: Double = 0.0
     private var longitude: Double  = 0.0
-    private var isLoaded = false
 
+    lateinit var mView: View
+    private var args: RecommendedVendor? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -80,70 +78,47 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (requireActivity().application as RezApp).localComponent?.inject(this)
-    }
+            activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity?.finishAffinity()
+                }
+            })
+        }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding?.root
+       _binding = FragmentHomeBinding.inflate(inflater, container, false)
+       return binding?.root
     }
 
-//    @Deprecated("Deprecated in Java")
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        rezViewModel.getHomeResponse.observe(
-//            viewLifecycleOwner, Observer {
-//                 binding?.progressBar?.visible(it is Resource.Loading)
-//                when(it) {
-//                    is Resource.Success -> {
-//                        if (it.value.status){
-//                            lifecycleScope.launch {
-//                                topList = it.value.data[0].recommended_vendors
-//                                val gson = Gson()
-//                                val db = gson.toJson(topList)
-//                                sharedPreferences.edit().putString("toplist", db).apply()
-//                                nearList = it.value.data[0].nearby_vendors
-//                                val near = gson.toJson(nearList)
-//                                sharedPreferences.edit().putString("nearlist", near).apply()
-//                                suggestionList = it.value.data[0].suggested_vendors
-//                                val suggested = gson.toJson(suggestionList)
-//                                sharedPreferences.edit().putString("suggestedlist", suggested).apply()
-//                                topRestaurants()
-//                                suggestionRestaurants()
-//                                if (nearList.isEmpty()){
-//                                    binding?.nearRestRecycler?.visible(false)
-//                                    binding?.nearLayout?.visible(false)
-//                                    binding?.nearView?.visible(false)
-//                                }else if(nearList.isNotEmpty()) {
-//                                    nearRestaurants()
-//                                }
-//                            }
-//                        } else {
-//                            it.value.message?.let { it1 ->
-//                                Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
-//                        }
-//                    }
-//                    is Resource.Failure -> {
-//                        handleApiError(it) { getVendors()  }
-//                    }
-//                }
-//            }
-//        )
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        locationRequest = LocationRequest.create()
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest.interval = 5000
-        locationRequest.fastestInterval = 2000
-        currentLocation()
+       // val bundle = Bundle()
+        //You need to add the following line for this solution to work; thanks skayred
+        //You need to add the following line for this solution to work; thanks skayred
+
+            locationRequest = LocationRequest.create()
+            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            locationRequest.interval = 5000
+            locationRequest.fastestInterval = 2000
+            currentLocation()
+//        }else {
+            //getVendors()
+//            print("yes")
+//            Log.d("YESWORKK", "YESSSSSS")
+//            latitude = sharedPreferences.getLong("lat", 0L).toDouble()
+//            longitude = sharedPreferences.getLong("long", 0L).toDouble()
+//            getVendors()
+//        }
+
+//        currentLocation()
         binding?.progressBar?.visible(true)
 
-        //rezViewModel = ViewModelProvider(activity as ViewModelStoreOwner).get(RezViewModel::class.java)
         searchRestaurants = binding?.selectVenue!!
         searchRestaurants.onItemClickListener = object : AdapterView.OnItemClickListener{
             override fun onItemClick(adapterView: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -169,12 +144,16 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                 findNavController().navigate(action)
             }
         }
-
+//        val check = arguments?.getString("toplist")
+//        if(check ==  null){
+//            binding?.progressBar?.visible(true)
+//        }else{
+//            topRestaurants()
+//        }
         binding!!.refreshLayout.setOnRefreshListener {
             getVendors()
             binding!!.refreshLayout.isRefreshing = false
         }
-
 
         binding!!.seeAllTopRecommTv.setOnClickListener {
             val action = HomeDirections.actionHome2ToTopRecommended()
@@ -190,7 +169,20 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
             val action = HomeDirections.actionHome2ToSuggestionForYou()
             findNavController().navigate(action)
         }
+        //fetchVendors()
     }
+
+    fun shouldInterceptBackPress() = true
+
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//
+//        //Save the fragment's state here
+//        val gson = Gson()
+//        val db = gson.toJson(topList)
+//        outState.putString("top", db)
+//    }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -198,46 +190,6 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (isLoaded){
-            rezViewModel.getHomeResponse.observe(
-                viewLifecycleOwner, Observer {
-                    binding?.progressBar?.visible(it is Resource.Loading)
-                    when(it) {
-                        is Resource.Success -> {
-                            if (it.value.status){
-                                lifecycleScope.launch {
-                                    topList = it.value.data[0].recommended_vendors
-                                    val gson = Gson()
-                                    val db = gson.toJson(topList)
-                                    sharedPreferences.edit().putString("toplist", db).apply()
-                                    nearList = it.value.data[0].nearby_vendors
-                                    val near = gson.toJson(nearList)
-                                    sharedPreferences.edit().putString("nearlist", near).apply()
-                                    suggestionList = it.value.data[0].suggested_vendors
-                                    val suggested = gson.toJson(suggestionList)
-                                    sharedPreferences.edit().putString("suggestedlist", suggested).apply()
-                                    topRestaurants()
-                                    suggestionRestaurants()
-                                    if (nearList.isEmpty()){
-                                        binding?.nearRestRecycler?.visible(false)
-                                        binding?.nearLayout?.visible(false)
-                                        binding?.nearView?.visible(false)
-                                    }else if(nearList.isNotEmpty()) {
-                                        nearRestaurants()
-                                    }
-                                }
-                            } else {
-                                it.value.message?.let { it1 ->
-                                    Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
-                            }
-                        }
-                        is Resource.Failure -> {
-                            handleApiError(it) { getVendors()  }
-                        }
-                    }
-                }
-            )
-        }
         if (requestCode == 1) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (isGPSEnabled()) {
@@ -260,8 +212,9 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
         }
     }
 
+
     private fun currentLocation(){
-            if (ActivityCompat.checkSelfPermission(
+            if (checkSelfPermission(
                     requireContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
@@ -336,6 +289,8 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
 
     private fun topRestaurants() {
        // topRecyclerView = binding?.topRecomendRecycler!!
+       // topList =
+       // val top = arguments?.getString("toplist") as List<RecommendedVendor>
         topRecommendedAdapter = TopRecommendedHomeAdapter(topList, this)
         binding?.topRecomendRecycler?.layoutManager = LinearLayoutManager(parentFragment?.requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding?.topRecomendRecycler?.adapter = topRecommendedAdapter
@@ -354,7 +309,6 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
         binding?.suggestionRecycler?.layoutManager = LinearLayoutManager(parentFragment?.requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding?.suggestionRecycler?.adapter = suggestionRestaurantAdapter
     }
-
 
 
 
@@ -455,6 +409,9 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                                 val gson = Gson()
                                 val db = gson.toJson(topList)
                                 sharedPreferences.edit().putString("toplist", db).apply()
+                                sharedPreferences.edit().putString("topguy", it.value.data[0].recommended_vendors[0].category_name).apply()
+//                                val bundle = Bundle()
+//                                bundle.putParcelable("key", )
                                 nearList = it.value.data[0].nearby_vendors
                                 val near = gson.toJson(nearList)
                                 sharedPreferences.edit().putString("nearlist", near).apply()
@@ -472,7 +429,7 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                                     nearRestaurants()
                                 }
                             } else {
-                                it.value.message?.let { it1 ->
+                                it.value.message.let { it1 ->
                                     Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -531,14 +488,11 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
 //        )
 //    }
 
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        outState.putString("top", topList.toString())
+
+//    override fun onDestroy() {
+//        _binding = null
+//        super.onDestroy()
+//        requireActivity().finishAffinity()
+//        //rezViewModel.store()
 //    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
 }

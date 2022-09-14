@@ -139,6 +139,7 @@ class Favorites : Fragment(), FavoritesPagingAdapter.OnClickFavoritesItemClickLi
 
     override fun onDestroy() {
         super.onDestroy()
+        rezViewModel.clean()
         _binding =  null
     }
 

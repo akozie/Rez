@@ -42,7 +42,7 @@ class QRCodeFragment : Fragment() {
     private val binding get() = _binding!!
     private var args: Booking? = null
     private val rezViewModel: RezViewModel by activityViewModels()
-    private lateinit var photo: String
+    //private lateinit var photo: String
 
 
 
@@ -97,7 +97,7 @@ class QRCodeFragment : Fragment() {
     }
 
     private fun setUpQRCode(){
-        args!!.id?.let {
+        args!!.id.let {
             rezViewModel.getEachBooking(token = "Bearer ${sharedPreferences.getString("token", "token")}",
                 it
             )
@@ -109,17 +109,19 @@ class QRCodeFragment : Fragment() {
                     if (it.value.status){
                         lifecycleScope.launch {
                             Glide.with(requireContext()).load(it.value.data.qr_code).into(binding.qrCode)
-                            binding.logo.text = it.value.data.booking_reference
-                            photo = it.value.data.qr_code
+                            binding.refText.text = it.value.data.booking_reference
+                            //photo = it.value.data.qr_code
                         }
                     } else {
-                        it.value.message?.let { it1 ->
+                        it.value.message.let { it1 ->
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
                 is Resource.Failure -> handleApiError(it) { setUpQRCode() }
             }
         })
+        rezViewModel.cleanGetBookingResponse()
+
     }
 
     //convert image to bitmap
@@ -138,6 +140,7 @@ class QRCodeFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        rezViewModel.cleanGetBookingResponse()
         _binding = null
     }
 }

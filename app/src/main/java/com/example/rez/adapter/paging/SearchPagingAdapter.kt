@@ -48,11 +48,7 @@ class SearchPagingAdapter(private val onClickListener : OnSearchClickListener): 
                 holder.itemView.apply {
                     with(current){
                         holder.hotelName.text = current?.company_name
-                        if (current?.ratings == 0){
-                            holder.hotelRatingBar.rating = 2.toFloat()
-                        } else {
-                            holder.hotelRatingBar.rating = current?.ratings?.toFloat()!!
-                        }
+                        holder.hotelRatingBar.rating = current?.ratings?.toFloat()!!
                         if (current.avatar==null){
                             Glide.with(context).load(R.drawable.table_image).into(holder.hotelImage)
                         }else{

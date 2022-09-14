@@ -20,10 +20,11 @@ abstract class BaseRepository {
             } catch (throwable: Throwable){
                 when(throwable){
                     is HttpException -> {
-                        Resource.Failure(false, throwable.code(),)
+                        //Log.d("FAILURECHECKLOOP", throwable.localizedMessage)
+                        Resource.Failure(false, throwable.code(), throwable.response())
                     }else -> {
-                    //Log.d("FAILURE", throwable.localizedMessage)
-                    Resource.Failure(true, null, )
+                    //Log.d("FAILURECHECK", throwable.localizedMessage)
+                    Resource.Failure(true, null,  null)
                 }
                 }
             }

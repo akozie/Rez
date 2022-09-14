@@ -33,6 +33,14 @@ class RezViewModel(
 //    val getVendorStateResponse: LiveData<Resource<StateResponse>>
 //        get() = _getVendorStateResponse
 
+    private val _getTablesResponse: MutableLiveData<Resource<GetTablesResponse>> = MutableLiveData()
+    val getTablesResponse: LiveData<Resource<GetTablesResponse>>
+        get() = _getTablesResponse
+
+    private val _getOpeningHoursResponse: MutableLiveData<Resource<GetOpeningHoursResponse>> = MutableLiveData()
+    val getOpeningHoursResponse: LiveData<Resource<GetOpeningHoursResponse>>
+        get() = _getOpeningHoursResponse
+
     private val _getVendorCategoryResponse: MutableLiveData<Resource<GetVendorCategoryResponse>> = MutableLiveData()
     val getVendorCategoryResponse: LiveData<Resource<GetVendorCategoryResponse>>
         get() = _getVendorCategoryResponse
@@ -173,6 +181,20 @@ class RezViewModel(
 //        _getVendorStateResponse.postValue( rezRepository.getVendorStates())
 //    }
 
+    fun getTable( token: String,
+                         vendorProfileID:Int
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _getTablesResponse.postValue( Resource.Loading)
+        _getTablesResponse.postValue( rezRepository.getTable(token, vendorProfileID))
+    }
+
+    fun getOpeningHours( token: String,
+                         vendorProfileID:Int
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _getOpeningHoursResponse.postValue( Resource.Loading)
+        _getOpeningHoursResponse.postValue( rezRepository.getOpeningHours(token, vendorProfileID))
+    }
+
     fun getVendorCategories(
     ) = viewModelScope.launch(Dispatchers.IO) {
         _getVendorCategoryResponse.postValue( Resource.Loading)
@@ -243,8 +265,8 @@ class RezViewModel(
                  long: Double,
                  token: String
     ) = viewModelScope.launch(Dispatchers.IO) {
-        _getHomeResponse.postValue( Resource.Loading)
-        _getHomeResponse.postValue(rezRepository.getHome(lat, long, token))
+            _getHomeResponse.postValue( Resource.Loading)
+            _getHomeResponse.postValue( rezRepository.getHome(lat, long, token))
     }
 
     fun search(search: String, noOfPersons: String?, priceFrom: Int?, priceTo: Int?, stateId: Int?, type: Int?, token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
@@ -350,4 +372,32 @@ class RezViewModel(
         _complaintResponse.value = Resource.Loading
         _complaintResponse.value = rezRepository.complaints(user, token)
     }
+
+    fun clean(){
+        _getVendorTableResponse.value = null
+        _getTablesResponse.value = null
+        _getOpeningHoursResponse.value = null
+    }
+
+    fun cleanImageProfile(){
+        _uploadImageResponse.value = null
+    }
+    fun cleanMyProfile(){
+        _getProfileResponse.value = null
+    }
+    fun cleanProfileResponse(){
+        _updateProfileResponse.value = null
+    }
+    fun cleanTableResponse(){
+        _bookTableResponse.value = null
+    }
+    fun cleanGetBookingResponse(){
+        _eachBookingResponse.value = null
+    }
+
+
+    fun store(){
+        _getHomeResponse.value = getHomeResponse.value
+    }
+
 }

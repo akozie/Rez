@@ -10,8 +10,13 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -22,6 +27,8 @@ import com.example.rez.databinding.ActivityDashboardBinding
 import com.example.rez.repository.AuthRepository
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.RezViewModelProviderFactory
+import com.example.rez.ui.fragment.dashboard.FavoritesCover
+import com.example.rez.ui.fragment.dashboard.Home
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
@@ -61,9 +68,7 @@ class DashboardActivity : AppCompatActivity() {
         val viewModelProviderFactory = RezViewModelProviderFactory(application, rezRepository)
         rezViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RezViewModel::class.java)
 
-
         setSupportActionBar(binding.appBarDashboard.dashboardActivityToolbar)
-
 
         /*Set Status bar Color*/
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -89,12 +94,7 @@ class DashboardActivity : AppCompatActivity() {
         notification = binding.appBarDashboard.dashboardActivityNotificationIcon
         navigationView = binding.navView
 
-//        val fragment1: Fragment = Home()
-//        val fragment2: Fragment = Favorites()
-//        val fragment3: Fragment = Reservation()
-//        val fm: FragmentManager = supportFragmentManager
-//        val active: Fragment = fragment1
-//
+
 //
 //        fm.beginTransaction().add(binding.appBarDashboard.contentDashboard.navHostFragmentContentDashboard, fragment3, "3").hide(fragment3).commit();
 //        fm.beginTransaction().add(binding.appBarDashboard.contentDashboard.navHostFragmentContentDashboard, fragment2, "2").hide(fragment2).commit();
@@ -190,7 +190,9 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
+
     /*CLose Nav Drawer if open, on back press*/
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -216,6 +218,7 @@ class DashboardActivity : AppCompatActivity() {
                     hiText.visibility = View.VISIBLE
                     toolbarFragmentName.visibility = View.GONE
                     notification.visibility = View.VISIBLE
+                    //Home()
                 }
                 R.id.favoritesCover -> {
                     hiText.visibility = View.GONE
@@ -223,6 +226,7 @@ class DashboardActivity : AppCompatActivity() {
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
                     notification.visibility = View.GONE
+                    //FavoritesCover()
                 }
                 R.id.favorites -> {
                     hiText.visibility = View.GONE
@@ -316,6 +320,13 @@ class DashboardActivity : AppCompatActivity() {
                     notification.visibility = View.GONE
                 }
                 R.id.search -> {
+                    hiText.visibility = View.GONE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
+                }
+                R.id.openingHoursFragment -> {
                     hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE
@@ -424,14 +435,24 @@ class DashboardActivity : AppCompatActivity() {
 //            false
 //        }
 
-//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-//        super.onRestoreInstanceState(savedInstanceState)
-//        onDestinationChangedListener()
-//    }
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        onDestinationChangedListener()
+    }
 
-
-
+    private fun replaceFragment(fragment: Fragment){
+        val fragmentManager: FragmentManager = supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_dashboard, fragment)
+        fragmentTransaction.commit()
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finishAffinity()
+    }
 }

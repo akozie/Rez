@@ -16,7 +16,7 @@ android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="210dp">
+        android:layout_height="300dp">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
@@ -159,7 +159,15 @@ android:orientation="vertical">
             android:fontFamily="@font/poppins_light"
             android:textSize="15sp" />
 
-<!--        <ImageView-->
+        <Button
+            android:id="@+id/opening_hours"
+            android:layout_width="wrap_content"
+            android:text="Opening hours"
+            android:visibility="gone"
+            android:layout_height="wrap_content"/>
+
+
+        <!--        <ImageView-->
 <!--            android:id="@+id/filterImageIv"-->
 <!--            android:layout_width="20dp"-->
 <!--            android:layout_height="20dp"-->
@@ -173,15 +181,6 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         android:id="@+id/tableListRecycler" />
 
-    <TextView
-        android:id="@+id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:visibility="gone"
-        android:fontFamily="@font/poppins_light"
-        android:text="No table yet" />
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
@@ -191,8 +190,16 @@ android:orientation="vertical">
         android:layout_gravity="center"/>
 
 
+
 </LinearLayout>
 
-
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="No table yet" />
 
 </LinearLayout>

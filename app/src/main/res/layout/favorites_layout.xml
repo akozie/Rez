@@ -85,10 +85,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:maxLines="2"
-                android:layout_gravity="center"
+                android:layout_gravity="start"
                 android:gravity="start"
-                android:fontFamily="@font/poppins_medium"
+                android:textStyle="bold"
                 android:padding="@dimen/padding_2dp"
                 android:textSize="@dimen/text_size_15sp"/>
 

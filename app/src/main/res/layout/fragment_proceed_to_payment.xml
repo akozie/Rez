@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
-    android:layout_marginBottom="@dimen/margin_50dp"
-tools:context=".ui.fragment.dashboard.ProceedToPayment"
-android:orientation="vertical">
-
+    tools:context=".ui.fragment.dashboard.ProceedToPayment"
+    android:orientation="vertical">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -20,7 +18,6 @@ android:orientation="vertical">
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-
 
     <TextView
         android:layout_marginTop="15dp"
@@ -212,7 +209,7 @@ android:orientation="vertical">
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Please be notified that booking fee cost 5% of all the table" />
+                android:text="Please be notified that the booking fee cost 5% of all table bookings." />
 
         </LinearLayout>
 
@@ -337,6 +334,7 @@ android:orientation="vertical">
         android:layout_height="40dp"
         android:layout_marginTop="@dimen/padding_20dp"
         android:hint="Card Number"
+        android:maxLength="40"
         android:fontFamily="@font/poppins_light"
         android:padding="7dp"
         android:textColor="@color/black"

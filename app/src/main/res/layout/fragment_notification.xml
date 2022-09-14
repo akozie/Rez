@@ -5,7 +5,6 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:id="@+id/nested"
-    android:layout_marginBottom="@dimen/margin_20dp"
 tools:context=".ui.fragment.dashboard.NotificationFragment">
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,11 +25,11 @@ tools:context=".ui.fragment.dashboard.NotificationFragment">
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/margin_10dp"
         android:id="@+id/notification_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

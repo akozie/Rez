@@ -16,7 +16,6 @@ class TopRecommendedHomeAdapter( private var topRecommendedList:List<Recommended
         var hotelName = binding.hotelNameTv
         var hotelRatingBar = binding.ratingBar
         var hotelReviews = binding.totalReviewTv
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -29,15 +28,11 @@ class TopRecommendedHomeAdapter( private var topRecommendedList:List<Recommended
             with(holder){
                 with(topRecommendedList[position]){
                     hotelName.text = company_name
+                    hotelRatingBar.rating = average_rating
                     if (avatar == null){
                         Glide.with(context).load(R.drawable.table_image).into(hotelImage)
                     } else {
                         Glide.with(context).load(avatar).into(hotelImage)
-                    }
-                    if (average_rating.toInt() == 0){
-                        hotelRatingBar.rating = "3".toFloat()
-                    }else {
-                        hotelRatingBar.rating = average_rating
                     }
                 }
             }

@@ -211,23 +211,27 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
             when(it) {
                 is Resource.Success -> {
                     binding.proceedTv.button.text = "Proceed to booking"
-                    val ref = it.value.data.reference
+                            val ref = it.value.data.reference
                             val amount = it.value.data.amount
                             sharedPreferences.edit().putString("ref", ref).apply()
                             sharedPreferences.edit().putString("amount", amount).apply()
                             showToast("Proceed to make payment")
+                            rezViewModel.cleanTableResponse()
                             val action = TableDetailsDirections.actionTableDetailsToProceedToPayment(date, time)
                             findNavController().navigate(action)
                             //removeObservers()
                 }
                 is Resource.Failure -> {
                     binding.proceedTv.button.text = "Proceed to booking"
+                    Log.d("ABOUTCHECK", "aaaa")
                     val message = "No available slots for this table today"
                         showToast(message)
                     handleApiError(it)
+                    rezViewModel.cleanTableResponse()
                     //removeObservers()
                 }
             }
+            binding.proceedTv.button.text = "Proceed to booking"
         }
         //removeObservers()
     }
@@ -236,6 +240,7 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
     }
     override fun onDestroy() {
         super.onDestroy()
+        rezViewModel.cleanTableResponse()
         _binding = null
     }
 }

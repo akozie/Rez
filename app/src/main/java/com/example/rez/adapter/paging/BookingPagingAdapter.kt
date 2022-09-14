@@ -73,12 +73,12 @@ class BookingPagingAdapter(private val onBookingClickListener: OnBookingClickLis
                                 holder.pendingTv.visible(false)
                                 holder.canceledTv.visible(false)
                                 acceptedTv.text = current?.status
-                                holder.itemView.setOnClickListener {
-                                    val currentPos = holder.bindingAdapterPosition
-                                    if (currentPos != RecyclerView.NO_POSITION){
-                                        onBookingClickListener.onBookingItemClick(current)
-                                    }
-                                }
+//                                holder.itemView.setOnClickListener {
+//                                    val currentPos = holder.bindingAdapterPosition
+//                                    if (currentPos != RecyclerView.NO_POSITION){
+//                                        onBookingClickListener.onBookingItemClick(current, currentPos)
+//                                    }
+//                                }
                             } else if (current?.status == "cancelled") {
                                         holder.canceledTv.visible(true)
                                         holder.acceptedTv.visible(false)
@@ -86,6 +86,12 @@ class BookingPagingAdapter(private val onBookingClickListener: OnBookingClickLis
                                         canceledTv.text = current?.status
                             }
                         }
+                    holder.itemView.setOnClickListener {
+                        val currentPos = holder.bindingAdapterPosition
+                        if (currentPos != RecyclerView.NO_POSITION){
+                            onBookingClickListener.onBookingItemClick(current!!)
+                        }
+                    }
                 }
            // AsyncPagingDataDiffer(differCallback)
             }

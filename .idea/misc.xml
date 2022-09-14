@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/drawable/cursor_appearance.xml" value="0.17447916666666666" />
         <entry key="app/src/main/res/drawable/drawer_close_icon.xml" value="0.1962962962962963" />
         <entry key="app/src/main/res/drawable/fragment_message_arrow_right_icon.xml" value="0.31145833333333334" />
+        <entry key="app/src/main/res/drawable/fragment_message_card_item.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/fragment_message_ellipse_icon.xml" value="0.31145833333333334" />
         <entry key="app/src/main/res/drawable/fragment_message_notification_icon.xml" value="0.30666666666666664" />
         <entry key="app/src/main/res/drawable/google_icon.xml" value="0.30666666666666664" />
@@ -61,6 +62,7 @@
         <entry key="app/src/main/res/drawable/rectanglebg.xml" value="0.19166666666666668" />
         <entry key="app/src/main/res/drawable/rounded_corner_home1.xml" value="0.17864583333333334" />
         <entry key="app/src/main/res/drawable/rounded_corner_pink.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/rounded_corners_shape.xml" value="0.1915" />
         <entry key="app/src/main/res/drawable/splash_screen.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/drawable/sucess_failure_background.xml" value="0.14947916666666666" />
         <entry key="app/src/main/res/drawable/tab_layout_indicator.xml" value="0.30666666666666664" />
@@ -74,6 +76,7 @@
         <entry key="app/src/main/res/layout/account_phone_number_dialog_fragment.xml" value="0.15833333333333333" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.14361702127659576" />
         <entry key="app/src/main/res/layout/activity_google.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.18704710144927536" />
         <entry key="app/src/main/res/layout/activity_landing.xml" value="0.12943262411347517" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/app_bar_dashboard.xml" value="0.25936599423631124" />
@@ -97,7 +100,7 @@
         <entry key="app/src/main/res/layout/fragment_forgot_password.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_google_directions.xml" value="0.20652173913043478" />
         <entry key="app/src/main/res/layout/fragment_help.xml" value="0.14361702127659576" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_my_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_near_rest.xml" value="0.14945652173913043" />
@@ -105,6 +108,7 @@
         <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.20652173913043478" />
         <entry key="app/src/main/res/layout/fragment_notification_message_list_layout.xml" value="0.20652173913043478" />
         <entry key="app/src/main/res/layout/fragment_o_t_p.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_opening_hours.xml" value="0.20697463768115942" />
         <entry key="app/src/main/res/layout/fragment_proceed_to_booking.xml" value="0.14361702127659576" />
         <entry key="app/src/main/res/layout/fragment_proceed_to_payment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_q_r_code.xml" value="0.17255434782608695" />
@@ -122,7 +126,7 @@
         <entry key="app/src/main/res/layout/fragment_suggest.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_suggestion_for_you.xml" value="0.14375" />
         <entry key="app/src/main/res/layout/fragment_table_details.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/fragment_table_list.xml" value="0.15534420289855072" />
+        <entry key="app/src/main/res/layout/fragment_table_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_top_recommended.xml" value="0.12590579710144928" />
         <entry key="app/src/main/res/layout/fragment_top_recommended_details.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_load_state_adapter.xml" value="0.20652173913043478" />

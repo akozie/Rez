@@ -192,6 +192,14 @@ android:orientation="vertical">
             android:textColor="@color/black"
             android:textSize="15sp" />
 
+        <Button
+            android:id="@+id/opening_hours"
+            android:layout_width="wrap_content"
+            android:text="Opening hours"
+            android:visibility="gone"
+            android:layout_height="wrap_content"/>
+
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

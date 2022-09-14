@@ -8,11 +8,10 @@ data class Table(
     val created_at: String,
     val description: String,
     val id: Int,
-    val image: String,
+    val image: String?,
     val max_people: Int,
     val price: String,
     val quantity: Int,
     val status: Boolean,
     val name: String
 ) : Parcelable
-

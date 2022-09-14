@@ -45,10 +45,5 @@ class MainActivity : AppCompatActivity() {
         val rezRepository = AuthRepository()
         val viewModelProviderFactory = RezViewModelProviderFactory(application, rezRepository)
         rezViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RezViewModel::class.java)
-
-
-
     }
-
-
 }

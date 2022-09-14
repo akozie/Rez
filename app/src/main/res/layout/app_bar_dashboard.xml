@@ -61,7 +61,7 @@
                 android:layout_height="@dimen/margin_25dp"
                 android:layout_marginEnd="@dimen/margin_10dp"
                 android:foregroundGravity="center"
-                android:src="@drawable/bell3x"
+                android:src="@drawable/fragment_message_notification_icon"
                 app:layout_constraintBottom_toBottomOf="@+id/dashboard_activity_toolbar_search_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

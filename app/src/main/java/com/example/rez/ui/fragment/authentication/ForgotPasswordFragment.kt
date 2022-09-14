@@ -111,8 +111,6 @@ class ForgotPasswordFragment : Fragment() {
 //                    isValidated = false
 //                }
                 else -> {
-                    Toast.makeText(requireContext(), null, Toast.LENGTH_SHORT).show()
-
                     isValidated = true
                 }
             }

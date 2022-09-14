@@ -32,6 +32,7 @@
             android:layout_marginStart="@dimen/margin_10dp"
             android:layout_marginEnd="@dimen/margin_10dp"
             android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginBottom="@dimen/margin_10dp"
             android:orientation="vertical"
             android:visibility="visible"
             android:background="@drawable/rectangle_outbox_blue">

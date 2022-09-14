@@ -31,4 +31,6 @@
     <color name="primaryColor">#12A058</color>
     <color name="quantum_black_hint_text">#61000000</color>
     <color name="quantum_googred500">#db4437</color>
+    <color name="table_not_available">#737171</color>
+    <color name="table_available">#85EC85</color>
 </resources>

@@ -26,9 +26,11 @@ import com.example.rez.model.dashboard.*
 import com.example.rez.ui.GlideApp
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.fragment.ProfileManagementDialogFragments
+import com.example.rez.util.enable
 import com.example.rez.util.handleApiError
 import com.example.rez.util.showToast
 import com.example.rez.util.visible
+import com.google.gson.Gson
 import com.viewpagerindicator.CirclePageIndicator
 import javax.inject.Inject
 
@@ -69,7 +71,9 @@ class SuggestFragment : Fragment(), OnTableClickListener {
         super.onViewCreated(view, savedInstanceState)
         args = arguments?.getParcelable("SUGGESTIONDATA")
         sharedPreferences.edit().putInt("vendorid", args!!.id).apply()
+        getOpeningHours()
         setList()
+        getTable()
         setSuggestionData()
 
         binding.likeIv.setOnClickListener {
@@ -117,11 +121,8 @@ class SuggestFragment : Fragment(), OnTableClickListener {
     private fun setSuggestionData() {
             binding.hotelNameTv.text = args?.company_name
             binding.categoryTv.text = args?.category_name
-        if (args?.average_rating?.toInt() == 0){
-            binding.ratingBar.rating = "1".toFloat()
-        }else {
-            binding.ratingBar.rating = args?.average_rating!!
-        }
+        binding.ratingBar.rating = args?.average_rating!!
+
         if (args?.total_tables.toString().isEmpty()){
             binding.tableQtyTv.text = "0 Table"
         }else  if (args?.total_tables == 1){
@@ -139,9 +140,9 @@ class SuggestFragment : Fragment(), OnTableClickListener {
     }
 
 
-    private fun setList() {
-        rezViewModel.getVendorTables(args!!.id, "Bearer ${sharedPreferences.getString("token", "token")}")
-        rezViewModel.getVendorTableResponse.observe(
+    private fun getTable() {
+        rezViewModel.getTable("Bearer ${sharedPreferences.getString("token", "token")}", args!!.id)
+        rezViewModel.getTablesResponse.observe(
             viewLifecycleOwner, Observer {
                 binding.progressBar.visible(it is Resource.Loading)
                 when(it) {
@@ -151,17 +152,39 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                             if (tableList.isEmpty()){
                                 binding.tableListRecycler.visibility = View.GONE
                                 binding.empty.visibility = View.VISIBLE
-                            }else{
-                                tableAdapter = TableAdapter(tableList, this)
-                                binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                                binding.tableListRecycler.adapter = tableAdapter
                             }
+                            setTableList()
+                            val gson = Gson()
+                            val db = gson.toJson(tableList)
+                            sharedPreferences.edit().putString("tablelist", db).apply()
+
+                        } else {
+                            it.value.message.let { it1 ->
+                                Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
+                        }
+                    }
+                    is Resource.Failure -> handleApiError(it) { getTable() }
+                }
+            }
+        )
+    }
+
+    private fun setList() {
+        rezViewModel.getVendorTables(args!!.id, "Bearer ${sharedPreferences.getString("token", "token")}")
+        rezViewModel.getVendorTableResponse.observe(
+            viewLifecycleOwner, Observer {
+                binding.progressBar.visible(it is Resource.Loading)
+                when(it) {
+                    is Resource.Success -> {
+                        if (it.value.status){
                             tableDetailsDataList = it.value.data.images
                             if (tableDetailsDataList.isEmpty()){
                                 tableDetailsDataList = listOf(Image("", 1, "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
-                            }else{
-                                setTableDetailsViewPagerAdapter()
                             }
+                            //Log.d("TABLEDATALIST", tableDetailsDataList.toString())
+
+                            setTableDetailsViewPagerAdapter()
+
                         } else {
                             it.value.message?.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
@@ -171,8 +194,39 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                 }
             }
         )
-        //removeObserverFromVendorTable()
     }
+
+    private fun setTableList() {
+        tableAdapter = TableAdapter(tableList, this)
+        binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.tableListRecycler.adapter = tableAdapter
+
+    }
+    private fun getOpeningHours() {
+        rezViewModel.getOpeningHours("Bearer ${sharedPreferences.getString("token", "token")}", args!!.id)
+        rezViewModel.getOpeningHoursResponse.observe(
+            viewLifecycleOwner, Observer {
+                binding.progressBar.visible(it is Resource.Loading)
+                when(it) {
+                    is Resource.Success -> {
+                        //
+                        val data = it.value.data
+                        if (data == null){
+                            binding.openingHours.visibility = View.GONE
+                        } else{
+                            binding.openingHours.visibility = View.VISIBLE
+                            binding.openingHours.setOnClickListener {
+                                val action = SuggestFragmentDirections.actionSuggestFragmentToOpeningHoursFragment(data)
+                                findNavController().navigate(action)
+                            }
+                        }
+                    }
+                    is Resource.Failure -> handleApiError(it) { getOpeningHours() }
+                }
+            }
+        )
+    }
+
 
     private fun registerObservers() {
         rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner) {
@@ -206,6 +260,7 @@ class SuggestFragment : Fragment(), OnTableClickListener {
         rezViewModel.getVendorTableResponse.removeObservers(viewLifecycleOwner)
     }
 
+
     override fun onTableItemClick(tableModel: Table) {
         val action = SuggestFragmentDirections.actionSuggestFragmentToTableDetails(tableModel)
         findNavController().navigate(action)
@@ -215,6 +270,7 @@ class SuggestFragment : Fragment(), OnTableClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        rezViewModel.clean()
         _binding = null
     }
 }

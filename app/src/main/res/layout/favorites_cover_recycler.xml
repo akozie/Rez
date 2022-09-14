@@ -37,7 +37,6 @@
                     android:layout_height="wrap_content"
                     android:text="Abuja"
                     android:fontFamily="@font/poppins_medium"
-                    android:maxLines="2"
                     android:layout_weight="9.5"
                     android:layout_gravity="start"
                     android:gravity="start"

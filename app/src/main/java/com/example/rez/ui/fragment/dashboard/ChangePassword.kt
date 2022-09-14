@@ -20,6 +20,7 @@ import com.example.rez.model.authentication.request.ChangePasswordRequest
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.ui.activity.MainActivity
+import com.example.rez.util.ValidationObject
 import com.example.rez.util.enable
 import com.example.rez.util.handleApiError
 import com.example.rez.util.visible
@@ -55,31 +56,6 @@ class ChangePassword : Fragment() {
         rezViewModel = (activity as DashboardActivity).rezViewModel
 
         binding.changePassTv.button.text = "Change Password"
-        rezViewModel.changePasswordResponse.observe(viewLifecycleOwner, Observer {
-            binding.changePassTv.progressBar.visible(it is Resource.Loading)
-            binding.changePassTv.button.text = "Please wait..."
-            when(it) {
-                is Resource.Success -> {
-                    binding.changePassTv.button.text = "Change Password"
-                    if (it.value.status){
-                        lifecycleScope.launch {
-                            val message = it.value.message
-                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(requireContext(), MainActivity::class.java))
-                        }
-                    } else {
-                        val message = it.value.message
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                        val action = ChangePasswordDirections.actionChangePasswordToSettings2()
-                        findNavController().navigate(action)
-                    }
-                }
-                is Resource.Failure -> {
-                    binding.changePassTv.button.text = "Change Password"
-                    handleApiError(it)
-                }
-            }
-        })
         binding.changePassTv.submit.setOnClickListener {
             if (binding.currentPassEt.text!!.isEmpty() || binding.newPassEt.text!!.isEmpty()) {
                 val message = "All inputs are required"
@@ -99,7 +75,6 @@ class ChangePassword : Fragment() {
         when {
             current.isEmpty() -> {
                 Toast.makeText(requireContext(), R.string.all_email_cant_be_empty, Toast.LENGTH_SHORT).show()
-
             }
             new.isEmpty() -> {
                 Toast.makeText(requireContext(), R.string.all_password_is_required, Toast.LENGTH_SHORT).show()
@@ -111,6 +86,33 @@ class ChangePassword : Fragment() {
                         password = new,
                         password_confirmation = confirm)
                     rezViewModel.changePassword(newUser, token = "Bearer ${sharedPreferences.getString("token", "token")}")
+                    rezViewModel.changePasswordResponse.observe(viewLifecycleOwner, Observer {
+                        binding.changePassTv.progressBar.visible(it is Resource.Loading)
+                        binding.changePassTv.button.text = "Please wait..."
+                        when(it) {
+                            is Resource.Success -> {
+                                binding.changePassTv.button.text = "Change Password"
+                                if (it.value.status){
+                                    lifecycleScope.launch {
+                                        val message = it.value.message
+                                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                                        val action = ChangePasswordDirections.actionChangePasswordToHome2()
+                                        findNavController().navigate(action)
+                                    }
+                                } else {
+                                    val message = it.value.message
+                                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                                    val action = ChangePasswordDirections.actionChangePasswordToSettings2()
+                                    findNavController().navigate(action)
+                                }
+                            }
+                            is Resource.Failure -> {
+                                binding.changePassTv.button.text = "Change Password"
+                                handleApiError(it)
+                            }
+                        }
+                    })
+
                 }
             }
         }
@@ -118,8 +120,6 @@ class ChangePassword : Fragment() {
 
     private fun validateSignUpFieldsOnTextChange(): Boolean {
         var isValidated = true
-
-
         binding.currentPassEt.doOnTextChanged { _, _, _, _ ->
             when {
                 binding.currentPassEt.text.toString().trim().isEmpty() -> {
@@ -131,7 +131,46 @@ class ChangePassword : Fragment() {
                 }
             }
         }
+        binding.newPassEt.doOnTextChanged { _, _, _, _ ->
+            when {
+                binding.newPassEt.text.toString().trim().isEmpty() -> {
+                    binding.newTILed.error =
+                        getString(R.string.all_password_is_required)
+                    binding.newTILed.errorIconDrawable = null
+                    isValidated = false
+                }
+                else -> {
+                    binding.newTILed.error = null
+                    isValidated = true
+                }
+            }
+        }
 
+        binding.confNewPassEt.doOnTextChanged { _, _, _, _ ->
+            when {
+                binding.confNewPassEt.text.toString().trim().isEmpty() -> {
+                    binding.confirmNewTILedtPass.error =
+                        getString(R.string.all_password_is_required)
+                    binding.confirmNewTILedtPass.errorIconDrawable =
+                        null
+                    isValidated = false
+                }
+                !ValidationObject.validatePasswordMismatch(
+                    binding.newPassEt.text.toString().trim(),
+                    binding.confNewPassEt.text.toString().trim()
+                ) -> {
+                    binding.confirmNewTILedtPass.error =
+                        getString(R.string.all_password_mismatch)
+                    binding.confirmNewTILedtPass.errorIconDrawable =
+                        null
+                    isValidated = false
+                }
+                else -> {
+                    binding.confirmNewTILedtPass.error = null
+                    isValidated = true
+                }
+            }
+        }
         return isValidated
     }
 

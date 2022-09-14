@@ -1,5 +1,6 @@
 package com.example.rez.api
 
+import android.media.tv.TableResponse
 import android.net.Uri
 import com.example.rez.model.authentication.genresponse.*
 import com.example.rez.model.authentication.request.*
@@ -15,6 +16,18 @@ interface AuthApi {
 //    @GET("states")
 //    suspend fun getVendorStates(
 //    ): StateResponse
+
+    @GET("user/vendorProfile/{vendorProfileID}/tables")
+    suspend fun getTable(
+        @Header("Authorization") token: String,
+        @Path("vendorProfileID") vendorProfileID: Int,
+        ): GetTablesResponse
+
+    @GET("user/vendorProfile/{vendorProfileID}/opening-hours")
+    suspend fun getOpeningHours(
+        @Header("Authorization") token: String,
+        @Path("vendorProfileID") vendorProfileID: Int,
+        ): GetOpeningHoursResponse
 
     @GET("vendor/categories")
     suspend fun getVendorCategories(

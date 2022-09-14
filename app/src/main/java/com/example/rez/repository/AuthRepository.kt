@@ -25,6 +25,13 @@ class AuthRepository: BaseRepository() {
 //        api.getVendorStates()
 //    }
 
+    suspend fun getTable(token: String, vendorProfileID:Int) = safeApiCall{
+        api.getTable(token, vendorProfileID)
+    }
+    suspend fun getOpeningHours(token: String, vendorProfileID:Int) = safeApiCall{
+        api.getOpeningHours(token, vendorProfileID)
+    }
+
     suspend fun getVendorCategories() = safeApiCall{
         api.getVendorCategories()
     }

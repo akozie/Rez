@@ -21,6 +21,7 @@ class TableAdapter(private var tableList: List<Table>, var tableClickListener: O
         val tableDescription = binding.shortDescriptionTv
         val firstCardView = binding.cardView
 
+        val capacityTv1 = binding.tableCapacityTv1
         val tableImageIv1 = binding.tableImageIv1
         val tableNameTv1 = binding.tableNameTv1
         val shortDescriptionTv1 = binding.shortDescriptionTv1
@@ -52,8 +53,9 @@ class TableAdapter(private var tableList: List<Table>, var tableClickListener: O
                         }
                     } else{
                         cardView1.visible(true)
-                        GlideApp.with(context).load(image).into(tableImageIv1)
-                        capacity.text = max_people.toString()
+                        firstCardView.visible(false)
+                        GlideApp.with(context).load(R.drawable.table_img).into(tableImageIv1)
+                        capacityTv1.text = max_people.toString()
                         tablePriceTv1.text = price
                         tableNameTv1.text = name
                         shortDescriptionTv1.text = description

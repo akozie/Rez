@@ -22,12 +22,8 @@ class ErrorFragment : DialogFragment() {
     private lateinit var argsDate: String
     private lateinit var argsTime: String
 
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (requireActivity().application as RezApp).localComponent?.inject(this)
         setStyle(STYLE_NO_TITLE, android.R.style.Theme_DeviceDefault_Light_Dialog_MinWidth)
 
     }
@@ -51,8 +47,8 @@ class ErrorFragment : DialogFragment() {
 
             dialog!!.show()
 
-            argsDate = arguments?.getString("INTVAL")!!
-            argsTime = arguments?.getString("INTVALUE")!!
+//            argsDate = arguments?.getString("INTVAL")!!
+//            argsTime = arguments?.getString("INTVALUE")!!
 
             binding.okTv.setOnClickListener {
                 val action = ErrorFragmentDirections.actionErrorFragmentToProceedToPayment(argsDate, argsTime)
