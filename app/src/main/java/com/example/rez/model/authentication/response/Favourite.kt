@@ -8,6 +8,6 @@ data class Favourite(
     val avatar: String,
     val company_name: String,
     val id: Int,
-    val ratings: Float,
+    val ratings: String,
     val state: String
 ) : Parcelable

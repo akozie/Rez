@@ -1,9 +1,15 @@
 package com.example.rez.ui.fragment.dashboard
 
+import android.Manifest
+import android.app.Activity
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,17 +33,31 @@ import com.example.rez.util.showToast
 import kotlinx.coroutines.flow.collectLatest
 import android.view.KeyEvent
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.rez.R
+import com.example.rez.adapter.RecyclerviewAdapter
+import com.example.rez.api.Resource
+import com.example.rez.model.authentication.response.ListClass
 import com.example.rez.model.dashboard.SearchModel
 
 
-class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
+class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, RecyclerviewAdapter.OnSelectPlace {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val rezViewModel: RezViewModel by activityViewModels()
     private lateinit var searchAdapter: SearchPagingAdapter
     private lateinit var loaderStateAdapter: BookingPagingStateAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var list : ArrayList<ListClass>
+    private var lat: Double = 0.0
+    private var lng: Double = 0.0
     private var priceTo: String? = null
     private val PRICEFROM: Int = 0
     private var args: SearchModel? = null
@@ -78,16 +98,36 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
         noOfPersons = "5"
         setRv()
 
-        //searchRestaurants =  binding.searchRestaurantsTextView.text.toString()
+        recyclerView = binding.recyclerview
 
+        checkPermissions()
+        binding.showAddress.setOnClickListener {
+            binding.showAddress.visibility = View.GONE
+            binding.edtUserAddress.visibility = View.VISIBLE
+            recyclerView.visibility = View.VISIBLE
+        }
         searchRestaurants = args!!.searchText.toString()
-        loadData()
+        //loadData()
 
 
         binding.btnRetry.setOnClickListener {
             searchAdapter.retry()
         }
+        val address = binding.showAddress.text.toString().trim()
+        getAddress(address)
+        binding.edtUserAddress.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                getData(editable.toString())
+            }
+        })
 
 //        binding.search.setOnClickListener {
 //            val searchText = binding.restaurantText.text.toString().trim()
@@ -101,38 +141,99 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
 //        }
 
 
-            binding.searchRestaurantsTextView.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(editable: Editable?) {
-                binding.searchRestaurantsTextView.setOnKeyListener(object : View.OnKeyListener {
-                    override fun onKey(p0: View?, p1: Int, p2: KeyEvent?): Boolean {
-                        if(p2?.action == KeyEvent.ACTION_DOWN && p1 == KeyEvent.KEYCODE_ENTER){
-                                if (editable?.length!! <= 2){
-                                    showToast("Text length must be greater than 2")
-                                } else{
-                                    searchRestaurants = editable.toString()
-                                    loadData()
-                                }
-                            return true;
-                        }
-                        return false;
-                    }
-                })
-            }
-        })
+//            binding.searchRestaurantsTextView.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//            }
+//
+//            override fun afterTextChanged(editable: Editable?) {
+//                binding.searchRestaurantsTextView.setOnKeyListener(object : View.OnKeyListener {
+//                    override fun onKey(p0: View?, p1: Int, p2: KeyEvent?): Boolean {
+//                        if(p2?.action == KeyEvent.ACTION_DOWN && p1 == KeyEvent.KEYCODE_ENTER){
+//                                if (editable?.length!! <= 2){
+//                                    showToast("Text length must be greater than 2")
+//                                } else{
+//                                    searchRestaurants = editable.toString()
+//                                    loadData()
+//                                }
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                })
+//            }
+//        })
     }
 
-    override fun onEachSearchClick(resultX: ResultX) {
-        val action = SearchDirections.actionSearchToSearchFragment(resultX)
-        findNavController().navigate(action)
+    // Locations
+    private fun checkPermissions() {
+        if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireContext() as Activity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 1)
+
+        }
+        else {
+            getLocations()
+            val address = binding.showAddress.text.toString().trim()
+            getAddress(address)
+        }
     }
+
+    private fun getLocations() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        try {
+            val address = binding.showAddress.text.toString().trim()
+            val geoCoder = Geocoder(requireContext())
+            val addressList: List<Address> = geoCoder.getFromLocationName(address, 1)
+            if (addressList.isNotEmpty()) {
+                val latt = addressList[0].latitude
+                val long = addressList[0].longitude
+                lat = latt.toString().toDouble()
+                lng = long.toString().toDouble()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } // end catch
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.isNotEmpty()&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(requireContext(), "Permission granted", Toast.LENGTH_SHORT).show()
+                    getLocations()
+                }
+                else {
+                    Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
 
     private fun setRv() {
         searchAdapter = SearchPagingAdapter(this)
@@ -163,31 +264,91 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener {
         }
     }
 
-    private fun loadData() {
-        lifecycleScope.launch {
-            if (restaurantID == null){
-                rezViewModel.search(searchRestaurants, null, null, null, null , null,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
-                    binding.progressBar.visible(false)
-                    searchAdapter.submitData(viewLifecycleOwner.lifecycle, it)
-                    //binding.searchLayout.visibility = View.GONE
-                    binding.appBarLayout.visibility = View.VISIBLE
+//    private fun loadData() {
+//        lifecycleScope.launch {
+//            if (restaurantID == null){
+//                rezViewModel.search(lat, lng, null, null, null, null , null,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
+//                    binding.progressBar.visible(false)
+//                    searchAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+//                    //binding.searchLayout.visibility = View.GONE
+//                    binding.appBarLayout.visibility = View.VISIBLE
+//                }
+//            } else {
+//                rezViewModel.search(lat, lng, null, null, null, null , restaurantID,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
+//                    binding.progressBar.visible(false)
+//                    searchAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+//                    //binding.searchLayout.visibility = View.GONE
+//                    binding.appBarLayout.visibility = View.VISIBLE
+//                    restaurantID = 0
+//                }
+//            }
+//        }
+//    }
+
+    private fun getAddress(address: String) {
+        if (!address.isEmpty()) {
+            if (address.length > 2){
+                try {
+                    val geoCoder = Geocoder(requireContext())
+                    val addressList: List<Address> = geoCoder.getFromLocationName(address, 1)!!
+                    if (addressList.isNotEmpty()) {
+                        val latt = addressList[0].latitude
+                        val long = addressList[0].longitude
+                        lat = latt.toString().toDouble()
+                        lng = long.toString().toDouble()
+
+                        Log.d("LAT", lat.toString())
+                        Log.d("LONG", lng.toString())
+//                    Log.d("LONG", "MEEEEEEEEEEE")
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } else {
-                rezViewModel.search(searchRestaurants, null, null, null, null , restaurantID,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
-                    binding.progressBar.visible(false)
-                    searchAdapter.submitData(viewLifecycleOwner.lifecycle, it)
-                    //binding.searchLayout.visibility = View.GONE
-                    binding.appBarLayout.visibility = View.VISIBLE
-                    restaurantID = 0
-                }
+            } else{
+                showToast("Text should be more than 2 letters")
             }
+            // end catch
+        } else{
+            //
         }
     }
 
-//    override fun likeUnlike(id: String, like: ImageView, unLike: ImageView) {
-//        registerObservers(like, unLike)
-//        rezViewModel.addOrRemoveFavorites(id, "Bearer ${sharedPreferences.getString("token", "token")}")
-//    }
+    private fun getData(text: String) {
+        if (text.length >= 8) {
+            rezViewModel.getPlace(text, getString(R.string.api_Key))
+            rezViewModel.getPlacesResponse.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is Resource.Success -> {
+                        recyclerView.visibility = View.VISIBLE
+                        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                        list  = it.value.predictions
+                        Log.d("SUCCESS", list.toString())
+                        for (i in 0 until it.value.predictions.size){
+                            it.value.predictions.get(i)?.let { it1 -> list.add(it1) }
+                        }
+                        val recyclerviewAdapter = RecyclerviewAdapter(list, this)
+                        recyclerviewAdapter.addList(list)
+                        recyclerView.adapter = recyclerviewAdapter
+                    }
+                    is Resource.Failure -> {
+                        Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+
+        }
+    }
+
+    override fun onEachPlace(position: String) {
+        binding.showAddress.text = position
+        binding.showAddress.visibility = View.VISIBLE
+        binding.edtUserAddress.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+    }
+    override fun onEachSearchClick(resultX: ResultX) {
+        val action = SearchDirections.actionSearchToSearchFragment(resultX)
+        findNavController().navigate(action)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -1,15 +1,19 @@
 package com.example.rez.ui.fragment.dashboard
 
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.rez.R
+import com.example.rez.RezApp
 import com.example.rez.databinding.FragmentOpeningHoursBinding
 import com.example.rez.model.dashboard.DataXXXXXXX
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import javax.inject.Inject
 
 
 /**
@@ -23,9 +27,14 @@ class OpeningHoursFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private var args: DataXXXXXXX? = null
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.BottomSheetDialogStyle)
+        (requireActivity().application as RezApp).localComponent?.inject(this)
+
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,9 +50,10 @@ class OpeningHoursFragment : BottomSheetDialogFragment() {
 
         args = arguments?.getParcelable("OPENING")
 
+        val address = sharedPreferences.getString("address", "address")
 
-        //Log.d("CHECKFIRST", firstMonText.toString())
-        //Log.d("CHECKSECOND", secondMonText.toString())
+        binding.address.text = address
+
 
         if (args?.monday?.isEmpty() == true){
             binding.monText.text = ""
@@ -57,7 +67,7 @@ class OpeningHoursFragment : BottomSheetDialogFragment() {
             } else {
                 val newTime = firstMonText.substring(0,2).toInt()
                 val calculatedTime = newTime - 12
-                val remainingTime = args?.monday?.get(0)?.substring(2,5)
+                val remainingTime = args?.monday?.get(0)?.substring(3,5)
                 if (calculatedTime == 0){
                     binding.monText.text = "12:$remainingTime PM"
                 }else if (calculatedTime < 10){
@@ -95,7 +105,7 @@ class OpeningHoursFragment : BottomSheetDialogFragment() {
             } else {
                 val newTime = firstTueText.substring(0,2).toInt()
                 val calculatedTime = newTime - 12
-                val remainingTime = args?.tuesday?.get(0)?.substring(2,5)
+                val remainingTime = args?.tuesday?.get(0)?.substring(3,5)
                 if (calculatedTime == 0){
                     binding.tueText.text = "12:$remainingTime PM"
                 }else if (calculatedTime < 10){
@@ -131,7 +141,7 @@ class OpeningHoursFragment : BottomSheetDialogFragment() {
             } else {
                 val newTime = firstWedText.substring(0,2).toInt()
                 val calculatedTime = newTime - 12
-                val remainingTime = args?.wednesday?.get(0)?.substring(2,5)
+                val remainingTime = args?.wednesday?.get(0)?.substring(3,5)
                 if (calculatedTime == 0){
                     binding.wedText.text = "12:$remainingTime PM"
                 }else if (calculatedTime < 10){
@@ -168,7 +178,7 @@ class OpeningHoursFragment : BottomSheetDialogFragment() {
             } else {
                 val newTime = firstThursText.substring(0,2).toInt()
                 val calculatedTime = newTime - 12
-                val remainingTime = args?.thursday?.get(0)?.substring(2,5)
+                val remainingTime = args?.thursday?.get(0)?.substring(3,5)
                 if (calculatedTime == 0){
                     binding.thursText.text = "12:$remainingTime PM"
                 }else if (calculatedTime < 10){
@@ -205,7 +215,7 @@ class OpeningHoursFragment : BottomSheetDialogFragment() {
             } else {
                 val newTime = firstFriText.substring(0,2).toInt()
                 val calculatedTime = newTime - 12
-                val remainingTime = args?.friday?.get(0)?.substring(2,5)
+                val remainingTime = args?.friday?.get(0)?.substring(3,5)
                 if (calculatedTime == 0){
                     binding.friText.text = "12:$remainingTime PM"
                 }else if (calculatedTime < 10){
@@ -242,7 +252,7 @@ class OpeningHoursFragment : BottomSheetDialogFragment() {
             } else {
                 val newTime = firstSatText.substring(0,2).toInt()
                 val calculatedTime = newTime - 12
-                val remainingTime = args?.saturday?.get(0)?.substring(2,5)
+                val remainingTime = args?.saturday?.get(0)?.substring(3,5)
                 if (calculatedTime == 0){
                     binding.satText.text = "12:$remainingTime PM"
                 }else if (calculatedTime < 10){
@@ -279,7 +289,7 @@ class OpeningHoursFragment : BottomSheetDialogFragment() {
             } else {
                 val newTime = firstSunText.substring(0,2).toInt()
                 val calculatedTime = newTime - 12
-                val remainingTime = args?.sunday?.get(0)?.substring(2,5)
+                val remainingTime = args?.sunday?.get(0)?.substring(3,5)
                 if (calculatedTime == 0){
                     binding.sunText.text = "12:$remainingTime PM"
                 }else if (calculatedTime < 10){

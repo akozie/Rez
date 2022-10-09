@@ -119,6 +119,7 @@
     <string name="required">Required</string>
     <string name="about">About</string>
     <string name="review">Review</string>
+    <string name="address_Info">Address &amp; Info</string>
 
     <string name="edittext_hint">
         <font color="grey" size="32">Password</font>

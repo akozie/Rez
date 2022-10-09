@@ -16,7 +16,8 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class SearchPagingSource(
-    val value: String,
+    private val lat: Double?,
+    private val lng: Double?,
     private val noOfPersons: String?,
     private val priceFrom: Int?,
     private val  priceTo: Int?,
@@ -33,7 +34,7 @@ class SearchPagingSource(
         val currentPage = params.key ?: 1
 
         return try {
-            val response = authApi.search(value, noOfPersons, priceFrom, priceTo, stateID, type, token, currentPage)
+            val response = authApi.search(lat, lng, noOfPersons, priceFrom, priceTo, stateID, type, token, currentPage)
             val bookings = response.body()?.data?.results!!.toList()
 
 

@@ -134,7 +134,6 @@ class LoginFragment : Fragment() {
         googleSignInButton.setOnClickListener {
             signIn()
         }
-
     }
 
     private fun login() {

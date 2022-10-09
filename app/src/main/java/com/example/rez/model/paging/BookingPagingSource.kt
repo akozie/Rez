@@ -19,11 +19,11 @@ class BookingPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Booking> {
-        val currentPage = params.key ?: 1
 
         return try {
+            val currentPage = params.key ?: 1
             val response = authApi.getBookingsHistory(token, currentPage)
-            val responseData = mutableListOf<Booking>()
+            //val responseData = mutableListOf<Booking>()
             val bookings = response.body()?.data?.bookings?.toList()
            // responseData.addAll(bookings)
 //            delay(5000)
@@ -31,7 +31,9 @@ class BookingPagingSource(
             LoadResult.Page(
                 data = bookings!!,
                 prevKey = if (currentPage == 1) null else currentPage - 1,
+                //prevKey = response.body()?.links?.prev_page_url?.toInt(),
                 nextKey = if (bookings.isEmpty()) null else currentPage + 1
+                //nextKey = if (bookings.isEmpty()) null else response.body()?.links?.next_page_url?.toInt()
 //                nextKey = if (response.body()?.links?.to!! >= response.body()?.links?.from!!) null else currentPage + 1
             )
         } catch (exception : IOException) {

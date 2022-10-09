@@ -1,6 +1,5 @@
 package com.example.rez.api
 
-import android.media.tv.TableResponse
 import android.net.Uri
 import com.example.rez.model.authentication.genresponse.*
 import com.example.rez.model.authentication.request.*
@@ -101,7 +100,8 @@ interface AuthApi {
 
     @GET("user/home/search")
     suspend fun search(
-        @Query("q") q: String,
+        @Query("lat") lat: Double?,
+        @Query("lng") lng: Double?,
         @Query("no_persons") no_persons: String?,
         @Query("price_from") price_from: Int?,
         @Query("price_to") price_to: Int?,

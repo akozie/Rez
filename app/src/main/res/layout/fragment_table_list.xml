@@ -197,7 +197,7 @@ android:orientation="vertical">
             android:id="@+id/opening_hours"
             android:layout_width="wrap_content"
             android:visibility="gone"
-            android:text="Opening hours"
+            android:text="@string/address_Info"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>

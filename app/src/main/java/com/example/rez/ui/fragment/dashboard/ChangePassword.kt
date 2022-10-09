@@ -122,7 +122,8 @@ class ChangePassword : Fragment() {
         var isValidated = true
         binding.currentPassEt.doOnTextChanged { _, _, _, _ ->
             when {
-                binding.currentPassEt.text.toString().trim().isEmpty() -> {
+                binding.currentPassEt.text.toString().trim().isEmpty() ->
+                {
                     Toast.makeText(requireContext(), R.string.all_password_is_required, Toast.LENGTH_SHORT).show()
                     isValidated = false
                 }
@@ -170,7 +171,7 @@ class ChangePassword : Fragment() {
                     isValidated = true
                 }
             }
-        }
+        }       
         return isValidated
     }
 

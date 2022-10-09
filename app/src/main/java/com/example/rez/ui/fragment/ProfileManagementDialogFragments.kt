@@ -1,6 +1,7 @@
 package com.example.rez.ui.fragment
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.ACCOUNT_SECON
 import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.CURRENT_FILTER_NAME_BUNDLE_KEY
 import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.FILTER_NAME_REQUEST_KEY
 import com.example.rez.ui.fragment.dashboard.TopFragment.Companion.FILTER_SECOND_NAME_REQUEST_KEY
+import com.example.rez.util.showToast
 
 class ProfileManagementDialogFragments(
     private var dialogLayoutId: Int,
@@ -194,7 +196,7 @@ class ProfileManagementDialogFragments(
                         phoneNumberEditText.text.toString()
 
                     when {
-                        inputValue.isEmpty() -> {
+                        inputValue.isNullOrEmpty() -> {
                             setFragmentResult(
                                 ACCOUNT_OTHER_NAME_REQUEST_KEY,
                                 bundleOf(

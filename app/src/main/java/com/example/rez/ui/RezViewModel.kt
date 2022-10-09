@@ -147,6 +147,10 @@ class RezViewModel(
         get() = _getDirectionResponse
 
 
+    private val _getPlacesResponse: MutableLiveData<Resource<MainPojo>> = MutableLiveData()
+    val getPlacesResponse: LiveData<Resource<MainPojo>>
+        get() = _getPlacesResponse
+
 
     private val _phoneNumber: MutableLiveData<String> = MutableLiveData()
     val phoneNumber: LiveData<String>
@@ -158,13 +162,21 @@ class RezViewModel(
         _phoneNumber.value = phoneNumber
     }
 
+
+    fun getPlace(input: String,
+                 key: String
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _getPlacesResponse.postValue(Resource.Loading)
+        _getPlacesResponse.postValue(rezRepository.getPlace(input, key))
+    }
+
     fun getDirect(mode: String,
                   origin: String,
                   destination: String,
                   key: String
     ) = viewModelScope.launch {
-          _getDirectionResponse.value = Resource.Loading
-        _getDirectionResponse.value = rezRepository.getDirection(mode,origin, destination, key)
+          _getDirectionResponse.postValue(Resource.Loading)
+        _getDirectionResponse.postValue(rezRepository.getDirection(mode,origin, destination, key))
     }
 
     fun addVendorRating(token: String,
@@ -269,8 +281,8 @@ class RezViewModel(
             _getHomeResponse.postValue( rezRepository.getHome(lat, long, token))
     }
 
-    fun search(search: String, noOfPersons: String?, priceFrom: Int?, priceTo: Int?, stateId: Int?, type: Int?, token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
-        SearchPagingSource(search, noOfPersons, priceFrom,  priceTo, stateId, type, api, token)
+    fun search(lat: Double?, lng: Double?, noOfPersons: String?, priceFrom: Int?, priceTo: Int?, stateId: Int?, type: Int?, token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
+        SearchPagingSource(lat, lng, noOfPersons, priceFrom,  priceTo, stateId, type, api, token)
     }.flow.cachedIn(viewModelScope)
 
 

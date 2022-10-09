@@ -70,7 +70,7 @@ class BookingDetailsFragment : Fragment() {
 
         binding.tableReviewBtn.submit.setOnClickListener {
             if (binding.tableReviewText.text!!.isEmpty() || binding.tableReviewRating.rating.equals(0)) {
-                val message = "Table review and table rating is required"
+                val message = "Table review and table rating are required"
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             } else {
                 binding.tableReviewBtn.submit.enable(true)
@@ -115,11 +115,11 @@ class BookingDetailsFragment : Fragment() {
                         }
                         is Resource.Failure -> {
                             binding.tableReviewBtn.button.text = "Submit review"
+                            showToast("Review can only be made when after a booking has been completed for this table")
                             handleApiError(it) { addTableReview() }
                         }
                     }
                 })
-
             }
         }
     }
@@ -159,6 +159,7 @@ class BookingDetailsFragment : Fragment() {
                                 }
                                 is Resource.Failure -> {
                                     binding.vendorRatingBtn.button.text = "Submit review"
+                                    showToast("Review can only be made when after a booking has been completed for this restaurant")
                                     handleApiError(it) { addVendorReview() }
                                 }
                             }

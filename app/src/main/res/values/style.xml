@@ -103,6 +103,14 @@
         <item name="strokeWidth">@dimen/margin_5dp</item>
     </style>
 
+    <style name="OpeningHourDividerStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/login_fragment_horizontal_divider_view_height</item>
+        <item name="android:background">@color/blue</item>
+        <item name="strokeColor">@color/blue</item>
+        <item name="strokeWidth">@dimen/margin_5dp</item>
+    </style>
+
     <style name="SignUpScreenCreateAccount">
         <item name="android:layout_marginStart">@dimen/margin_18dp</item>
         <item name="android:layout_marginTop">@dimen/margin_50dp</item>

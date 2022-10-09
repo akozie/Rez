@@ -17,6 +17,10 @@ import okhttp3.RequestBody
 class AuthRepository: BaseRepository() {
     //var favorite = 0
 
+    suspend fun getPlace(input: String, key: String) = safeApiCall {
+        googleapi.getPlace(input, key)
+    }
+
     suspend fun getDirection(mode: String, origin: String, destination: String, key: String) = safeApiCall {
         googleapi.getDirect(mode, origin, destination, key)
     }

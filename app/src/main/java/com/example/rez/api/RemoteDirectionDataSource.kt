@@ -11,10 +11,23 @@ class RemoteDirectionDataSource {
         companion object {
             private const val BASE_URL = "https://maps.googleapis.com/"
 
-            private val retrofit: Retrofit by lazy {
+//            private val retrofit: Retrofit by lazy {
+//                Retrofit.Builder()
+//                    .addConverterFactory(MoshiConverterFactory.create())
+//                    .baseUrl(BASE_URL)
+//                    .build()
+//            }
+
+            private val retrofit by lazy {
+                val logging = HttpLoggingInterceptor()
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+                val client = OkHttpClient.Builder()
+                    .addInterceptor(logging)
+                    .build()
                 Retrofit.Builder()
-                    .addConverterFactory(MoshiConverterFactory.create())
                     .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
                     .build()
             }
 

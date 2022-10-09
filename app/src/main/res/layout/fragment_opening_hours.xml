@@ -16,26 +16,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_margin="-10dp"
+    <TextView
+        android:id="@+id/address"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-    <Button
-        android:id="@+id/materialButton"
-        android:layout_marginTop="-10dp"
-        android:layout_width="70dp"
-        android:layout_height="22dp"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/grey"
-        app:cornerRadius="@dimen/margin_50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
+        android:text="Address"
+        app:drawableLeftCompat="@drawable/ic_baseline_location_on_24"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_16sp"/>
+
     <TextView
         android:id="@+id/mon"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/monday"
@@ -79,7 +73,11 @@
             android:textSize="@dimen/text_size_15sp"
             android:gravity="center_horizontal|center"/>
 
+
     </LinearLayout>
+    <View
+        android:id="@+id/opening_screen_fragment_bottom_divider_view1"
+        style="@style/OpeningHourDividerStyle" />
 
     <TextView
         android:id="@+id/tue"
@@ -131,6 +129,9 @@
             android:layout_gravity="center"/>
 
     </LinearLayout>
+    <View
+        android:id="@+id/opening_screen_fragment_bottom_divider_view2"
+        style="@style/OpeningHourDividerStyle" />
 
     <TextView
         android:id="@+id/wed"
@@ -179,6 +180,9 @@
             android:textSize="@dimen/text_size_15sp"/>
 
     </LinearLayout>
+    <View
+        android:id="@+id/opening_screen_fragment_bottom_divider_view3"
+        style="@style/OpeningHourDividerStyle" />
 
     <TextView
         android:id="@+id/thurs"
@@ -228,6 +232,10 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/opening_screen_fragment_bottom_divider_view4"
+        style="@style/OpeningHourDividerStyle" />
+
     <TextView
         android:id="@+id/fri"
         android:layout_marginTop="10dp"
@@ -275,6 +283,9 @@
             android:gravity="center_horizontal|center"/>
 
     </LinearLayout>
+    <View
+        android:id="@+id/opening_screen_fragment_bottom_divider_view5"
+        style="@style/OpeningHourDividerStyle" />
 
     <TextView
         android:id="@+id/sat"
@@ -323,6 +334,9 @@
             android:gravity="center_horizontal|center"/>
 
     </LinearLayout>
+    <View
+        android:id="@+id/opening_screen_fragment_bottom_divider_view6"
+        style="@style/OpeningHourDividerStyle" />
 
     <TextView
         android:id="@+id/sun"
@@ -374,6 +388,9 @@
     </LinearLayout>
 
 
+    <View
+        android:id="@+id/opening_screen_fragment_bottom_divider_view"
+        style="@style/OpeningHourDividerStyle" />
 
 
 

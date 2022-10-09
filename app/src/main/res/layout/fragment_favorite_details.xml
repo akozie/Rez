@@ -162,17 +162,9 @@ android:orientation="vertical">
         <Button
             android:id="@+id/opening_hours"
             android:layout_width="wrap_content"
-            android:text="Opening hours"
+            android:text="@string/address_Info"
             android:visibility="gone"
             android:layout_height="wrap_content"/>
-
-
-        <!--        <ImageView-->
-<!--            android:id="@+id/filterImageIv"-->
-<!--            android:layout_width="20dp"-->
-<!--            android:layout_height="20dp"-->
-<!--            android:layout_marginEnd="15dp"-->
-<!--            android:src="@drawable/filter11" />-->
 
     </LinearLayout>
 
@@ -188,8 +180,6 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_gravity="center"/>
-
-
 
 </LinearLayout>
 

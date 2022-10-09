@@ -98,6 +98,9 @@
         <action
             android:id="@+id/action_myProfile_to_successFragment"
             app:destination="@id/successFragment" />
+        <action
+            android:id="@+id/action_myProfile_to_home2"
+            app:destination="@id/home2" />
     </fragment>
     <fragment
         android:id="@+id/reservation"

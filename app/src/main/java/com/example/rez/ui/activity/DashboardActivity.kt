@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -23,6 +24,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.example.rez.R
 import com.example.rez.RezApp
+import com.example.rez.api.NameInterface
 import com.example.rez.databinding.ActivityDashboardBinding
 import com.example.rez.repository.AuthRepository
 import com.example.rez.ui.RezViewModel
@@ -34,7 +36,7 @@ import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
 import javax.inject.Inject
 
-class DashboardActivity : AppCompatActivity() {
+class DashboardActivity : AppCompatActivity(), NameInterface {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var _binding: ActivityDashboardBinding
@@ -114,6 +116,7 @@ class DashboardActivity : AppCompatActivity() {
 //        searchview.setOnClickListener {
 //            navController.navigate(R.id.search)
 //        }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         bottomNavigationView.setupWithNavController(navController)
@@ -184,12 +187,15 @@ class DashboardActivity : AppCompatActivity() {
                     confirmationDialog.create().show()
                     return@setNavigationItemSelectedListener true
                 }
-
                 else -> return@setNavigationItemSelectedListener true
             }
         }
     }
-
+    override fun onDataPass(data: String) {
+        sharedPreferences.edit().putString("name", data).apply()
+        searchview.text = data
+        Log.d("LOGNAME", "hello " + data)
+    }
 
     /*CLose Nav Drawer if open, on back press*/
     @Deprecated("Deprecated in Java")
@@ -213,12 +219,11 @@ class DashboardActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.home2 -> {
                     bottomNavigationView.visibility = View.VISIBLE
-                    toolbarFragmentName.text = sharedPreferences.getString("username", "username")
+                    //toolbarFragmentName.text = sharedPreferences.getString("username", "username")
                     searchview.visibility = View.VISIBLE
                     hiText.visibility = View.VISIBLE
                     toolbarFragmentName.visibility = View.GONE
                     notification.visibility = View.VISIBLE
-                    //Home()
                 }
                 R.id.favoritesCover -> {
                     hiText.visibility = View.GONE
@@ -226,7 +231,6 @@ class DashboardActivity : AppCompatActivity() {
                     searchview.visibility = View.INVISIBLE
                     toolbarFragmentName.visibility = View.VISIBLE
                     notification.visibility = View.GONE
-                    //FavoritesCover()
                 }
                 R.id.favorites -> {
                     hiText.visibility = View.GONE

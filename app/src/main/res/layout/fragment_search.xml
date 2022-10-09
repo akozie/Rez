@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/margin_30dp"
     tools:context=".ui.fragment.dashboard.Search">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -28,8 +27,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/search_restaurants_Text_view"
+                <TextView
+                    android:id="@+id/show_address"
+                    style="@style/SignUpScreenEditTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="start|center"
+                    android:textColor="@color/white"
+                    android:paddingStart="@dimen/padding_5dp"
+                    android:paddingEnd="@dimen/padding_0dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/edt_user_address"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_60dp"
                     android:backgroundTint="@color/quantum_grey600"
@@ -58,80 +70,16 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/search_layout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:layout_marginTop="@dimen/margin_10dp"-->
-<!--        android:layout_marginEnd="10dp"-->
-<!--        android:background="@drawable/rectangle_outbox_blue"-->
-<!--        android:orientation="vertical"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="3dp"-->
-<!--            android:background="@color/blue" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/restaurant_text"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="53dp"-->
-<!--            android:background="@color/white"-->
-<!--            android:drawableLeft="@drawable/ic_baseline_search_pink"-->
-<!--            android:drawablePadding="@dimen/padding_21dp"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:hint="Search for restaurant"-->
-<!--            android:maxLines="1"-->
-<!--            android:paddingStart="@dimen/padding_20dp"-->
-<!--            android:singleLine="true"-->
-<!--            android:textColorHint="@color/gray_dark"-->
-<!--            android:textSize="@dimen/text_size_16sp" />-->
-
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="3dp"-->
-<!--            android:background="@color/blue" />-->
-
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/fragment_select_state"-->
-<!--            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="55dp"-->
-<!--            app:backgroundTint="@color/white"-->
-<!--            app:endIconDrawable="@drawable/ic_arrow_down_24"-->
-<!--            app:endIconTint="@color/grey_light"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent">-->
-
-<!--            <AutoCompleteTextView-->
-<!--                android:id="@+id/select_venue"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:fontFamily="@font/poppins_light"-->
-<!--                android:inputType="none"-->
-<!--                android:text="Select venue"-->
-<!--                android:textColor="@android:color/background_dark"-->
-<!--                android:textCursorDrawable="@color/grey_light"-->
-<!--                android:theme="@style/Autocomplete"-->
-<!--                app:backgroundTint="@color/white" />-->
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--        <Button-->
-<!--            android:id="@+id/search"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="@drawable/rectangle_outbox_blue"-->
-<!--            android:text="SEARCH"-->
-<!--            android:textSize="@dimen/text_size_16sp"-->
-<!--            android:textStyle="bold" />-->
-<!--    </LinearLayout>-->
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="@dimen/margin_18dp"
+        android:layout_marginEnd="@dimen/margin_18dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        tools:layout_editor_absoluteX="18dp" />
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
@@ -143,35 +91,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-<!--    <TextView-->
-<!--        android:id="@+id/empty_result_table"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:gravity="center"-->
-<!--        android:text="No result "-->
-<!--        android:fontFamily="@font/poppins_medium"-->
-<!--        android:textSize="@dimen/text_size_15sp"/>-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/saveText"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center"-->
-<!--        android:text="22"-->
-<!--        android:visibility="visible"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/priceText"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/priceText"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center"-->
-<!--        android:text="22"-->
-<!--        android:visibility="visible"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recyclerview"

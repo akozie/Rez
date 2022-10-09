@@ -125,7 +125,11 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
 
     private fun setNearData() {
         binding.hotelNameTv.text = args?.company_name
-        binding.ratingBar.rating = args?.ratings!!
+        if (args?.ratings.isNullOrEmpty()){
+            binding.ratingBar.rating = "0".toFloat()
+        }else{
+            binding.ratingBar.rating = args?.ratings!!.toFloat()
+        }
     }
 
     override fun onTableItemClick(tableModel: Table) {
@@ -171,15 +175,14 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
                     is Resource.Success -> {
                         if (it.value.status){
                             tableDetailsDataList = it.value.data.images
+                            val address = it.value.data.address
+                            sharedPreferences.edit().putString("address", address).apply()
                             if (tableDetailsDataList.isEmpty()){
                                 tableDetailsDataList = listOf(Image("", 1, "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
                             }
-                            //Log.d("TABLEDATALIST", tableDetailsDataList.toString())
-
                             setTableDetailsViewPagerAdapter()
-
                         } else {
-                            it.value.message?.let { it1 ->
+                            it.value.message.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
@@ -188,6 +191,7 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
             }
         )
     }
+
     private fun getOpeningHours() {
         rezViewModel.getOpeningHours("Bearer ${sharedPreferences.getString("token", "token")}", args!!.id)
         rezViewModel.getOpeningHoursResponse.observe(
@@ -217,8 +221,8 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
         tableAdapter = TableAdapter(tableList, this)
         binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.tableListRecycler.adapter = tableAdapter
-
     }
+
     private fun filter(guest: String, price: String) {
         var newList = listOf<Table>()
         newList = tableList.filter { it.price <= price || it.max_people.toString() == guest }
@@ -227,7 +231,6 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
         binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.tableListRecycler.adapter = tableAdapter
     }
-
 
     private fun registerObservers() {
         rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner) {

@@ -194,7 +194,7 @@ android:orientation="vertical">
         <Button
             android:id="@+id/opening_hours"
             android:layout_width="wrap_content"
-            android:text="Opening hours"
+            android:text="@string/address_Info"
             android:visibility="gone"
             android:layout_height="wrap_content"/>
 

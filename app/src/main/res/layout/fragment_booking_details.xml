@@ -5,7 +5,6 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 android:fillViewport="true"
-    android:layout_marginBottom="@dimen/margin_30dp"
 tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
 
     <LinearLayout
@@ -240,19 +239,6 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
                         android:drawableLeft="@drawable/round_right_mark2"
                         android:textColor="@color/green"/>
 
-                    <!--<TextView
-                        android:layout_weight="1"
-                        android:id="@+id/statusTv"
-                        android:layout_marginLeft="1dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:layout_gravity="start"
-                        android:gravity="center_vertical"
-                        android:textStyle="bold"
-                        android:textSize="11dp"
-                        android:textColor="@color/green"/>-->
-
                 </LinearLayout>
 
 
@@ -268,6 +254,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_10dp"
+        android:textColor="@color/black"
         android:fontFamily="@font/poppins_light"
         android:textSize="@dimen/text_size_15sp"
         android:text="Add review" />
@@ -299,7 +286,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
             style="@style/LoginFragmentButtonStyle"
             layout="@layout/custom_button"
             android:layout_marginStart="@dimen/margin_10dp"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/margin_10dp"
             android:backgroundTint="@color/blue"
             android:textColor="@color/white"
@@ -311,28 +298,6 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <!--    <ProgressBar-->
-<!--        android:id="@+id/progress_bar"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:visibility="gone"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content" />-->
-
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/table_review_btn"-->
-<!--        style="@style/LoginFragmentButtonStyle"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:backgroundTint="@color/blue"-->
-<!--        android:text="Submit review"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="@dimen/text_size_16sp"-->
-<!--        app:cornerRadius="@dimen/margin_5dp"-->
-<!--        android:layout_marginStart="@dimen/margin_10dp"-->
-<!--        android:layout_marginEnd="@dimen/margin_10dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -358,7 +323,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_10dp"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/margin_10dp"
             android:backgroundTint="@color/blue"
             android:textColor="@color/white"
@@ -370,21 +335,6 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />
-
-        <!--        <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/vendor_rating_btn"-->
-<!--        style="@style/LoginFragmentButtonStyle"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:backgroundTint="@color/blue"-->
-<!--        android:text="Submit rating"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="@dimen/text_size_16sp"-->
-<!--        app:cornerRadius="@dimen/margin_5dp"-->
-<!--        android:layout_marginStart="@dimen/margin_10dp"-->
-<!--        android:layout_marginEnd="@dimen/margin_10dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />-->
 
 </LinearLayout>
 </androidx.core.widget.NestedScrollView>

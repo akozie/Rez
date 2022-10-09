@@ -5,7 +5,7 @@ data class Data(
     val avatar: String,
     val email_verified: Int?,
     var first_name: String,
-    val id: Int,
+    val id: String,
     val last_name: String,
     val phone: String?,
     val token: String?

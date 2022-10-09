@@ -199,15 +199,14 @@ class NearRestFragment : Fragment(), OnTableClickListener {
                     is Resource.Success -> {
                         if (it.value.status){
                             tableDetailsDataList = it.value.data.images
+                            val address = it.value.data.address
+                            sharedPreferences.edit().putString("address", address).apply()
                             if (tableDetailsDataList.isEmpty()){
                                 tableDetailsDataList = listOf(Image("", 1, "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
                             }
-                            //Log.d("TABLEDATALIST", tableDetailsDataList.toString())
-
                             setTableDetailsViewPagerAdapter()
-
                         } else {
-                            it.value.message?.let { it1 ->
+                            it.value.message.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }

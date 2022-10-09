@@ -44,6 +44,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
+import com.example.rez.api.NameInterface
 import com.example.rez.ui.GlideApp
 import com.example.rez.ui.MyGlideAppGlideModule
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -60,6 +61,8 @@ class MyProfile : Fragment() {
     private val binding get() = _binding!!
     private lateinit var rezViewModel: RezViewModel
     private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
+    lateinit var dataPasser: NameInterface
+
 
 
     @Inject
@@ -109,8 +112,6 @@ class MyProfile : Fragment() {
         }
 
         binding.saveBtn.progressBar.visible(false)
-       // binding.saveBtn.enable(false)
-
 
         binding.saveBtn.submit.setOnClickListener {
             if (binding.firstNameEt.text!!.isEmpty()) {
@@ -122,12 +123,17 @@ class MyProfile : Fragment() {
             }
         }
     }
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dataPasser = context as NameInterface
+    }
+    fun passData(data: String){
+        dataPasser.onDataPass(data)
+    }
     private fun updateProfile() {
         val firstName = binding.firstNameEt.text.toString().trim()
         val lastName = binding.lastNameEt.text.toString().trim()
         val email = binding.userEmailEt.text.toString().trim()
-       // val phoneNumber = binding.phoneText.text.toString().trim() + binding.mobileNoEt.text.toString().trim()
         val phoneNumber = binding.mobileNoEt.text.toString().trim()
 
         when {
@@ -157,12 +163,13 @@ class MyProfile : Fragment() {
                         is Resource.Success -> {
                             binding.saveBtn.button.text = "Update Profile"
                             if (it.value.status){
-                                lifecycleScope.launch {
                                     val message = it.value.message
                                     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                                val newName = binding.firstNameEt.text.toString()
+                                sharedPreferences.edit().putString("name", newName).apply()
+                                passData(newName)
                                     val action = MyProfileDirections.actionMyProfileToSuccessFragment()
                                     findNavController().navigate(action)
-                                }
                             } else {
                                 it.value.message.let { it1 ->
                                     Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
@@ -171,11 +178,10 @@ class MyProfile : Fragment() {
                         }
                         is Resource.Failure -> {
                             binding.saveBtn.button.text = "Update Profile"
-                            showToast("File is too Large")
+                            showToast("Invalid phone number")
                             handleApiError(it) { updateProfile() }
                         }
                     }
-                   // rezViewModel.cleanProfileResponse()
                 })
             }
         }
@@ -196,7 +202,11 @@ class MyProfile : Fragment() {
                             binding.lastNameEt.text = it.value.data.last_name
                             binding.userEmailEt.text = sharedPreferences.getString("email", "email")
                             //binding.mobileNoEt.text = it.value.data.phone?.substring(4)
-                            binding.mobileNoEt.text = it.value.data.phone
+                            if (it.value.data.phone.isNullOrEmpty()){
+                                binding.mobileNoEt.text = "+234"
+                            }else{
+                                binding.mobileNoEt.text = it.value.data.phone
+                            }
                             if (it.value.data.avatar == null){
                                 GlideApp.with(requireContext()).load(R.drawable.chairman_image).into(binding.customerImageIv)
                             }else {
@@ -319,6 +329,7 @@ class MyProfile : Fragment() {
                     }
                     is Resource.Failure -> {
                         binding.saveBtn.button.text = "Update Profile"
+                        showToast("File too large")
                         handleApiError(it)
                         //rezViewModel.cleanImageProfile()
                     }
@@ -403,17 +414,17 @@ class MyProfile : Fragment() {
 //    }
 
     private fun accountPhoneEditDialog() {
-        // when other name name value is clicked
+        // when phone number value is clicked
         childFragmentManager.setFragmentResultListener(
             ACCOUNT_OTHER_NAME_REQUEST_KEY,
             requireActivity()
         ) { key, bundle ->
-            // collect input values from dialog fragment and update the otherName text of user
+            // collect input values from dialog fragment and update the phone number of user
             val otherName = bundle.getString(ACCOUNT_OTHER_NAME_BUNDLE_KEY)
             binding.mobileNoEt.text = otherName
         }
 
-        // when last Name name value is clicked
+        // when phone number value is clicked
         binding.mobileNoEt.setOnClickListener {
             val currentOtherName =
                 binding.mobileNoEt.text.toString()

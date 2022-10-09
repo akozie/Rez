@@ -54,9 +54,6 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
     private lateinit var topRecommendedAdapter: TopRecommendedHomeAdapter
     private lateinit var nearRestaurantAdapter: NearRestaurantAdapter
     private lateinit var suggestionRestaurantAdapter: SuggestionRestaurantAdapter
-//    private lateinit var topRecyclerView: RecyclerView
-//    private lateinit var nearRecyclerView: RecyclerView
-//    private lateinit var suggestionRecyclerView: RecyclerView
     private lateinit var topList:List<RecommendedVendor>
     private lateinit var nearList:List<NearbyVendor>
     private lateinit var suggestionList:List<SuggestedVendor>
@@ -84,7 +81,6 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                 }
             })
         }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -408,25 +404,35 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                                 topList = it.value.data[0].recommended_vendors
                                 val gson = Gson()
                                 val db = gson.toJson(topList)
-                                sharedPreferences.edit().putString("toplist", db).apply()
-                                sharedPreferences.edit().putString("topguy", it.value.data[0].recommended_vendors[0].category_name).apply()
 //                                val bundle = Bundle()
 //                                bundle.putParcelable("key", )
                                 nearList = it.value.data[0].nearby_vendors
                                 val near = gson.toJson(nearList)
-                                sharedPreferences.edit().putString("nearlist", near).apply()
                                 suggestionList = it.value.data[0].suggested_vendors
                                 val suggested = gson.toJson(suggestionList)
-                                sharedPreferences.edit().putString("suggestedlist", suggested)
-                                    .apply()
-                                topRestaurants()
-                                suggestionRestaurants()
+                                if (topList.isEmpty()) {
+                                    binding?.topRecomendRecycler?.visible(false)
+                                    binding?.topLayout?.visible(false)
+                                } else if (topList.isNotEmpty()) {
+                                    topRestaurants()
+                                    sharedPreferences.edit().putString("toplist", db).apply()
+                                    sharedPreferences.edit().putString("topguy", it.value.data[0].recommended_vendors[0].category_name).apply()
+                                }
+                                if (suggestionList.isEmpty()) {
+                                    binding?.suggestionRecycler?.visible(false)
+                                    binding?.suggestedLayout?.visible(false)
+                                    binding?.suggestedView?.visible(false)
+                                } else if (suggestionList.isNotEmpty()) {
+                                    suggestionRestaurants()
+                                    sharedPreferences.edit().putString("suggestedlist", suggested).apply()
+                                }
                                 if (nearList.isEmpty()) {
                                     binding?.nearRestRecycler?.visible(false)
                                     binding?.nearLayout?.visible(false)
                                     binding?.nearView?.visible(false)
                                 } else if (nearList.isNotEmpty()) {
                                     nearRestaurants()
+                                    sharedPreferences.edit().putString("nearlist", near).apply()
                                 }
                             } else {
                                 it.value.message.let { it1 ->

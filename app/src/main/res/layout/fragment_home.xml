@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_10dp"
                 android:drawableLeft="@drawable/ic_baseline_search_pink"
-                android:hint="Search for restaurant"
+                android:hint="Enter your destination"
                 android:gravity="center_vertical"
                 android:drawablePadding="@dimen/padding_21dp"
                 android:singleLine="true"
@@ -109,6 +109,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/top_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -205,6 +206,7 @@
             </LinearLayout>
 
             <View
+                android:id="@+id/suggested_view"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -218,6 +220,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/suggested_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">

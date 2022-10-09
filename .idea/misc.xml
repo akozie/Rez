@@ -108,7 +108,7 @@
         <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.20652173913043478" />
         <entry key="app/src/main/res/layout/fragment_notification_message_list_layout.xml" value="0.20652173913043478" />
         <entry key="app/src/main/res/layout/fragment_o_t_p.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_opening_hours.xml" value="0.20697463768115942" />
+        <entry key="app/src/main/res/layout/fragment_opening_hours.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_proceed_to_booking.xml" value="0.14361702127659576" />
         <entry key="app/src/main/res/layout/fragment_proceed_to_payment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_q_r_code.xml" value="0.17255434782608695" />
@@ -136,6 +136,7 @@
         <entry key="app/src/main/res/layout/profile_activity_header.xml" value="0.14361702127659576" />
         <entry key="app/src/main/res/layout/reservation_list_adapter.xml" value="0.25" />
         <entry key="app/src/main/res/layout/review_show_adapter_layout.xml" value="0.14990942028985507" />
+        <entry key="app/src/main/res/layout/rv_layout.xml" value="0.20199275362318841" />
         <entry key="app/src/main/res/layout/search_adapter.xml" value="0.1671195652173913" />
         <entry key="app/src/main/res/layout/step_item_layout.xml" value="0.16822916666666668" />
         <entry key="app/src/main/res/layout/suggestion_adapter.xml" value="0.335" />
