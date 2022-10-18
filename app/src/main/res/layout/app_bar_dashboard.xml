@@ -66,6 +66,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/notification_count"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:visibility="gone"
+                android:background="@drawable/notification_count_layout"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="@dimen/text_size_10sp"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="@+id/dashboard_activity_notification_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/dashboard_activity_toolbar_fragment_name_text_view"

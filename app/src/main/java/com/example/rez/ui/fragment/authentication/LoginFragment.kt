@@ -22,6 +22,7 @@ import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentLoginBinding
 import com.example.rez.model.authentication.request.FacebookRequest
 import com.example.rez.model.authentication.request.LoginRequest
+import com.example.rez.model.authentication.response.LoginResponse
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.ui.activity.MainActivity
@@ -190,13 +191,12 @@ class LoginFragment : Fragment() {
                                     }
                                 } else {
                                     it.value.message?.let { it1 -> showToast(it1) }
-
                                 }
-
                             }
-                            is Resource.Failure -> {
+                            is Resource.Error<*> -> {
                                 binding.loginTv.button.text = "LOGIN"
-                                handleApiError(it)
+                                showToast(it.data.toString())
+                                rezViewModel.loginResponse.removeObservers(viewLifecycleOwner)
                             }
                         }
                     })
@@ -250,7 +250,7 @@ class LoginFragment : Fragment() {
 
     /*create the googleSignIn client*/
     private fun googleSignInClient() {
-        val serverClientId = getString(R.string.default_web_client_id) // get the client id
+        val serverClientId = getString(R.string.default_web_id) // get the client id
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(serverClientId)
             .requestEmail()
@@ -289,7 +289,7 @@ class LoginFragment : Fragment() {
 
     /*open the dashboard fragment if account was selected*/
     private fun startDashboard(account: GoogleSignInAccount?) {
-        account?.idToken?.let {
+        account?.idToken?.let { it ->
             val googleRequest = FacebookRequest(it)
             rezViewModel.loginWithGoogle(googleRequest) // make the google login request
             rezViewModel.loginGoogleResponse.observe(viewLifecycleOwner, Observer {
@@ -322,9 +322,11 @@ class LoginFragment : Fragment() {
                         }
 
                     }
-                    is Resource.Failure ->  {
+                    is Resource.Error<*> ->  {
                         binding.loginTv.button.text = "LOGIN"
-                        handleApiError(it)
+                        showToast(it.data.toString())
+                        rezViewModel.loginGoogleResponse.removeObservers(viewLifecycleOwner)
+                        //showToast("User already has an account mapped without a social provider")
                     } // handle error
                 }
             })
@@ -366,9 +368,11 @@ class LoginFragment : Fragment() {
                             it.value.message?.let { it1 -> showToast(it1) } // show the user the message
                         }
                     }
-                    is Resource.Failure ->  {
+                    is Resource.Error<*> ->  {
                         binding.loginTv.button.text = "LOGIN"
-                        handleApiError(it)
+                        showToast(it.data.toString())
+                        rezViewModel.loginWithFacebookResponse.removeObservers(viewLifecycleOwner)
+                        //showToast("User already has an account mapped without a social provider")
                     } // handle error
                 }
             })

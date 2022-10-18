@@ -28,6 +28,7 @@ import com.example.rez.model.authentication.response.Booking
 import com.example.rez.ui.GlideApp
 import com.example.rez.ui.RezViewModel
 import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import kotlinx.coroutines.launch
 import java.io.File
@@ -99,7 +100,7 @@ class QRCodeFragment : Fragment() {
     private fun setUpQRCode(){
         args!!.id.let {
             rezViewModel.getEachBooking(token = "Bearer ${sharedPreferences.getString("token", "token")}",
-                it.toInt()
+                it
             )
         }
         rezViewModel.eachBookingResponse.observe(viewLifecycleOwner, Observer {
@@ -117,7 +118,9 @@ class QRCodeFragment : Fragment() {
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it) { setUpQRCode() }
+                is Resource.Error<*> -> {
+                    showToast(it.data.toString())
+                    rezViewModel.eachBookingResponse.removeObservers(viewLifecycleOwner)                }
             }
         })
         rezViewModel.cleanGetBookingResponse()

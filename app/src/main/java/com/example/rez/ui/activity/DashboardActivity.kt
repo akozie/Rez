@@ -8,16 +8,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -25,16 +25,18 @@ import androidx.navigation.ui.*
 import com.example.rez.R
 import com.example.rez.RezApp
 import com.example.rez.api.NameInterface
+import com.example.rez.api.Resource
 import com.example.rez.databinding.ActivityDashboardBinding
 import com.example.rez.repository.AuthRepository
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.RezViewModelProviderFactory
-import com.example.rez.ui.fragment.dashboard.FavoritesCover
-import com.example.rez.ui.fragment.dashboard.Home
+import com.example.rez.ui.fragment.dashboard.NotificationFragment
+import com.example.rez.util.visible
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
 import javax.inject.Inject
+
 
 class DashboardActivity : AppCompatActivity(), NameInterface {
 
@@ -60,15 +62,16 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ( application as RezApp).localComponent?.inject(this)
+        (application as RezApp).localComponent?.inject(this)
 
-    //    ( application as NexPortApp).localComponent?.inject(this)
+        //    ( application as NexPortApp).localComponent?.inject(this)
         _binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val rezRepository = AuthRepository()
         val viewModelProviderFactory = RezViewModelProviderFactory(application, rezRepository)
-        rezViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RezViewModel::class.java)
+        rezViewModel =
+            ViewModelProvider(this, viewModelProviderFactory).get(RezViewModel::class.java)
 
         setSupportActionBar(binding.appBarDashboard.dashboardActivityToolbar)
 
@@ -80,11 +83,11 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
 //            window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 //        }
 
+
         drawerLayout = binding.drawerLayout
         navView = binding.navView
         val navViewHeader = navView.getHeaderView(0)
         drawerCloseIcon = navViewHeader.findViewById(R.id.nav_drawer_close_icon_image_view)
-
 
 
         /*Initialize Toolbar Views*/
@@ -92,17 +95,10 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
         hiText = binding.appBarDashboard.hiText
         searchview.text = sharedPreferences.getString("name", "name")
         toolbarFragmentName = binding.appBarDashboard.dashboardActivityToolbarFragmentNameTextView
-        bottomNavigationView = binding.appBarDashboard.contentDashboard.dashboardActivityBottomNavigationView
+        bottomNavigationView =
+            binding.appBarDashboard.contentDashboard.dashboardActivityBottomNavigationView
         notification = binding.appBarDashboard.dashboardActivityNotificationIcon
         navigationView = binding.navView
-
-
-//
-//        fm.beginTransaction().add(binding.appBarDashboard.contentDashboard.navHostFragmentContentDashboard, fragment3, "3").hide(fragment3).commit();
-//        fm.beginTransaction().add(binding.appBarDashboard.contentDashboard.navHostFragmentContentDashboard, fragment2, "2").hide(fragment2).commit();
-//        fm.beginTransaction().add(binding.appBarDashboard.contentDashboard.navHostFragmentContentDashboard,fragment1, "1").commit();
-
-        // searchview.queryHint = Html.fromHtml("<font color = #BDBABA>" + getResources().getString(R.string.hintSearchMess) + "</font>")
 
 
 
@@ -113,9 +109,6 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
             navController.graph, drawerLayout
         )
 
-//        searchview.setOnClickListener {
-//            navController.navigate(R.id.search)
-//        }
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
@@ -128,6 +121,7 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
         notification.setOnClickListener {
             navController.navigate(R.id.notificationFragment)
         }
+
         /*Close Drawer Icon*/
         drawerCloseIcon.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -137,31 +131,36 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
             when (it.itemId) {
                 R.id.bookingHistory -> {
                     findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
-                        R.id.bookingHistory)
+                        R.id.bookingHistory
+                    )
                     drawerLayout.closeDrawer(GravityCompat.START)
                     return@setNavigationItemSelectedListener true
                 }
                 R.id.notificationFragment -> {
                     findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
-                        R.id.notificationFragment)
+                        R.id.notificationFragment
+                    )
                     drawerLayout.closeDrawer(GravityCompat.START)
                     return@setNavigationItemSelectedListener true
                 }
                 R.id.help2 -> {
                     findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
-                        R.id.help2)
+                        R.id.help2
+                    )
                     drawerLayout.closeDrawer(GravityCompat.START)
                     return@setNavigationItemSelectedListener true
                 }
                 R.id.securityAndPrivacy -> {
                     findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
-                        R.id.securityAndPrivacy)
+                        R.id.securityAndPrivacy
+                    )
                     drawerLayout.closeDrawer(GravityCompat.START)
                     return@setNavigationItemSelectedListener true
                 }
                 R.id.settings2 -> {
                     findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
-                        R.id.settings2)
+                        R.id.settings2
+                    )
                     drawerLayout.closeDrawer(GravityCompat.START)
                     return@setNavigationItemSelectedListener true
                 }
@@ -171,14 +170,43 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
                     confirmationDialog.setMessage(R.string.logout_confirmation_dialog_message)
                     confirmationDialog.setPositiveButton("YES") { _: DialogInterface, _: Int ->
                         // First clear the Shared preference, so that the authentication token stored in it will be deleted
-                        sharedPreferences.edit().clear().apply()
-                        val intent = Intent(this, MainActivity::class.java)
-                        // After clearing the shared preference, navigate the user back to the landing screen which is the MainActivity
-                        startActivity(intent)
-                        // Use Toast to notify the user that they are being logged out
-                        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
-                        // Finish the current activity so that the user can not use the back button to come back to this current screen
-                        finish()
+
+                        rezViewModel.logout(
+                            "Bearer ${
+                                sharedPreferences.getString(
+                                    "token",
+                                    "token"
+                                )
+                            }"
+                        )
+                        rezViewModel.logoutResponse.observe(this) {
+                            when (it) {
+                                is Resource.Success -> {
+                                    //will delete later, but will toast for development
+                                    if (it.value.status) {
+                                        sharedPreferences.edit().clear().apply()
+                                        Toast.makeText(
+                                            this,
+                                            "${it.value.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        val intent = Intent(this, MainActivity::class.java)
+                                        // After clearing the shared preference, navigate the user back to the landing screen which is the MainActivity
+                                        startActivity(intent)
+                                        // Use Toast to notify the user that they are being logged out
+                                        // Finish the current activity so that the user can not use the back button to come back to this current screen
+                                        finish()
+                                    }
+                                }
+                                is Resource.Failure -> {
+                                    Toast.makeText(
+                                        this,
+                                        "Please check your internet connection",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        }
                     }
                     confirmationDialog.setNegativeButton(
                         "NO"
@@ -190,7 +218,37 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
                 else -> return@setNavigationItemSelectedListener true
             }
         }
+
+        rezViewModel.countNotification(
+            "Bearer ${
+                sharedPreferences.getString(
+                    "token",
+                    "token"
+                )
+            }"
+        )
+        rezViewModel.notificationCountResponse.observe(this) {
+            when (it) {
+                is Resource.Success -> {
+                    //will delete later, but will toast for development
+                    if (it.value.status) {
+                        if(it.value.data.count > 0){
+                            binding.appBarDashboard.notificationCount.visible(true)
+                            binding.appBarDashboard.notificationCount.text = it.value.data.count.toString()
+                        }
+                    }
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(
+                        this,
+                        "Please check your internet connection",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
     }
+
     override fun onDataPass(data: String) {
         sharedPreferences.edit().putString("name", data).apply()
         searchview.text = data
@@ -208,8 +266,13 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return  navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+//    override fun onNewIntent(intent: Intent?) {
+//        super.onNewIntent(intent)
+//
+//    }
 
     /*Set Up Navigation Change Listener*/
     private fun onDestinationChangedListener() {
@@ -417,39 +480,21 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
         }
     }
 
-//    private val mOnNavigationItemSelectedListener =
-//        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.navigation_home -> {
-//                    fm.beginTransaction().hide(active).show(fragment1).commit()
-//                    active = fragment1
-//                    return@OnNavigationItemSelectedListener true
-//                }
-//                R.id.navigation_dashboard -> {
-//                    fm.beginTransaction().hide(active).show(fragment2).commit()
-//                    active = fragment2
-//                    return@OnNavigationItemSelectedListener true
-//                }
-//                R.id.navigation_notifications -> {
-//                    fm.beginTransaction().hide(active).show(fragment3).commit()
-//                    active = fragment3
-//                    return@OnNavigationItemSelectedListener true
-//                }
-//            }
-//            false
-//        }
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent != null) {
+            val orderFragment = intent.getStringExtra("PUSHNOTIFICATION");
+            if (orderFragment != null) {
+                navController.navigate(R.id.notificationFragment)
+            }
+        }
+    }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         onDestinationChangedListener()
     }
 
-    private fun replaceFragment(fragment: Fragment){
-        val fragmentManager: FragmentManager = supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_dashboard, fragment)
-        fragmentTransaction.commit()
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)

@@ -18,7 +18,7 @@ data class Data(
     val state: String?,
     val opened: Boolean,
     val ratings: Float,
-    val tables: Int?,
+    val tables: String?,
     val favourite: Boolean,
 ) : Parcelable
 

@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Table(
-    var id: Int,
+    var id: String,
     var name: String,
     var table_image_url: String
 ) : Parcelable

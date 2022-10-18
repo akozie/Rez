@@ -152,6 +152,20 @@ class RezViewModel(
         get() = _getPlacesResponse
 
 
+    private val _logoutResponse: MutableLiveData<Resource<GeneralResponse>> = MutableLiveData()
+    val logoutResponse: LiveData<Resource<GeneralResponse>>
+        get() = _logoutResponse
+
+
+    private val _fcmTokenResponse: MutableLiveData<Resource<GeneralResponse>> = MutableLiveData()
+    val fcmTokenResponse: LiveData<Resource<GeneralResponse>>
+        get() = _fcmTokenResponse
+
+    private val _notificationCountResponse: MutableLiveData<Resource<NotificationCountResonse>> = MutableLiveData()
+    val notificationCountResponse: LiveData<Resource<NotificationCountResonse>>
+        get() = _notificationCountResponse
+
+
     private val _phoneNumber: MutableLiveData<String> = MutableLiveData()
     val phoneNumber: LiveData<String>
         get() = _phoneNumber
@@ -181,7 +195,7 @@ class RezViewModel(
 
     fun addVendorRating(token: String,
                         rating: RateVendorRequest,
-                       vendorID: Int
+                       vendorID: String
     ) = viewModelScope.launch(Dispatchers.IO) {
         _addVendorReviewResponse.postValue( Resource.Loading)
         _addVendorReviewResponse.postValue( rezRepository.addVendorRating(token, rating, vendorID))
@@ -193,15 +207,34 @@ class RezViewModel(
 //        _getVendorStateResponse.postValue( rezRepository.getVendorStates())
 //    }
 
+    fun countNotification( token: String,
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _notificationCountResponse.postValue( Resource.Loading)
+        _notificationCountResponse.postValue( rezRepository.countNotification(token))
+    }
+
+    fun fcmToken( token: String,
+                  fcmTokenRequest: FcmTokenRequest
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _fcmTokenResponse.postValue( Resource.Loading)
+        _fcmTokenResponse.postValue( rezRepository.fcmToken(token, fcmTokenRequest))
+    }
+
+    fun logout( token: String,
+    ) = viewModelScope.launch {
+        _logoutResponse.postValue( Resource.Loading)
+        _logoutResponse.postValue( rezRepository.logout(token))
+    }
+
     fun getTable( token: String,
-                         vendorProfileID:Int
+                         vendorProfileID:String
     ) = viewModelScope.launch(Dispatchers.IO) {
         _getTablesResponse.postValue( Resource.Loading)
         _getTablesResponse.postValue( rezRepository.getTable(token, vendorProfileID))
     }
 
     fun getOpeningHours( token: String,
-                         vendorProfileID:Int
+                         vendorProfileID:String
     ) = viewModelScope.launch(Dispatchers.IO) {
         _getOpeningHoursResponse.postValue( Resource.Loading)
         _getOpeningHoursResponse.postValue( rezRepository.getOpeningHours(token, vendorProfileID))
@@ -214,7 +247,7 @@ class RezViewModel(
     }
 
     fun deleteTableReview(token: String,
-                       reviewID: Int
+                       reviewID: String
     ) = viewModelScope.launch(Dispatchers.IO) {
         _deleteTableReviewResponse.postValue( Resource.Loading)
         _deleteTableReviewResponse.postValue( rezRepository.deleteTableReview(token, reviewID))
@@ -222,8 +255,8 @@ class RezViewModel(
 
     fun addTableReview(token: String,
                        tableReviewRequest: TableReviewRequest,
-                       vendorID: Int,
-                       tableID: Int
+                       vendorID: String,
+                       tableID: String
     ) = viewModelScope.launch(Dispatchers.IO) {
         _addTableReviewResponse.postValue( Resource.Loading)
         _addTableReviewResponse.postValue( rezRepository.addTableReview(token, tableReviewRequest, vendorID, tableID))
@@ -238,7 +271,7 @@ class RezViewModel(
 
 
     fun getEachBooking(token: String,
-                 bookingID: Int
+                 bookingID: String
     ) = viewModelScope.launch(Dispatchers.IO) {
         _eachBookingResponse.postValue( Resource.Loading)
         _eachBookingResponse.postValue( rezRepository.getEachBooking(token, bookingID))
@@ -252,21 +285,21 @@ class RezViewModel(
         NotificationPagingSource(api, token)
     }.flow.cachedIn(viewModelScope)
 
-    fun getVendorProfileTableReviews(vendorID: Int, tableID: Int, token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
+    fun getVendorProfileTableReviews(vendorID: String, tableID: String, token: String) = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)){
         ReviewPagingSource(vendorID, tableID, api, token)
     }.flow.cachedIn(viewModelScope)
 
 
 
-    fun getVendorProfileTable( vendorID: Int,
-                               tableID: Int,
+    fun getVendorProfileTable( vendorID: String,
+                               tableID: String,
                  token: String
     ) = viewModelScope.launch {
         _getProfileTableResponse.value = Resource.Loading
         _getProfileTableResponse.value = rezRepository.getVendorProfileTable(vendorID, tableID, token)
     }
 
-    fun getVendorTables( vendorID: Int,
+    fun getVendorTables( vendorID: String,
                  token: String
     ) = viewModelScope.launch(Dispatchers.IO) {
         _getVendorTableResponse.postValue( Resource.Loading)
@@ -291,7 +324,7 @@ class RezViewModel(
     }.flow.cachedIn(viewModelScope)
 
 
-    fun getFavorites(token: String) = viewModelScope.launch {
+    fun getFavorites(token: String) = viewModelScope.launch(Dispatchers.IO) {
         _getFavoritesCover.postValue(Resource.Loading)
         _getFavoritesCover.postValue(rezRepository.getFavorites(token))
     }
@@ -406,7 +439,9 @@ class RezViewModel(
     fun cleanGetBookingResponse(){
         _eachBookingResponse.value = null
     }
-
+    fun cleanProfileTableResponse(){
+        _getProfileTableResponse.value = null
+    }
 
     fun store(){
         _getHomeResponse.value = getHomeResponse.value

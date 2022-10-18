@@ -70,7 +70,7 @@ class SuggestFragment : Fragment(), OnTableClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         args = arguments?.getParcelable("SUGGESTIONDATA")
-        sharedPreferences.edit().putInt("vendorid", args!!.id).apply()
+        sharedPreferences.edit().putString("vendorid", args!!.id).apply()
         getOpeningHours()
         setList()
         getTable()
@@ -163,7 +163,9 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it) { getTable() }
+                    is Resource.Error<*> -> {
+                        showToast(it.data.toString())
+                        rezViewModel.getTablesResponse.removeObservers(viewLifecycleOwner)                    }
                 }
             }
         )
@@ -181,7 +183,7 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                             val address = it.value.data.address
                             sharedPreferences.edit().putString("address", address).apply()
                             if (tableDetailsDataList.isEmpty()){
-                                tableDetailsDataList = listOf(Image("", 1, "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
+                                tableDetailsDataList = listOf(Image("", "1", "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
                             }
                             setTableDetailsViewPagerAdapter()
                         } else {
@@ -189,7 +191,10 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it) { setList() }
+                    is Resource.Error<*> -> {
+                        showToast(it.data.toString())
+                        rezViewModel.getVendorTableResponse.removeObservers(viewLifecycleOwner)
+                    }
                 }
             }
         )
@@ -220,7 +225,9 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                             }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it) { getOpeningHours() }
+                    is Resource.Error<*> -> {
+                        showToast(it.data.toString())
+                        rezViewModel.getOpeningHoursResponse.removeObservers(viewLifecycleOwner)                    }
                 }
             }
         )
@@ -246,7 +253,9 @@ class SuggestFragment : Fragment(), OnTableClickListener {
                         removeObserver()
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Error<*> -> {
+                    showToast(it.data.toString())
+                    rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)                }
             }
         }
     }

@@ -39,7 +39,7 @@ class TableDetails : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewPager2: ViewPager2
     private lateinit var tabLayout: TabLayout
-    private var argsId: Int = 0
+    private lateinit var argsId: String
     private val rezViewModel: RezViewModel by activityViewModels()
 
     @Inject
@@ -62,15 +62,17 @@ class TableDetails : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         argsId = arguments?.getParcelable<Table>("TABLE")!!.id // get table id
-        sharedPreferences.edit().putInt("tid", argsId).apply() // save table is
+        sharedPreferences.edit().putString("tid", argsId).apply() // save table is
         setUpTable()
         setUpAboutTable()
     }
 
     // get vendor profile table
     private fun setUpTable(){
-       val vendorID = sharedPreferences.getInt("vendorid", 0)
-        rezViewModel.getVendorProfileTable(vendorID, argsId, "Bearer ${sharedPreferences.getString("token", "token")}")
+       val vendorID = sharedPreferences.getString("vendorid", "vendorid")
+        if (vendorID != null) {
+            rezViewModel.getVendorProfileTable(vendorID, argsId, "Bearer ${sharedPreferences.getString("token", "token")}")
+        }
         rezViewModel.getProfileTableResponse.observe(viewLifecycleOwner, Observer {
             binding.progressBar.visible(it is Resource.Loading)
             when(it) {
@@ -89,11 +91,14 @@ class TableDetails : Fragment() {
                         sharedPreferences.edit().putString("tablequantity", tableList.max_people.toString()).apply()
                        // showToast(it.value.message)
                     } else {
-                        it.value.message?.let { it1 ->
+                        it.value.message.let { it1 ->
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it) { setUpTable() }
+                is Resource.Error<*> -> {
+                    showToast(it.data.toString())
+                    rezViewModel.getProfileTableResponse.removeObservers(viewLifecycleOwner)
+                }
             }
         })
     }

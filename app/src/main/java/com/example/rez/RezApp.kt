@@ -10,6 +10,7 @@ import com.example.rez.di.module.AppModule
 import com.example.rez.di.module.LocalModule
 import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
+import com.google.firebase.FirebaseApp
 import javax.inject.Inject
 
 class RezApp: Application() {

@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 data class Favourite(
     val avatar: String,
     val company_name: String,
-    val id: Int,
+    val id: String,
     val ratings: String,
     val state: String
 ) : Parcelable

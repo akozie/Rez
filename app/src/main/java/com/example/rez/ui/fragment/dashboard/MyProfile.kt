@@ -9,8 +9,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Base64
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,38 +21,27 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
+import androidx.navigation.fragment.findNavController
 import com.example.rez.R
 import com.example.rez.RezApp
+import com.example.rez.api.NameInterface
 import com.example.rez.api.Resource
 import com.example.rez.databinding.FragmentMyProfileBinding
 import com.example.rez.model.authentication.request.UpdateProfileRequest
+import com.example.rez.ui.GlideApp
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.ui.fragment.ProfileManagementDialogFragments.Companion.createProfileDialogFragment
 import com.example.rez.util.*
 import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImage.getPickImageChooserIntent
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
-import android.provider.MediaStore
-
-import android.graphics.BitmapFactory
-import android.util.Log
-import androidx.lifecycle.asLiveData
-import androidx.navigation.fragment.findNavController
-import com.example.rez.api.NameInterface
-import com.example.rez.ui.GlideApp
-import com.example.rez.ui.MyGlideAppGlideModule
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.util.zip.Deflater
-import java.util.zip.DeflaterOutputStream
 
 
 class MyProfile : Fragment() {
@@ -68,6 +57,25 @@ class MyProfile : Fragment() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
+    /*function to crop picture*/
+    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
+        override fun createIntent(context: Context, input: Any?): Intent {
+            return CropImage.activity()
+                .setCropMenuCropButtonTitle("Done")
+                .setAspectRatio(1, 1)
+                .getIntent(this@MyProfile.context!!)
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            var imageUri: Uri? = null
+            try {
+                imageUri = CropImage.getActivityResult(intent).uri
+            } catch (e: Exception) {
+                Timber.d(e.localizedMessage)
+            }
+            return imageUri
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,6 +116,7 @@ class MyProfile : Fragment() {
         }
         /*Select profile image*/
         binding.imageSelectIv.setOnClickListener {
+//            startActivityForResult(getPickImageChooserIntent(requireContext()), 200)
             Manifest.permission.READ_EXTERNAL_STORAGE.checkForPermission(NAME, READ_IMAGE_STORAGE)
         }
 
@@ -141,10 +150,6 @@ class MyProfile : Fragment() {
                 Toast.makeText(requireContext(), R.string.all_email_cant_be_empty, Toast.LENGTH_SHORT).show()
 
             }
-//            !ValidationObject.validateEmail(email) -> {
-//                Toast.makeText(requireContext(), R.string.all_invalid_email, Toast.LENGTH_SHORT).show()
-//
-//            }
             firstName.isEmpty() -> {
                 Toast.makeText(requireContext(), "Name cannot be empty", Toast.LENGTH_SHORT).show()
             }
@@ -176,10 +181,10 @@ class MyProfile : Fragment() {
                             }
                             //rezViewModel.cleanProfileResponse()
                         }
-                        is Resource.Failure -> {
+                        is Resource.Error<*> -> {
                             binding.saveBtn.button.text = "Update Profile"
-                            showToast("Invalid phone number")
-                            handleApiError(it) { updateProfile() }
+                            showToast(it.data.toString())
+                            rezViewModel.updateProfileResponse.removeObservers(viewLifecycleOwner)
                         }
                     }
                 })
@@ -218,10 +223,10 @@ class MyProfile : Fragment() {
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> {
+                is Resource.Error<*> -> {
                     binding.saveBtn.button.text = "Update Profile"
-                    handleApiError(it) { getProfile() }
-                }
+                    showToast(it.data.toString())
+                    rezViewModel.getProfileResponse.removeObservers(viewLifecycleOwner)                }
             }
         })
 
@@ -277,25 +282,6 @@ class MyProfile : Fragment() {
     }
 
 
-    /*function to crop picture*/
-    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
-        override fun createIntent(context: Context, input: Any?): Intent {
-            return CropImage.activity()
-                .setCropMenuCropButtonTitle("Done")
-                .setAspectRatio(1, 1)
-                .getIntent(context)
-        }
-
-        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-            var imageUri: Uri? = null
-            try {
-                imageUri = CropImage.getActivityResult(intent).uri
-            } catch (e: Exception) {
-                Timber.d(e.localizedMessage)
-            }
-            return imageUri
-        }
-    }
 
     /*Upload Profile Picture*/
     private fun uploadImageToServer(uri: Uri) {
@@ -327,10 +313,10 @@ class MyProfile : Fragment() {
                         }
                         //rezViewModel.cleanImageProfile()
                     }
-                    is Resource.Failure -> {
+                    is Resource.Error<*> -> {
                         binding.saveBtn.button.text = "Update Profile"
-                        showToast("File too large")
-                        handleApiError(it)
+                        showToast(it.data.toString())
+                        rezViewModel.uploadImageResponse.removeObservers(viewLifecycleOwner)
                         //rezViewModel.cleanImageProfile()
                     }
                 }
@@ -386,32 +372,6 @@ class MyProfile : Fragment() {
             )
         }
     }
-
-    // Email Dialog
-//    private fun accountEmailEditDialog() {
-//        // when other name name value is clicked
-//        childFragmentManager.setFragmentResultListener(
-//            ACCOUNT_EMAIL_REQUEST_KEY,
-//            requireActivity()
-//        ) { key, bundle ->
-//            // collect input values from dialog fragment and update the otherName text of user
-//            val otherName = bundle.getString(ACCOUNT_EMAIL_BUNDLE_KEY)
-//            binding.userEmailEt.text = otherName
-//        }
-//
-//        // when last Name name value is clicked
-//        binding.userEmailEt.setOnClickListener {
-//            val email =
-//                binding.userEmailEt.text.toString()
-//            val bundle = bundleOf(CURRENT_EMAIL_BUNDLE_KEY to email)
-//            createProfileDialogFragment(
-//                R.layout.account_email_dialog_fragment,
-//                bundle
-//            ).show(
-//                childFragmentManager, MyProfile::class.java.simpleName
-//            )
-//        }
-//    }
 
     private fun accountPhoneEditDialog() {
         // when phone number value is clicked

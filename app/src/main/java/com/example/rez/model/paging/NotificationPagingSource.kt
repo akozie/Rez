@@ -24,11 +24,11 @@ class NotificationPagingSource(
 
         return try {
             val response = authApi.getNotification(token, currentPage)
-            val bookings = response.body()?.data?.notifications!!.toList()
+            val bookings = response.body()?.data?.notifications?.toList()
 
 
             LoadResult.Page(
-                data = bookings,
+                data = bookings!!,
                 prevKey = if (currentPage == 1) null else currentPage - 1,
                 nextKey = if (bookings.isEmpty()) null else currentPage + 1
             )

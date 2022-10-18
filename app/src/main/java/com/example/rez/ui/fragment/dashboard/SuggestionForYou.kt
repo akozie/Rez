@@ -79,12 +79,15 @@ class SuggestionForYou : Fragment(), SuggestionAndNearAdapter.OnSuggestionItemCl
                                 suggestionRestaurants()
                             }
                         } else {
-                            it.value.message?.let { it1 ->
+                            it.value.message.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                         removeObserverFromSuggestion()
                     }
-                    is Resource.Failure -> handleApiError(it)
+                    is Resource.Error<*> -> {
+                        showToast(it.data.toString())
+                        rezViewModel.getHomeResponse.removeObservers(viewLifecycleOwner)
+                    }
                 }
             }
         )
@@ -127,7 +130,9 @@ class SuggestionForYou : Fragment(), SuggestionAndNearAdapter.OnSuggestionItemCl
                         removeObserver()
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Error<*> -> {
+                    showToast(it.data.toString())
+                    rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)                }
             }
         }
     }

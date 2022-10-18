@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RemoteDataSource {
     companion object{
-                private const val BASE_URL = "http://www.rez.ng/api/v1/"
+                private const val BASE_URL = "https://rez.ng/api/v1/"
 
         private val retrofit by lazy {
             val logging = HttpLoggingInterceptor()

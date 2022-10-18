@@ -71,10 +71,10 @@ class ResetPasswordFragment : Fragment() {
                             ResetPasswordFragmentDirections.actionResetPasswordFragmentToLoginFragment()
                         findNavController().navigate(action)
                     }}
-                is Resource.Failure -> {
+                is Resource.Error<*> -> {
                     binding.resetSubmitBtn.button.text = "Submit"
-                    showToast("Enter the correct code")
-                    handleApiError(it)
+                    showToast(it.data.toString())
+                    rezViewModel.resetPasswordResponse.removeObservers(viewLifecycleOwner)
                 }
             }
         })
@@ -89,9 +89,10 @@ class ResetPasswordFragment : Fragment() {
                         val message = it.value.message
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                     }}
-                is Resource.Failure -> {
+                is Resource.Error<*> -> {
                     binding.resetSubmitBtn.button.text = "Submit"
-                    handleApiError(it)
+                    showToast(it.data.toString())
+                    rezViewModel.forgotPasswordResponse.removeObservers(viewLifecycleOwner)
                 }
             }
         })
@@ -244,5 +245,4 @@ class ResetPasswordFragment : Fragment() {
         }
         return isValidated
     }
-
 }

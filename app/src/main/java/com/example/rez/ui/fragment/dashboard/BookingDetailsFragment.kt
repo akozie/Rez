@@ -113,10 +113,10 @@ class BookingDetailsFragment : Fragment() {
                                     Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                             }
                         }
-                        is Resource.Failure -> {
+                        is Resource.Error<*> -> {
                             binding.tableReviewBtn.button.text = "Submit review"
-                            showToast("Review can only be made when after a booking has been completed for this table")
-                            handleApiError(it) { addTableReview() }
+                            showToast(it.data.toString())
+                            rezViewModel.addTableReviewResponse.removeObservers(viewLifecycleOwner)
                         }
                     }
                 })
@@ -135,7 +135,7 @@ class BookingDetailsFragment : Fragment() {
             else -> {
                 if (vendorFormattedReviewRating > 0) {
                     val newRating = RateVendorRequest(rating = vendorFormattedReviewRating)
-                    args!!.vendor.id?.let {
+                    args!!.vendor.id?.let { it ->
                         rezViewModel.addVendorRating(
                             token = "Bearer ${
                                 sharedPreferences.getString(
@@ -157,10 +157,10 @@ class BookingDetailsFragment : Fragment() {
                                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                                     }
                                 }
-                                is Resource.Failure -> {
+                                is Resource.Error<*> -> {
                                     binding.vendorRatingBtn.button.text = "Submit review"
-                                    showToast("Review can only be made when after a booking has been completed for this restaurant")
-                                    handleApiError(it) { addVendorReview() }
+                                    showToast(it.data.toString())
+                                    rezViewModel.addVendorReviewResponse.removeObservers(viewLifecycleOwner)
                                 }
                             }
                         })

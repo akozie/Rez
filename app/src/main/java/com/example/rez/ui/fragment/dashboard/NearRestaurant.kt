@@ -78,11 +78,13 @@ class NearRestaurant : Fragment(), NearAdapter.OnNearItemClickListener {
                                 nearRestaurants()
                             }
                         } else {
-                            it.value.message?.let { it1 ->
+                            it.value.message.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it) { getVendors() }
+                    is Resource.Error<*> -> {
+                        showToast(it.data.toString())
+                        rezViewModel.getHomeResponse.removeObservers(viewLifecycleOwner)                    }
                 }
             }
         )
@@ -123,7 +125,9 @@ class NearRestaurant : Fragment(), NearAdapter.OnNearItemClickListener {
                         removeObserver()
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Error<*> -> {
+                    showToast(it.data.toString())
+                    rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)                }
             }
         }
     }

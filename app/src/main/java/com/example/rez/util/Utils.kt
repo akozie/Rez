@@ -24,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.lang.Error
 
 fun<A: Activity> Activity.startNewActivity(activity: Class<A>) {
     Intent(this, activity).also{
@@ -62,14 +63,14 @@ fun Fragment.handleApiError(
 ) {
     when {
         failure.isNetworkError -> requireView().snackbar("Please check your internet connection", retry)
-        failure.errorCode == 400 -> {
-            if (this is LoginFragment) {
-                requireView().snackbar("You have entered incorrect email or password")
-            }
-            if (this is RegistrationFragment) {
-                requireView().snackbar("You have entered incorrect email or phone number")
-            }
-        }
+//        failure.errorCode == 400 -> {
+////            if (this is LoginFragment) {
+////                requireView().snackbar("You have entered incorrect email or password")
+////            }
+//            if (this is RegistrationFragment) {
+//                requireView().snackbar("You have entered incorrect email or phone number")
+//            }
+//        }
 //        failure.errorCode == 400 && failure.message == "No available slots for this table today" ->{
 //            if (this is AboutFragment){
 //                requireView().snackbar("No available slots for this table today")
@@ -81,7 +82,7 @@ fun Fragment.handleApiError(
 //            }
 //        }
         else -> {
-            requireView().snackbar("Bad request")
+            requireView().snackbar("Try again")
         }
     }
 }

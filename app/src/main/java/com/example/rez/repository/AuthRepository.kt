@@ -10,6 +10,7 @@ import com.example.rez.model.authentication.genresponse.RegResponse
 import com.example.rez.model.authentication.request.*
 import com.example.rez.model.dashboard.BookTableRequest
 import com.example.rez.model.dashboard.ComplaintRequest
+import com.example.rez.model.dashboard.FcmTokenRequest
 import com.example.rez.model.paging.BookingPagingSource
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -29,10 +30,22 @@ class AuthRepository: BaseRepository() {
 //        api.getVendorStates()
 //    }
 
-    suspend fun getTable(token: String, vendorProfileID:Int) = safeApiCall{
+    suspend fun countNotification(token: String) = safeApiCall{
+        api.countNotification(token)
+    }
+
+    suspend fun fcmToken(token: String, fcmTokenRequest: FcmTokenRequest) = safeApiCall{
+        api.fcmToken(token, fcmTokenRequest)
+    }
+
+    suspend fun logout(token: String) = safeApiCall{
+        api.logout(token)
+    }
+
+    suspend fun getTable(token: String, vendorProfileID:String) = safeApiCall{
         api.getTable(token, vendorProfileID)
     }
-    suspend fun getOpeningHours(token: String, vendorProfileID:Int) = safeApiCall{
+    suspend fun getOpeningHours(token: String, vendorProfileID:String) = safeApiCall{
         api.getOpeningHours(token, vendorProfileID)
     }
 
@@ -40,22 +53,22 @@ class AuthRepository: BaseRepository() {
         api.getVendorCategories()
     }
 
-    suspend fun addVendorRating(token: String, rating: RateVendorRequest, vendorInt: Int) = safeApiCall{
+    suspend fun addVendorRating(token: String, rating: RateVendorRequest, vendorInt: String) = safeApiCall{
         api.addVendorRating(token, rating, vendorInt)
     }
 
-    suspend fun deleteTableReview(token: String, reviewId: Int) = safeApiCall{
+    suspend fun deleteTableReview(token: String, reviewId: String) = safeApiCall{
         api.deleteTableReview(token, reviewId)
     }
 
-    suspend fun addTableReview(token: String, tableReviewRequest: TableReviewRequest, vendorInt: Int, tableId: Int) = safeApiCall{
+    suspend fun addTableReview(token: String, tableReviewRequest: TableReviewRequest, vendorInt: String, tableId: String) = safeApiCall{
         api.addTableReview(token, tableReviewRequest, vendorInt, tableId)
     }
 
     suspend fun bookTable(token: String, bookTableRequest: BookTableRequest) = safeApiCall{
         api.bookTable(token, bookTableRequest)
     }
-    suspend fun getEachBooking(token: String, bookingID: Int) = safeApiCall{
+    suspend fun getEachBooking(token: String, bookingID: String) = safeApiCall{
         api.getEachBooking(token, bookingID)
     }
 
@@ -86,11 +99,11 @@ class AuthRepository: BaseRepository() {
 //        api.getVendorProfileTableReviews(vendorInt, tableId, token)
 //    }
 
-    suspend fun getVendorProfileTable(vendorInt: Int, tableId: Int, token: String) = safeApiCall{
+    suspend fun getVendorProfileTable(vendorInt: String, tableId: String, token: String) = safeApiCall{
         api.getVendorProfileTable(vendorInt, tableId, token)
     }
 
-    suspend fun getVendorTables(vendorInt: Int, token: String) = safeApiCall{
+    suspend fun getVendorTables(vendorInt: String, token: String) = safeApiCall{
         api.getVendorTables(vendorInt, token)
     }
 

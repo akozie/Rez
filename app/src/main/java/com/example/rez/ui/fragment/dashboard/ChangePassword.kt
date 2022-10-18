@@ -20,10 +20,7 @@ import com.example.rez.model.authentication.request.ChangePasswordRequest
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.ui.activity.MainActivity
-import com.example.rez.util.ValidationObject
-import com.example.rez.util.enable
-import com.example.rez.util.handleApiError
-import com.example.rez.util.visible
+import com.example.rez.util.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -106,9 +103,10 @@ class ChangePassword : Fragment() {
                                     findNavController().navigate(action)
                                 }
                             }
-                            is Resource.Failure -> {
+                            is Resource.Error<*> -> {
                                 binding.changePassTv.button.text = "Change Password"
-                                handleApiError(it)
+                                showToast(it.data.toString())
+                                rezViewModel.changePasswordResponse.removeObservers(viewLifecycleOwner)
                             }
                         }
                     })

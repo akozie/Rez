@@ -8,7 +8,7 @@ data class Booking(
     val booked_for: String,
     val confirmed_payment: Boolean,
     val created_at: String,
-    val id: Int,
+    val id: String,
     val status: String,
     val table: Table,
     val vendor: Vendor

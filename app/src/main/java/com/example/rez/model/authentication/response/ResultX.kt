@@ -7,6 +7,6 @@ import kotlinx.android.parcel.Parcelize
 data class ResultX(
     val avatar: String,
     val company_name: String,
-    val id: Int,
+    val id: String,
     val ratings: Int
 ) : Parcelable

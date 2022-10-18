@@ -173,7 +173,9 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
                         }
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Error<*> -> {
+                    showToast(it.data.toString())
+                    rezViewModel.eachBookingResponse.removeObservers(viewLifecycleOwner)                }
             }
         }
         rezViewModel.cleanGetBookingResponse()

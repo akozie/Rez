@@ -23,6 +23,7 @@ import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.MainActivity
 import com.example.rez.util.enable
 import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -103,10 +104,10 @@ class ComplaintsFragment : Fragment() {
                                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                             }
                         }
-                        is Resource.Failure -> {
+                        is Resource.Error<*> -> {
                             binding.submit.button.text = "Submit"
-                            handleApiError(it)
-                        }
+                            showToast(it.data.toString())
+                            rezViewModel.complaintResponse.removeObservers(viewLifecycleOwner)                        }
                     }
                 })
 

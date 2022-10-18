@@ -47,7 +47,7 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
     private val rezViewModel: RezViewModel by activityViewModels()
-    private  var tableID: Int = 0
+    private lateinit var tableID: String
     private lateinit var msg:String
 
     var day = 0
@@ -97,9 +97,11 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
     }
 
     private fun setUpAbout(){
-        val vendoID = sharedPreferences.getInt("vendorid", 0)
-         tableID = sharedPreferences.getInt("tid", 0)
-        rezViewModel.getVendorProfileTable(vendoID, tableID, "Bearer ${sharedPreferences.getString("token", "token")}")
+        val vendoID = sharedPreferences.getString("vendorid", "vendorid")
+         tableID = sharedPreferences.getString("tid", "tid").toString()
+        if (vendoID != null) {
+            rezViewModel.getVendorProfileTable(vendoID, tableID, "Bearer ${sharedPreferences.getString("token", "token")}")
+        }
         rezViewModel.getProfileTableResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             when(it) {
                 is Resource.Success -> {
@@ -110,15 +112,15 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
                         it.value.message.let { it1 ->
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
+                    rezViewModel.cleanProfileTableResponse()
                 }
-                is Resource.Failure -> {
+                is Resource.Error<*> -> {
                     binding.proceedTv.button.text = "Proceed to booking"
-                    handleApiError(it)
+                    showToast(it.data.toString())
+                    rezViewModel.cleanProfileTableResponse()
                 }
             }
-
         })
-
     }
 
     private fun pickDate() {
@@ -221,12 +223,10 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
                             findNavController().navigate(action)
                             //removeObservers()
                 }
-                is Resource.Failure -> {
+                is Resource.Error<*> -> {
                     binding.proceedTv.button.text = "Proceed to booking"
-                    Log.d("ABOUTCHECK", "aaaa")
-                    val message = "No available slots for this table today"
-                        showToast(message)
-                    handleApiError(it)
+                    //Log.d("ABOUTCHECK", "aaaa")
+                    showToast(it.data.toString())
                     rezViewModel.cleanTableResponse()
                     //removeObservers()
                 }
@@ -241,6 +241,7 @@ class AboutFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePicker
     override fun onDestroy() {
         super.onDestroy()
         rezViewModel.cleanTableResponse()
+        rezViewModel.cleanProfileTableResponse()
         _binding = null
     }
 }

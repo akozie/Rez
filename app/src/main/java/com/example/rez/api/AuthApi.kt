@@ -12,20 +12,33 @@ import retrofit2.Response
 import retrofit2.http.*
 interface AuthApi {
 
-//    @GET("states")
-//    suspend fun getVendorStates(
-//    ): StateResponse
+
+    @GET("user/notifications/count")
+    suspend fun countNotification(
+        @Header("Authorization") token: String,
+        ): NotificationCountResonse
+
+    @PUT("user/push-token")
+    suspend fun fcmToken(
+        @Header("Authorization") token: String,
+        @Body fcmTokenRequest: FcmTokenRequest
+        ): GeneralResponse
+
+    @POST("user/logout")
+    suspend fun logout(
+        @Header("Authorization") token: String,
+        ): GeneralResponse
 
     @GET("user/vendorProfile/{vendorProfileID}/tables")
     suspend fun getTable(
         @Header("Authorization") token: String,
-        @Path("vendorProfileID") vendorProfileID: Int,
+        @Path("vendorProfileID") vendorProfileID: String,
         ): GetTablesResponse
 
     @GET("user/vendorProfile/{vendorProfileID}/opening-hours")
     suspend fun getOpeningHours(
         @Header("Authorization") token: String,
-        @Path("vendorProfileID") vendorProfileID: Int,
+        @Path("vendorProfileID") vendorProfileID: String,
         ): GetOpeningHoursResponse
 
     @GET("vendor/categories")
@@ -36,21 +49,21 @@ interface AuthApi {
     suspend fun addVendorRating(
         @Header("Authorization") token: String,
         @Body rating: RateVendorRequest,
-        @Path("vendorProfileID") vendorProfileID: Int,
+        @Path("vendorProfileID") vendorProfileID: String,
     ): GeneralResponse
 
     @DELETE("user/reviews/{reviewID}")
     suspend fun deleteTableReview(
         @Header("Authorization") token: String,
-        @Path("reviewID") reviewID: Int
+        @Path("reviewID") reviewID: String
     ): GeneralResponse
 
     @POST("user/vendorProfile/{vendorProfileID}/table/{tableID}/reviews")
     suspend fun addTableReview(
         @Header("Authorization") token: String,
         @Body tableReviewRequest: TableReviewRequest,
-        @Path("vendorProfileID") vendorProfileID: Int,
-        @Path("tableID") tableID: Int
+        @Path("vendorProfileID") vendorProfileID: String,
+        @Path("tableID") tableID: String
     ): GeneralResponse
 
     @POST("user/book/table")
@@ -74,27 +87,27 @@ interface AuthApi {
     @GET("user/bookings/{bookingID}")
     suspend fun getEachBooking(
         @Header("Authorization") token: String,
-        @Path("bookingID") bookingID: Int,
+        @Path("bookingID") bookingID: String,
         ): GetEachBookingResponse
 
     @GET("user/vendorProfile/{vendorProfileID}/table/{tableID}/reviews")
     suspend fun getVendorProfileTableReviews(
-        @Path("vendorProfileID") vendorProfileID: Int,
-        @Path("tableID") tableID: Int,
+        @Path("vendorProfileID") vendorProfileID: String,
+        @Path("tableID") tableID: String,
         @Header("Authorization") token: String,
         @Query("page") page: Int,
         ): Response<ReviewResponse>
 
     @GET("user/vendorProfile/{vendorProfileID}/table/{tableID}")
     suspend fun getVendorProfileTable(
-        @Path("vendorProfileID") vendorProfileID: Int,
-        @Path("tableID") tableID: Int,
+        @Path("vendorProfileID") vendorProfileID: String,
+        @Path("tableID") tableID: String,
         @Header("Authorization") token: String
     ): GetProfileTableResponse
 
     @GET("user/vendorProfile/{vendorProfileID}")
     suspend fun getVendorTables(
-        @Path("vendorProfileID") vendorProfileID: Int,
+        @Path("vendorProfileID") vendorProfileID: String,
         @Header("Authorization") token: String
     ): GetVendorTableResponse
 

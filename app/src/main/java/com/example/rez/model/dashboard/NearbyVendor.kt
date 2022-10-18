@@ -8,7 +8,7 @@ data class NearbyVendor(
     val avatar: String,
     val company_name: String,
     val distance: Double,
-    val id: Int,
+    val id: String,
     val lat: Double,
     val lng: Double,
     val category_name: String,

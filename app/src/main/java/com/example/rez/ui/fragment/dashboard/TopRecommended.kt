@@ -21,6 +21,7 @@ import com.example.rez.databinding.FragmentTopRecommendedBinding
 import com.example.rez.model.dashboard.RecommendedVendor
 import com.example.rez.ui.RezViewModel
 import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import com.google.android.gms.location.*
 import com.google.gson.Gson
@@ -73,11 +74,13 @@ class TopRecommended : Fragment(), OnTopItemClickListener {
                                 topRestaurants()
                             }
                         } else {
-                            it.value.message?.let { it1 ->
+                            it.value.message.let { it1 ->
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it) { getVendors() }
+                    is Resource.Error<*> -> {
+                        showToast(it.data.toString())
+                        rezViewModel.getHomeResponse.removeObservers(viewLifecycleOwner)                    }
                 }
             }
         )

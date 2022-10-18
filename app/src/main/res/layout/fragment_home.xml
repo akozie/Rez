@@ -42,8 +42,21 @@
                 android:background="@color/blue"
                 android:layout_height="3dp"/>
 
-            <EditText
-                android:id="@+id/restaurant_text"
+            <TextView
+                android:id="@+id/show_address"
+                style="@style/SignUpScreenEditTextField"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="start|center"
+                android:textColor="@color/black"
+                android:paddingStart="@dimen/padding_10dp"
+                android:paddingEnd="@dimen/padding_0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <AutoCompleteTextView
+                android:id="@+id/edt_user_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_10dp"
@@ -56,14 +69,31 @@
                 android:textSize="@dimen/text_size_16sp"
                 android:paddingStart="@dimen/padding_20dp"
                 android:textColorHint="@color/gray_dark"
-                android:background="@color/white"/>
-
+                android:background="@color/white"
+                android:clickable="true"
+                android:imeOptions="actionSearch"
+                app:layout_anchorGravity="center"
+                android:layout_marginEnd="@dimen/margin_50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:focusable="true" />
             <View
                 android:layout_width="match_parent"
                 android:background="@color/blue"
                 android:layout_height="3dp"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="@dimen/margin_18dp"
+                android:layout_marginEnd="@dimen/margin_18dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+                tools:layout_editor_absoluteX="18dp" />
+
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="visible"
                 android:id="@+id/fragment_select_state"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
@@ -76,6 +106,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <AutoCompleteTextView
+                    android:visibility="visible"
                     android:id="@+id/select_venue"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

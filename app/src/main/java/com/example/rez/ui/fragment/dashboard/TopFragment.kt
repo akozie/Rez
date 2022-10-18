@@ -80,7 +80,7 @@ class TopFragment : Fragment(), OnTableClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         args = arguments?.getParcelable("TOPDATA")
-        sharedPreferences.edit().putInt("vendorid", args!!.id).apply()
+        sharedPreferences.edit().putString("vendorid", args!!.id).apply()
 
         //binding.openingHours.enable(false)
         getOpeningHours()
@@ -171,7 +171,7 @@ private fun setTopData() {
                             val address = it.value.data.address
                             sharedPreferences.edit().putString("address", address).apply()
                             if (tableDetailsDataList.isEmpty()){
-                                tableDetailsDataList = listOf(Image("", 1, "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
+                                tableDetailsDataList = listOf(Image("", "1", "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"))
                             }
                             setTableDetailsViewPagerAdapter()
                         } else {
@@ -179,7 +179,11 @@ private fun setTopData() {
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it) { setList() }
+                    is Resource.Error<*> ->
+                    {
+                        showToast(it.data.toString())
+                        rezViewModel.getVendorTableResponse.removeObservers(viewLifecycleOwner)
+                    }
                 }
             }
         )
@@ -208,7 +212,9 @@ private fun setTopData() {
                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it) { getTable() }
+                    is Resource.Error<*> -> {
+                        showToast(it.data.toString())
+                        rezViewModel.getTablesResponse.removeObservers(viewLifecycleOwner)                    }
                 }
             }
         )
@@ -232,7 +238,9 @@ private fun setTopData() {
                             }
                         }
                     }
-                    is Resource.Failure -> handleApiError(it) { getOpeningHours() }
+                    is Resource.Error<*> -> {
+                        showToast(it.data.toString())
+                        rezViewModel.getOpeningHoursResponse.removeObservers(viewLifecycleOwner)                    }
                 }
             }
         )
@@ -257,7 +265,9 @@ private fun setTopData() {
                         removeObserver()
                     }
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Error<*> -> {
+                    showToast(it.data.toString())
+                    rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)                }
             }
         }
     }

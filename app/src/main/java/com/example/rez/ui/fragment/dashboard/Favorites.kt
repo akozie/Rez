@@ -22,6 +22,7 @@ import com.example.rez.model.dashboard.Favorite
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -88,7 +89,10 @@ class Favorites : Fragment(), FavoritesPagingAdapter.OnClickFavoritesItemClickLi
                     }
 
                 }
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Error<*> -> {
+                    showToast(it.data.toString())
+                    rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)
+                }
             }
         }
     }

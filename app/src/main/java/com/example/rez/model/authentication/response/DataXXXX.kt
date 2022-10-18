@@ -9,7 +9,7 @@ data class DataXXXX(
     val booking_reference: String?,
     val confirmed_payment: Boolean,
     val created_at: String,
-    val id: Int,
+    val id: String,
     val qr_code: String?,
     val reason: String,
     val status: String,

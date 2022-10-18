@@ -23,6 +23,7 @@ import com.example.rez.model.authentication.genresponse.RegResponse
 import com.example.rez.model.authentication.request.FacebookRequest
 import com.example.rez.model.authentication.request.RegisterRequest
 import com.example.rez.model.authentication.response.CountryCodes
+import com.example.rez.model.dashboard.FcmTokenRequest
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.util.ValidationObject.isValidPhoneNumber
@@ -43,8 +44,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Response
 import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -59,7 +63,7 @@ class RegistrationFragment : Fragment() {
     private lateinit var rezSignInClient: GoogleSignInClient
     private var GOOGLE_SIGNIN_RQ_CODE = 100
     private lateinit var callbackManager : CallbackManager
-    private lateinit var phoneNumberText: String
+    private lateinit var fcmToken: String
 
  //   private lateinit var phoneNumber: AutoCompleteTextView
     private lateinit var country: ArrayList<CountryCodes>
@@ -86,14 +90,13 @@ class RegistrationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.loginTv.button.text = "SIGNUP"
-//        phoneNumberText = binding.initPhoneNumber.text.toString().trim()+binding.edtUserMobile.text.toString().trim()
-//        val phoneNumber = binding.initPhoneNumber
-//        val countryCode = arrayListOf("+1", "+20", "+212", "+213", "+216", "+218", "+220", "+221", "+222", "+223", "+224", "+225", "+226", "+227", "+228", "+229", "+230", "+231", "+232", "+233", "+234", "+235", "+236", "+237", "+238", "+239", "+240", "+241", "+242", "+243", "+244", "+245", "+246", "+248", "+249", "+250", "+251", "+252", "+253", "+254", "+255", "+256", "+257", "+258", "+260", "+261", "+262", "+262", "+263", "+264", "+265", "+266", "+267", "+268", "+269", "+27", "+290", "+291", "+297", "+298", "+299", "+30", "+31", "+32", "+33", "+34", "+345", "+350", "+351", "+352", "+353", "+354", "+355", "+356", "+358", "+359", "+36", "+370", "+371", "+372", "+373", "+374", "+375", "+376", "+377", "+378", "+379", "+380", "+381", "+382", "+385", "+386", "+387", "+389", "+39", "+40", "+41", "+420", "+421", "+423", "+43", "+44", "+45", "+46", "+47", "+48", "+49", "+500", "+501", "+502", "+503", "+504", "+505", "+506", "+507", "+508", "+509", "+51", "+52", "+53", "+537", "+54", "+55", "+56", "+57", "+58", "+590", "+591", "+593", "+594", "+595", "+596", "+597", "+598", "+599", "+60", "+61", "+62", "+63", "+64", "+65", "+66", "+670", "+672", "+673", "+674", "+675", "+676", "+677", "+678", "+679", "+680", "+681", "+682", "+683", "+685", "+686", "+687", "+688", "+689", "+690", "+691", "+692", "+7", "+77", "+81", "+82", "+84", "+850", "+852", "+853", "+855", "+856", "+86", "+872", "+880", "+886", "+90", "+91", "+92", "+93", "+94", "+95", "+960", "+961", "+962", "+963", "+964", "+965", "+966", "+967", "+968", "+970", "+971", "+972", "+973", "+974", "+975", "+976", "+977", "+98", "+992", "+993", "+994", "+995", "+996", "+998")
-//        country = arrayListOf()
-//        val phoneAdapter = PhoneAdapter(countryCode, requireContext(),
-//            android.R.layout.simple_dropdown_item_1line)
-//        phoneNumber.setAdapter(phoneAdapter)
 
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { token ->
+            if (!token.isSuccessful) {
+                //return@addOnCompleteListener
+            }
+             fcmToken = token.result //this is the token retrieved
+        }
         rezViewModel.phoneNumber.observe(viewLifecycleOwner){
             validatePhoneNumber(it)
         }
@@ -133,47 +136,6 @@ class RegistrationFragment : Fragment() {
        // binding.signUpTv.enable(false)
 
 
-
-//        rezViewModel.registerResp.observe(viewLifecycleOwner, Observer {
-//            binding.loginTv.progressBar.visible(it is Resource.Loading)
-//            binding.loginTv.button.text = "Please wait.."
-//            when(it) {
-//                is Resource.Success -> {
-//                    binding.loginTv.button.text = "SIGNUP"
-//                    if (it.value.containsKey("data")){
-//                        val data = it.value.get("data") as RegistrationSuccessData
-//                        val uEmail = binding.edtUserEmail.text.toString().trim()
-//                        val token: String? = data.token
-//                        sharedPreferences.edit().putString("token", token).commit() // save user's token
-//                        sharedPreferences.edit().putString("email", uEmail).commit() // save user's email
-//
-//                        val message = it.value.get("message") as String
-//                        startActivity(
-//                            Intent(
-//                                requireContext(),
-//                                DashboardActivity::class.java
-//                            )
-//                        )
-//                        requireActivity().finish()
-//                        showToast(message)
-//                    } else {
-//                        val message = it.value.get("message") as String
-//                        showToast(message)
-//                    }
-//                }
-//                is Resource.Failure -> {
-//                    binding.loginTv.button.text = "SIGNUP"
-//                    handleApiError(it)
-//
-//                }
-//            }
-//        })
-
-
-//        binding.edtFirstName.addTextChangedListener {
-//            val email = binding.edtUserEmail.text.toString().trim()
-//            binding.signUpTv.enable(email.isNotEmpty() && it.toString().isNotEmpty())
-//        }
 
         binding.loginTv.submit.setOnClickListener {
             register() // register user
@@ -229,7 +191,7 @@ class RegistrationFragment : Fragment() {
                 binding.TILedtPass.errorIconDrawable = null
 
             }
-            password.length <= 5 -> {
+            password.length <= 6 -> {
                 binding.TILedtPass.error =
                     getString(R.string.valid_password_is_required)
                 binding.TILedtPass.errorIconDrawable = null
@@ -253,6 +215,7 @@ class RegistrationFragment : Fragment() {
                         first_name = firstName,
                         last_name = lastName,
                         email = email,
+                        fcm_token = fcmToken,
                         phone = phoneNumber,
                         password = password,
                         password_confirmation = confirmPassword
@@ -286,13 +249,13 @@ class RegistrationFragment : Fragment() {
                                     showToast(message)
                                 }
                             }
-                            is Resource.Failure -> {
+                            is Resource.Error<*> -> {
                                 binding.loginTv.button.text = "SIGNUP"
-                                handleApiError(it)
+                                showToast(it.data.toString())
+                                rezViewModel.regResponse.removeObservers(viewLifecycleOwner)
                             }
                         }
                     })
-
                 }
             }
         }
@@ -412,7 +375,7 @@ class RegistrationFragment : Fragment() {
 
     /*create the googleSignIn client*/
     private fun googleSignInClient() {
-        val serverClientId = getString(R.string.default_web_client_id) // get the client id
+        val serverClientId = getString(R.string.default_web_id) // get the client id
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(serverClientId)
             .requestEmail()
@@ -451,7 +414,7 @@ class RegistrationFragment : Fragment() {
 
     /*open the dashboard fragment if account was selected*/
     private fun startDashboard(account: GoogleSignInAccount?) {
-        account?.idToken?.let {
+        account?.idToken?.let { it ->
             val googleRequest = FacebookRequest(it)
             rezViewModel.loginWithGoogle(googleRequest) // make the google login request
             rezViewModel.loginGoogleResponse.observe(viewLifecycleOwner, Observer {
@@ -484,9 +447,10 @@ class RegistrationFragment : Fragment() {
                         }
 
                     }
-                    is Resource.Failure ->  {
+                    is Resource.Error<*> ->  {
                         binding.loginTv.button.text = "SIGNUP"
-                        handleApiError(it)
+                        showToast(it.data.toString())
+                        rezViewModel.loginGoogleResponse.removeObservers(viewLifecycleOwner)
                     } // handle error
                 }
             })
@@ -528,9 +492,10 @@ class RegistrationFragment : Fragment() {
                             it.value.message?.let { it1 -> showToast(it1) } // show the user the message
                         }
                     }
-                    is Resource.Failure ->  {
+                    is Resource.Error<*> ->  {
                         binding.loginTv.button.text = "SIGNUP"
-                        handleApiError(it)
+                        showToast(it.data.toString())
+                        rezViewModel.loginWithFacebookResponse.removeObservers(viewLifecycleOwner)
                     } // handle error
                 }
             })

@@ -129,44 +129,6 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
             }
         })
 
-//        binding.search.setOnClickListener {
-//            val searchText = binding.restaurantText.text.toString().trim()
-//            if (searchText.isNullOrEmpty()){
-//                showToast("You must type in a search text")
-//            }else if (searchText.length <= 2){
-//                showToast("Search text too short")
-//            }else{
-//                loadData()
-//            }
-//        }
-
-
-//            binding.searchRestaurantsTextView.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//
-//            }
-//
-//            override fun afterTextChanged(editable: Editable?) {
-//                binding.searchRestaurantsTextView.setOnKeyListener(object : View.OnKeyListener {
-//                    override fun onKey(p0: View?, p1: Int, p2: KeyEvent?): Boolean {
-//                        if(p2?.action == KeyEvent.ACTION_DOWN && p1 == KeyEvent.KEYCODE_ENTER){
-//                                if (editable?.length!! <= 2){
-//                                    showToast("Text length must be greater than 2")
-//                                } else{
-//                                    searchRestaurants = editable.toString()
-//                                    loadData()
-//                                }
-//                            return true;
-//                        }
-//                        return false;
-//                    }
-//                })
-//            }
-//        })
     }
 
     // Locations
@@ -264,26 +226,6 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
         }
     }
 
-//    private fun loadData() {
-//        lifecycleScope.launch {
-//            if (restaurantID == null){
-//                rezViewModel.search(lat, lng, null, null, null, null , null,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
-//                    binding.progressBar.visible(false)
-//                    searchAdapter.submitData(viewLifecycleOwner.lifecycle, it)
-//                    //binding.searchLayout.visibility = View.GONE
-//                    binding.appBarLayout.visibility = View.VISIBLE
-//                }
-//            } else {
-//                rezViewModel.search(lat, lng, null, null, null, null , restaurantID,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
-//                    binding.progressBar.visible(false)
-//                    searchAdapter.submitData(viewLifecycleOwner.lifecycle, it)
-//                    //binding.searchLayout.visibility = View.GONE
-//                    binding.appBarLayout.visibility = View.VISIBLE
-//                    restaurantID = 0
-//                }
-//            }
-//        }
-//    }
 
     private fun getAddress(address: String) {
         if (!address.isEmpty()) {
@@ -314,7 +256,7 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
     }
 
     private fun getData(text: String) {
-        if (text.length >= 8) {
+        if (text.length >= 4) {
             rezViewModel.getPlace(text, getString(R.string.api_Key))
             rezViewModel.getPlacesResponse.observe(viewLifecycleOwner, Observer {
                 when (it) {

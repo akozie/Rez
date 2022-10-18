@@ -15,8 +15,8 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class ReviewPagingSource(
-    val vendorID: Int,
-    val tableID: Int,
+    val vendorID: String,
+    val tableID: String,
     private val authApi: AuthApi,
     val token: String
 ) : PagingSource<Int, ReviewX>() {

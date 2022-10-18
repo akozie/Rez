@@ -8,7 +8,7 @@ data class RecommendedVendor(
     val avatar: String,
     val average_rating: Float,
     val company_name: String,
-    val id: Int,
+    val id: String,
     val category_name: String,
     val total_tables: Int,
     val liked_by_user: Boolean

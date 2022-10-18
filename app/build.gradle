@@ -7,6 +7,7 @@ plugins {
 
 }
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdk 31
@@ -102,12 +103,18 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.3.6'
     implementation 'androidx.activity:activity-ktx:1.4.0'
 
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:30.4.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.8'
+
     //User permission
     implementation "com.karumi:dexter:6.2.2"
 
     // Image crop
     api "com.theartofdev.edmodo:android-image-cropper:2.8.0"
     implementation 'androidx.activity:activity-ktx:1.2.0-alpha'
+    //implementation 'androidx.fragment:fragment-ktx:1.5.3'
 
     //Picasso
     implementation "com.squareup.picasso:picasso:2.8"

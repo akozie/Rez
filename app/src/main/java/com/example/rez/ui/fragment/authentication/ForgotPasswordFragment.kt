@@ -84,9 +84,11 @@ class ForgotPasswordFragment : Fragment() {
                                         ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToResetPasswordFragment(ref)
                                     findNavController().navigate(action)
                                 }}
-                            is Resource.Failure -> {
+                            is Resource.Error<*> -> {
                                 binding.submitBtn.button.text = "Submit"
-                                handleApiError(it)
+                                showToast(it.data.toString())
+                                rezViewModel.forgotPasswordResponse.removeObservers(viewLifecycleOwner)
+
                             }
                         }
                     })

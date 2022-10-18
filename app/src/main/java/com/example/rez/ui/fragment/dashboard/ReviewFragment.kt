@@ -83,7 +83,11 @@ class ReviewFragment : Fragment() {
                     .setPositiveButton(android.R.string.yes,
                         DialogInterface.OnClickListener { _, _ ->
                             // Continue with delete operation
-                            rezViewModel.deleteTableReview("Bearer ${sharedPreferences.getString("token", "token")}", sharedPreferences.getInt("reviewid", 0))
+                            sharedPreferences.getString("reviewid", "reviewid")?.let {
+                                rezViewModel.deleteTableReview("Bearer ${sharedPreferences.getString("token", "token")}",
+                                    it
+                                )
+                            }
                             rezViewModel.deleteTableReviewResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                                 binding.progressBar.visible(it is Resource.Loading)
                                 when(it) {
@@ -92,11 +96,14 @@ class ReviewFragment : Fragment() {
                                             loadData()
                                             showToast(it.value.message)
                                         } else {
-                                            it.value.message?.let { it1 ->
+                                            it.value.message.let { it1 ->
                                                 Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                                         }
                                     }
-                                    is Resource.Failure -> handleApiError(it)
+                                    is Resource.Error<*> -> {
+                                        showToast(it.data.toString())
+                                        rezViewModel.deleteTableReviewResponse.removeObservers(viewLifecycleOwner)
+                                    }
                                 }
 
                             })
@@ -146,11 +153,13 @@ class ReviewFragment : Fragment() {
 
     private fun loadData() {
         lifecycleScope.launch {
-            val vendorID = sharedPreferences.getInt("vendorid", 0)
-        val tableID = sharedPreferences.getInt("tid", 0)
-        rezViewModel.getVendorProfileTableReviews(vendorID, tableID, "Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
-                binding.progressBar.visible(false)
-                reviewAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+            val vendorID = sharedPreferences.getString("vendorid", "vendorid")
+        val tableID = sharedPreferences.getString("tid", "tid")
+            if (vendorID != null) {
+                rezViewModel.getVendorProfileTableReviews(vendorID, tableID!!, "Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {
+                    binding.progressBar.visible(false)
+                    reviewAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+                }
             }
         }
 

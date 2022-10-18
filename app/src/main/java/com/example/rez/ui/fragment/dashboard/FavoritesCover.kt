@@ -19,6 +19,7 @@ import com.example.rez.databinding.FragmentFavoritesCoverBinding
 import com.example.rez.model.dashboard.Favorite
 import com.example.rez.ui.RezViewModel
 import com.example.rez.util.handleApiError
+import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import javax.inject.Inject
 
@@ -78,7 +79,9 @@ class FavoritesCover : Fragment(), FavoritesCoverAdapter.OnClickFavoritesCoverIt
                             Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
                     }
                 }
-                is Resource.Failure -> handleApiError(it) { setUpFavorites() }
+                is Resource.Error<*> -> {
+                    showToast(it.data.toString())
+                    rezViewModel.getFavoritesCover.removeObservers(viewLifecycleOwner)                }
             }
         })
     }
