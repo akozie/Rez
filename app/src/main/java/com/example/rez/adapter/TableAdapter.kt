@@ -15,6 +15,7 @@ class TableAdapter(private var tableList: List<Table>, var tableClickListener: O
 
     inner class MyViewHolder(private val binding: TableLayoutBinding): RecyclerView.ViewHolder(binding.root) {
         val capacity = binding.tableCapacityTv
+        val people = binding.people
         val pricee = binding.tablePriceTv
         val tableCategoryName = binding.tableNameTv
         val tableCategoryImage = binding.tableImageIv
@@ -44,7 +45,12 @@ class TableAdapter(private var tableList: List<Table>, var tableClickListener: O
                         }else if (image == null){
                             GlideApp.with(context).load(R.drawable.table_img).into(tableCategoryImage)
                         }
-                        capacity.text = max_people.toString()
+                        if (max_people == 1){
+                            capacity.text = max_people.toString()
+                            people.text = "Person"
+                        }else{
+                            capacity.text = max_people.toString()
+                        }
                         pricee.text = price
                         tableCategoryName.text = name
                         tableDescription.text = description
@@ -64,12 +70,10 @@ class TableAdapter(private var tableList: List<Table>, var tableClickListener: O
             }
         }
     }
-
     override fun getItemCount(): Int {
         return tableList.size
     }
 }
-
 interface OnTableClickListener {
     fun onTableItemClick(tableModel: Table)
 }

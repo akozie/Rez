@@ -1,6 +1,7 @@
 package com.example.rez.util
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -9,6 +10,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
@@ -147,4 +149,17 @@ fun ImageView.loadImage(imageUrl: String?) {
                 .placeholder(R.drawable.chairman_image)
                 .error(R.drawable.chairman_image)
         ).into(this)
+}
+
+fun Fragment.hideKeyboard() {
+    view?.let { activity?.hideKeyboard(it) }
+}
+
+//fun Activity.hideKeyboard() {
+//    hideKeyboard(currentFocus ?: View(this))
+//}
+
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }

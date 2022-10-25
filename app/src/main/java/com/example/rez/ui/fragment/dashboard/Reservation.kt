@@ -43,7 +43,6 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
     private val rezViewModel: RezViewModel by activityViewModels()
     private lateinit var bookingAdapter: BookingPagingAdapter
     private lateinit var loaderStateAdapter: BookingPagingStateAdapter
-   // private  val booking: Booking = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -109,12 +108,10 @@ class Reservation : Fragment(), BookingPagingAdapter.OnBookingClickListener {
 
     private fun loadData() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
                     rezViewModel.getBookings("Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {pagingData ->
                         binding.progressBar.visible(false)
                         //   Log.d("BOOKINGSSS", it.toString())
                         bookingAdapter.submitData(pagingData)
-                    }
             }
         }
     }

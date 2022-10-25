@@ -45,6 +45,7 @@ import com.example.rez.adapter.RecyclerviewAdapter
 import com.example.rez.api.Resource
 import com.example.rez.model.authentication.response.ListClass
 import com.example.rez.model.dashboard.SearchModel
+import com.example.rez.util.hideKeyboard
 
 
 class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, RecyclerviewAdapter.OnSelectPlace {
@@ -58,13 +59,15 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
     private lateinit var list : ArrayList<ListClass>
     private var lat: Double = 0.0
     private var lng: Double = 0.0
+    private var newLat: Double? = 0.0
+    private var newLng: Double? = 0.0
     private var priceTo: String? = null
     private val PRICEFROM: Int = 0
     private var args: SearchModel? = null
     private var stateID: Int = 0
     private var restaurantID: Int = 0
     private lateinit var noOfPersons: String
-    private lateinit var searchRestaurants: String
+    private var searchRestaurants: String? = null
     private var isLoaded = false
 
 
@@ -87,11 +90,10 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            isEnabled = false
-
-            // enable or disable the backpress
-        }
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+//            isEnabled = false
+//
+//        }
         args = arguments?.getParcelable("SEARCHMODEL")
         stateID = 1
         restaurantID = args?.typeID!!
@@ -100,21 +102,20 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
 
         recyclerView = binding.recyclerview
 
-        checkPermissions()
         binding.showAddress.setOnClickListener {
             binding.showAddress.visibility = View.GONE
             binding.edtUserAddress.visibility = View.VISIBLE
             recyclerView.visibility = View.VISIBLE
+            args = null
+            hideKeyboard()
         }
         searchRestaurants = args!!.searchText.toString()
-        //loadData()
 
-
+        getLocations()
         binding.btnRetry.setOnClickListener {
             searchAdapter.retry()
         }
-        val address = binding.showAddress.text.toString().trim()
-        getAddress(address)
+
         binding.edtUserAddress.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -131,71 +132,42 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
 
     }
 
-    // Locations
-    private fun checkPermissions() {
-        if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireContext() as Activity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 1)
-
-        }
-        else {
-            getLocations()
-            val address = binding.showAddress.text.toString().trim()
-            getAddress(address)
-        }
-    }
-
     private fun getLocations() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        try {
-            val address = binding.showAddress.text.toString().trim()
             val geoCoder = Geocoder(requireContext())
-            val addressList: List<Address> = geoCoder.getFromLocationName(address, 1)
-            if (addressList.isNotEmpty()) {
+        if (args != null){
+            searchRestaurants = args!!.searchText.toString()
+            if (searchRestaurants!!.isNullOrEmpty()){
+                val address = binding.showAddress.text.toString().trim()
+                val addressList: List<Address> = geoCoder.getFromLocationName(address, 1)
                 val latt = addressList[0].latitude
                 val long = addressList[0].longitude
                 lat = latt.toString().toDouble()
                 lng = long.toString().toDouble()
+                loadData(lat, lng)
+            }else{
+                val addressList: List<Address> = geoCoder.getFromLocationName(searchRestaurants, 1)
+                val latt = addressList[0].latitude
+                val long = addressList[0].longitude
+                Log.d("LATLNG", latt.toString())
+                newLat = latt.toString().toDouble()
+                newLng = long.toString().toDouble()
+                Log.d("LATLNGGGGG", lat.toString())
+                Log.d("LNGGGGG", lng.toString())
+                loadData(newLat!!, newLng!!)
+                args = null
+                newLat = null
+                newLng = null
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } // end catch
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1) {
-            if (grantResults.isNotEmpty()&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(requireContext(), "Permission granted", Toast.LENGTH_SHORT).show()
-                    getLocations()
-                }
-                else {
-                    Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
-                }
-            }
+        }else{
+            val address = binding.showAddress.text.toString().trim()
+            val addressList: List<Address> = geoCoder.getFromLocationName(address, 1)
+            val latt = addressList[0].latitude
+            val long = addressList[0].longitude
+            lat = latt.toString().toDouble()
+            lng = long.toString().toDouble()
+            loadData(lat, lng)
         }
     }
-
 
     private fun setRv() {
         searchAdapter = SearchPagingAdapter(this)
@@ -226,34 +198,18 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
         }
     }
 
-
-    private fun getAddress(address: String) {
-        if (!address.isEmpty()) {
-            if (address.length > 2){
-                try {
-                    val geoCoder = Geocoder(requireContext())
-                    val addressList: List<Address> = geoCoder.getFromLocationName(address, 1)!!
-                    if (addressList.isNotEmpty()) {
-                        val latt = addressList[0].latitude
-                        val long = addressList[0].longitude
-                        lat = latt.toString().toDouble()
-                        lng = long.toString().toDouble()
-
-                        Log.d("LAT", lat.toString())
-                        Log.d("LONG", lng.toString())
-//                    Log.d("LONG", "MEEEEEEEEEEE")
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            } else{
-                showToast("Text should be more than 2 letters")
+    private fun loadData(lat: Double, lng:Double) {
+        lifecycleScope.launch {
+            rezViewModel.search(lat,lng,noOfPersons,0,priceTo?.toInt(),stateID,null,"Bearer ${sharedPreferences.getString("token", "token")}").collectLatest {pagingData ->
+                binding.progressBar.visible(false)
+                searchAdapter.submitData(pagingData)
+                args = null
             }
-            // end catch
-        } else{
-            //
+            args = null
         }
+        args = null
     }
+
 
     private fun getData(text: String) {
         if (text.length >= 4) {
@@ -264,13 +220,18 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
                         recyclerView.visibility = View.VISIBLE
                         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                         list  = it.value.predictions
-                        Log.d("SUCCESS", list.toString())
-                        for (i in 0 until it.value.predictions.size){
-                            it.value.predictions.get(i)?.let { it1 -> list.add(it1) }
+                        if (list.isEmpty()){
+                            recyclerView.visibility = View.GONE
+                        }else{
+                            Log.d("SUCCESS", list.toString())
+                            for (i in 0 until it.value.predictions.size){
+                                it.value.predictions.get(i)?.let { it1 -> list.add(it1) }
+                            }
+                            val recyclerviewAdapter = RecyclerviewAdapter(list, this)
+                            recyclerviewAdapter.addList(list)
+                            recyclerView.adapter = recyclerviewAdapter
                         }
-                        val recyclerviewAdapter = RecyclerviewAdapter(list, this)
-                        recyclerviewAdapter.addList(list)
-                        recyclerView.adapter = recyclerviewAdapter
+
                     }
                     is Resource.Failure -> {
                         Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
@@ -286,7 +247,11 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
         binding.showAddress.visibility = View.VISIBLE
         binding.edtUserAddress.visibility = View.GONE
         recyclerView.visibility = View.GONE
+        args = null
+        hideKeyboard()
+        getLocations()
     }
+
     override fun onEachSearchClick(resultX: ResultX) {
         val action = SearchDirections.actionSearchToSearchFragment(resultX)
         findNavController().navigate(action)

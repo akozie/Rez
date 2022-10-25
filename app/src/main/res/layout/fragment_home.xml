@@ -6,7 +6,6 @@
     android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/margin_30dp"
     tools:context=".ui.fragment.dashboard.Home">
 
 <LinearLayout
@@ -82,15 +81,6 @@
                 android:background="@color/blue"
                 android:layout_height="3dp"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginStart="@dimen/margin_18dp"
-                android:layout_marginEnd="@dimen/margin_18dp"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-                tools:layout_editor_absoluteX="18dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="visible"
@@ -118,13 +108,29 @@
                     android:textColor="@android:color/background_dark"
                     android:textCursorDrawable="@color/grey_light" />
             </com.google.android.material.textfield.TextInputLayout>
-            <Button
-                android:id="@+id/search"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="SEARCH"
-                android:textStyle="bold"
-                android:background="@drawable/rectangle_outbox_blue"/>
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/rectangle_outbox_blue"
+                    android:text="SEARCH"
+                    android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:elevation="2dp"
+                    android:backgroundTint="@color/white"
+                    android:id="@+id/recyclerview"
+                    android:background="@drawable/rectangle_outbox_blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout

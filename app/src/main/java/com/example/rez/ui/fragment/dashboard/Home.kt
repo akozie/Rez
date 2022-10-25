@@ -45,6 +45,7 @@ import com.example.rez.model.authentication.response.ListClass
 import com.example.rez.model.dashboard.*
 import com.example.rez.ui.RezViewModel
 import com.example.rez.util.handleApiError
+import com.example.rez.util.hideKeyboard
 import com.example.rez.util.showToast
 import com.example.rez.util.visible
 import com.google.android.gms.common.api.ApiException
@@ -100,7 +101,7 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
     ): View? {
         // Inflate the layout for this fragment
        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-       return binding?.root
+       return binding.root
     }
 
 
@@ -119,9 +120,9 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
 
 
 
-        binding?.progressBar?.visible(true)
+        binding.progressBar.visible(true)
 
-        searchRestaurants = binding?.selectVenue!!
+        searchRestaurants = binding.selectVenue
         searchRestaurants.onItemClickListener = object : AdapterView.OnItemClickListener{
             override fun onItemClick(adapterView: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 val category  = adapterView?.getItemAtPosition(p2) as Category
@@ -160,22 +161,22 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
 //        }else{
 //            topRestaurants()
 //        }
-        binding!!.refreshLayout.setOnRefreshListener {
+        binding.refreshLayout.setOnRefreshListener {
             getVendors()
-            binding!!.refreshLayout.isRefreshing = false
+            binding.refreshLayout.isRefreshing = false
         }
 
-        binding!!.seeAllTopRecommTv.setOnClickListener {
+        binding.seeAllTopRecommTv.setOnClickListener {
             val action = HomeDirections.actionHome2ToTopRecommended()
             findNavController().navigate(action)
         }
 
-        binding!!.seeAllNearRestTv.setOnClickListener {
+        binding.seeAllNearRestTv.setOnClickListener {
             val action = HomeDirections.actionHome2ToNearRestaurant()
             findNavController().navigate(action)
         }
 
-        binding!!.seeAllSuggestionTv.setOnClickListener {
+        binding.seeAllSuggestionTv.setOnClickListener {
             val action = HomeDirections.actionHome2ToSuggestionForYou()
             findNavController().navigate(action)
         }
@@ -258,8 +259,6 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                                     val index = locationResult.locations.size - 1
                                      latitude = locationResult.locations[index].latitude
                                      longitude = locationResult.locations[index].longitude
-                                    sharedPreferences.edit().putLong("lat", latitude.toBits()).apply()
-                                    sharedPreferences.edit().putLong("long", longitude.toBits()).apply()
                                     getVendors()
                                     fetchVendors()
                                     getLocations()
@@ -317,26 +316,21 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
     }
 
     private fun topRestaurants() {
-       // topRecyclerView = binding?.topRecomendRecycler!!
-       // topList =
-       // val top = arguments?.getString("toplist") as List<RecommendedVendor>
         topRecommendedAdapter = TopRecommendedHomeAdapter(topList, this)
-        binding?.topRecomendRecycler?.layoutManager = LinearLayoutManager(parentFragment?.requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding?.topRecomendRecycler?.adapter = topRecommendedAdapter
+        binding.topRecomendRecycler.layoutManager = LinearLayoutManager(parentFragment?.requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.topRecomendRecycler.adapter = topRecommendedAdapter
     }
 
     private fun nearRestaurants() {
-      //  nearRecyclerView = binding?.nearRestRecycler!!
         nearRestaurantAdapter = NearRestaurantAdapter(nearList, this)
-        binding?.nearRestRecycler?.layoutManager = LinearLayoutManager(parentFragment?.requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding?.nearRestRecycler?.adapter = nearRestaurantAdapter
+        binding.nearRestRecycler.layoutManager = LinearLayoutManager(parentFragment?.requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.nearRestRecycler.adapter = nearRestaurantAdapter
     }
 
     private fun suggestionRestaurants() {
-//        suggestionRecyclerView = binding?.suggestionRecycler!!
         suggestionRestaurantAdapter = SuggestionRestaurantAdapter(suggestionList, this)
-        binding?.suggestionRecycler?.layoutManager = LinearLayoutManager(parentFragment?.requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding?.suggestionRecycler?.adapter = suggestionRestaurantAdapter
+        binding.suggestionRecycler.layoutManager = LinearLayoutManager(parentFragment?.requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.suggestionRecycler.adapter = suggestionRestaurantAdapter
     }
 
 
@@ -397,7 +391,7 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
 
     private fun registerObservers(like: ImageView, unLike: ImageView) {
         rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner) {
-            binding?.progressBar?.visible(it is Resource.Loading)
+            binding.progressBar.visible(it is Resource.Loading)
             when (it) {
                 is Resource.Success -> {
                     if (unLike.isVisible) {
@@ -435,39 +429,37 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                 rezViewModel.getHomeResponse.observe(
                     it.viewLifecycleOwner
                 ) {
-                    binding?.progressBar?.visible(it is Resource.Loading)
+                    binding.progressBar.visible(it is Resource.Loading)
                     when (it) {
                         is Resource.Success -> {
                             if (it.value.status) {
                                 topList = it.value.data[0].recommended_vendors
                                 val gson = Gson()
                                 val db = gson.toJson(topList)
-//                                val bundle = Bundle()
-//                                bundle.putParcelable("key", )
                                 nearList = it.value.data[0].nearby_vendors
                                 val near = gson.toJson(nearList)
                                 suggestionList = it.value.data[0].suggested_vendors
                                 val suggested = gson.toJson(suggestionList)
                                 if (topList.isEmpty()) {
-                                    binding?.topRecomendRecycler?.visible(false)
-                                    binding?.topLayout?.visible(false)
-                                } else if (topList.isNotEmpty()) {
+                                    binding.topRecomendRecycler.visible(false)
+                                    binding.topLayout.visible(false)
+                                } else {
                                     topRestaurants()
                                     sharedPreferences.edit().putString("toplist", db).apply()
                                     sharedPreferences.edit().putString("topguy", it.value.data[0].recommended_vendors[0].category_name).apply()
                                 }
                                 if (suggestionList.isEmpty()) {
-                                    binding?.suggestionRecycler?.visible(false)
-                                    binding?.suggestedLayout?.visible(false)
-                                    binding?.suggestedView?.visible(false)
-                                } else if (suggestionList.isNotEmpty()) {
+                                    binding.suggestionRecycler.visible(false)
+                                    binding.suggestedLayout.visible(false)
+                                    binding.suggestedView.visible(false)
+                                } else {
                                     suggestionRestaurants()
                                     sharedPreferences.edit().putString("suggestedlist", suggested).apply()
                                 }
                                 if (nearList.isEmpty()) {
-                                    binding?.nearRestRecycler?.visible(false)
-                                    binding?.nearLayout?.visible(false)
-                                    binding?.nearView?.visible(false)
+                                    binding.nearRestRecycler.visible(false)
+                                    binding.nearLayout.visible(false)
+                                    binding.nearView.visible(false)
                                 } else if (nearList.isNotEmpty()) {
                                     nearRestaurants()
                                     sharedPreferences.edit().putString("nearlist", near).apply()
@@ -509,13 +501,17 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                         recyclerView.visibility = View.VISIBLE
                         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                         list  = it.value.predictions
-                        Log.d("SUCCESS", list.toString())
-                        for (i in 0 until it.value.predictions.size){
-                            it.value.predictions.get(i)?.let { it1 -> list.add(it1) }
+                        if (list.isEmpty()){
+                            recyclerView.visibility = View.GONE
+                        }else{
+                            Log.d("SUCCESS", list.toString())
+                            for (i in 0 until it.value.predictions.size){
+                                it.value.predictions.get(i)?.let { it1 -> list.add(it1) }
+                            }
+                            val recyclerviewAdapter = RecyclerviewAdapter(list, this)
+                            recyclerviewAdapter.addList(list)
+                            recyclerView.adapter = recyclerviewAdapter
                         }
-                        val recyclerviewAdapter = RecyclerviewAdapter(list, this)
-                        recyclerviewAdapter.addList(list)
-                        recyclerView.adapter = recyclerviewAdapter
                     }
                     is Resource.Failure -> {
                         Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
@@ -535,13 +531,6 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         try {
@@ -573,7 +562,6 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
 
                         Log.d("LAT", latitude.toString())
                         Log.d("LONG", longitude.toString())
-//                    Log.d("LONG", "MEEEEEEEEEEE")
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -581,11 +569,12 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
             } else{
                 showToast("Text should be more than 2 letters")
             }
-            // end catch
         } else{
             //
         }
     }
+
+
 
     private fun sendFCMToken(){
         FirebaseMessaging.getInstance().token.addOnCompleteListener { token ->
@@ -600,16 +589,13 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
             if (view != null){
                 rezViewModel.fcmToken("Bearer ${sharedPreferences.getString("token", "token")}",fcm)
                 rezViewModel.fcmTokenResponse.observe(viewLifecycleOwner) {
-                    binding?.progressBar?.visible(it is Resource.Loading)
+                    binding.progressBar.visible(it is Resource.Loading)
                     when (it) {
                         is Resource.Success -> {
-                            //will delete later, but will toast for development
-                            //
                         }
                     }
                 }
             }
-
         }
     }
 
@@ -625,12 +611,11 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
         recyclerView.visibility = View.GONE
         binding.fragmentSelectState.visibility = View.VISIBLE
         binding.search.visibility = View.VISIBLE
+        hideKeyboard()
     }
 
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
-       // requireActivity().finishAffinity()
-        //rezViewModel.store()
     }
 }

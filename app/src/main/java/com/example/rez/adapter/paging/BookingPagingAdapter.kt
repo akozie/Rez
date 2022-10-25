@@ -41,8 +41,6 @@ class BookingPagingAdapter(private val onBookingClickListener: OnBookingClickLis
         }
     }
 
-   // val differ = AsyncListDiffer(this, differCallback)
-
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookingMyViewHolder {
             val binding = ReservationListAdapterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -56,34 +54,28 @@ class BookingPagingAdapter(private val onBookingClickListener: OnBookingClickLis
                         if (current?.table?.table_image_url == null){
                             GlideApp.with(context).load(R.drawable.table_image).into(tableImageIv)
                         } else {
-                            GlideApp.with(context).load(current?.table?.table_image_url).into(tableImageIv)
+                            GlideApp.with(context).load(current.table.table_image_url).into(tableImageIv)
                         }
                             tableNameTv.text = current?.table?.name
                             restaurentNameTv.text = current?.vendor?.name
                             dateTv.text = current?.booked_for?.substring(0, 10)
                             completedTv.text = current?.confirmed_payment?.toString()
-                            timeTv.text = current?.booked_for?.substring(10)
+                            timeTv.text = current?.booked_for?.substring(10,15)
                             if (current?.status == "pending"){
                                 holder.pendingTv.visible(true)
                                 holder.acceptedTv.visible(false)
                                 holder.canceledTv.visible(false)
-                                pendingTv.text = current?.status
+                                pendingTv.text = current.status
                             }else if (current?.status == "accepted"){
                                 holder.acceptedTv.visible(true)
                                 holder.pendingTv.visible(false)
                                 holder.canceledTv.visible(false)
-                                acceptedTv.text = current?.status
-//                                holder.itemView.setOnClickListener {
-//                                    val currentPos = holder.bindingAdapterPosition
-//                                    if (currentPos != RecyclerView.NO_POSITION){
-//                                        onBookingClickListener.onBookingItemClick(current, currentPos)
-//                                    }
-//                                }
+                                acceptedTv.text = current.status
                             } else if (current?.status == "cancelled") {
                                         holder.canceledTv.visible(true)
                                         holder.acceptedTv.visible(false)
                                         holder.pendingTv.visible(false)
-                                        canceledTv.text = current?.status
+                                        canceledTv.text = current.status
                             }
                         }
                     holder.itemView.setOnClickListener {
@@ -93,7 +85,6 @@ class BookingPagingAdapter(private val onBookingClickListener: OnBookingClickLis
                         }
                     }
                 }
-           // AsyncPagingDataDiffer(differCallback)
             }
             interface OnBookingClickListener {
             fun onBookingItemClick(booking: Booking)

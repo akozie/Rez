@@ -71,15 +71,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="@dimen/margin_18dp"
-        android:layout_marginEnd="@dimen/margin_18dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        tools:layout_editor_absoluteX="18dp" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
@@ -92,17 +84,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_recyclerview"
+    <RelativeLayout
+        android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="@dimen/margin_5dp"
-        android:layout_marginBottom="@dimen/margin_30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/margin_5dp"
+            android:layout_marginBottom="@dimen/margin_30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:elevation="2dp"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/rectangle_outbox_blue"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/search_recyclerview"
+            tools:layout_editor_absoluteX="18dp" />
+    </RelativeLayout>
 
     <Button
         android:visibility="gone"
