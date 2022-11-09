@@ -16,7 +16,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class AuthRepository: BaseRepository() {
-    //var favorite = 0
 
     suspend fun getPlace(input: String, key: String) = safeApiCall {
         googleapi.getPlace(input, key)
@@ -29,6 +28,12 @@ class AuthRepository: BaseRepository() {
 //    suspend fun getVendorStates() = safeApiCall{
 //        api.getVendorStates()
 //    }
+
+
+
+    suspend fun pendingReviews(token: String) = safeApiCall{
+        api.pendingReviews(token)
+    }
 
     suspend fun countNotification(token: String) = safeApiCall{
         api.countNotification(token)
@@ -53,16 +58,16 @@ class AuthRepository: BaseRepository() {
         api.getVendorCategories()
     }
 
-    suspend fun addVendorRating(token: String, rating: RateVendorRequest, vendorInt: String) = safeApiCall{
-        api.addVendorRating(token, rating, vendorInt)
-    }
+//    suspend fun addVendorRating(token: String, rating: RateVendorRequest, vendorInt: String) = safeApiCall{
+//        api.addVendorRating(token, rating, vendorInt)
+//    }
 
     suspend fun deleteTableReview(token: String, reviewId: String) = safeApiCall{
         api.deleteTableReview(token, reviewId)
     }
 
-    suspend fun addTableReview(token: String, tableReviewRequest: TableReviewRequest, vendorInt: String, tableId: String) = safeApiCall{
-        api.addTableReview(token, tableReviewRequest, vendorInt, tableId)
+    suspend fun addTableReview(token: String, tableReviewRequest: TableReviewRequest, id: String) = safeApiCall{
+        api.addTableReview(token, tableReviewRequest, id)
     }
 
     suspend fun bookTable(token: String, bookTableRequest: BookTableRequest) = safeApiCall{

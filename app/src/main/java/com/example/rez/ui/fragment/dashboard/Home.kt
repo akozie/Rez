@@ -101,7 +101,7 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
     ): View? {
         // Inflate the layout for this fragment
        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-       return binding.root
+        return binding.root
     }
 
 
@@ -118,6 +118,7 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
             locationRequest.fastestInterval = 2000
             currentLocation()
 
+       // addressText = null
 
 
         binding.progressBar.visible(true)
@@ -151,6 +152,7 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                     searchText = searchText,
                     typeID = restaurantID
                 )
+                //address = null
                 val action = HomeDirections.actionHome2ToSearch(searchModel)
                 findNavController().navigate(action)
             }
@@ -180,11 +182,11 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
             val action = HomeDirections.actionHome2ToSuggestionForYou()
             findNavController().navigate(action)
         }
-        val address = binding.showAddress.text.toString().trim()
-        getAddress(address)
+
+
         binding.edtUserAddress.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+                //list = null
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -208,7 +210,6 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
 //        val db = gson.toJson(topList)
 //        outState.putString("top", db)
 //    }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -262,8 +263,8 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                                     getVendors()
                                     fetchVendors()
                                     getLocations()
-                                    val address = binding.showAddress.text.toString().trim()
-                                    getAddress(address)
+//                                    val address = binding.showAddress.text.toString().trim()
+//                                    getAddress(address)
                                 }
                             }
                         }, Looper.getMainLooper())
@@ -387,8 +388,6 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
         }
     }
 
-
-
     private fun registerObservers(like: ImageView, unLike: ImageView) {
         rezViewModel.addOrRemoveFavoritesResponse.observe(viewLifecycleOwner) {
             binding.progressBar.visible(it is Resource.Loading)
@@ -506,12 +505,13 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
                         }else{
                             Log.d("SUCCESS", list.toString())
                             for (i in 0 until it.value.predictions.size){
-                                it.value.predictions.get(i)?.let { it1 -> list.add(it1) }
+                                it.value.predictions.get(i).let { it1 -> list.add(it1) }
                             }
                             val recyclerviewAdapter = RecyclerviewAdapter(list, this)
                             recyclerviewAdapter.addList(list)
                             recyclerView.adapter = recyclerviewAdapter
                         }
+                        rezViewModel.getPlacesResponse.removeObservers(viewLifecycleOwner)
                     }
                     is Resource.Failure -> {
                         Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
@@ -536,43 +536,44 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
         try {
             val address = binding.showAddress.text.toString().trim()
             val geoCoder = Geocoder(requireContext())
-            val addressList: List<Address> = geoCoder.getFromLocationName(address, 1)
+            val addressList = geoCoder.getFromLocationName(address, 1)
             if (addressList.isNotEmpty()) {
                 val latt = addressList[0].latitude
                 val long = addressList[0].longitude
                 latitude = latt.toString().toDouble()
                 longitude = long.toString().toDouble()
+                Thread.sleep(1)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         } // end catch
     }
 
-    private fun getAddress(address: String) {
-        if (!address.isEmpty()) {
-            if (address.length > 2){
-                try {
-                    val geoCoder = Geocoder(requireContext())
-                    val addressList: List<Address> = geoCoder.getFromLocationName(address, 1)!!
-                    if (addressList.isNotEmpty()) {
-                        val latt = addressList[0].latitude
-                        val long = addressList[0].longitude
-                        latitude = latt.toString().toDouble()
-                        longitude = long.toString().toDouble()
-
-                        Log.d("LAT", latitude.toString())
-                        Log.d("LONG", longitude.toString())
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            } else{
-                showToast("Text should be more than 2 letters")
-            }
-        } else{
-            //
-        }
-    }
+//    private fun getAddress(newAddress: String) {
+//        if (!newAddress.isEmpty()) {
+//            if (newAddress.length > 2){
+//                try {
+//                    val geoCoder = Geocoder(requireContext())
+//                    val addressList = geoCoder.getFromLocationName(newAddress, 1)!!
+//                    if (addressList.isNotEmpty()) {
+//                        val latt = addressList[0].latitude
+//                        val long = addressList[0].longitude
+//                        latitude = latt.toString().toDouble()
+//                        longitude = long.toString().toDouble()
+//
+//                        Log.d("LAT", latitude.toString())
+//                        Log.d("LONG", longitude.toString())
+//                    }
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//            } else{
+//                showToast("Text should be more than 2 letters")
+//            }
+//        } else{
+//            //
+//        }
+//    }
 
 
 
@@ -611,11 +612,14 @@ class Home : Fragment(),OnTopHomeItemClickListener, OnItemClickListener, OnSugge
         recyclerView.visibility = View.GONE
         binding.fragmentSelectState.visibility = View.VISIBLE
         binding.search.visibility = View.VISIBLE
+        binding.edtUserAddress.text.clear()
         hideKeyboard()
     }
 
+
     override fun onDestroy() {
-        _binding = null
         super.onDestroy()
+        rezViewModel.cleanMapResponse()
+        _binding = null
     }
 }

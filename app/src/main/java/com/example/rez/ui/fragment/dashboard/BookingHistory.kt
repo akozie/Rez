@@ -104,15 +104,14 @@ class BookingHistory : Fragment(), BookingPagingAdapter.OnBookingClickListener {
     }
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onBookingItemClick(booking: Booking) {
         val action = BookingHistoryDirections.actionBookingHistoryToBookingDetailsFragment(booking)
         findNavController().navigate(action)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
 

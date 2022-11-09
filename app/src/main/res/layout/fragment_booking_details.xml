@@ -35,7 +35,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 app:cardCornerRadius="10dp">
 
                 <ImageView
@@ -179,67 +179,67 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal">-->
 
-                    <TextView
-                        android:id="@+id/acceptedTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Your Request is Accepted"
-                        android:layout_gravity="start"
-                        android:gravity="center_vertical"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textSize="12sp"
-                        android:drawablePadding="5dp"
-                        android:textColor="@color/green"
-                        app:drawableLeftCompat="@drawable/round_right_mark2" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/acceptedTv"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:text="Your Request is Accepted"-->
+<!--                        android:layout_gravity="start"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:fontFamily="@font/poppins_medium"-->
+<!--                        android:textSize="12sp"-->
+<!--                        android:drawablePadding="5dp"-->
+<!--                        android:textColor="@color/green"-->
+<!--                        app:drawableLeftCompat="@drawable/round_right_mark2" />-->
 
-                    <TextView
-                        android:visibility="gone"
-                        android:id="@+id/pendingTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Your Request is Pending"
-                        android:layout_gravity="start"
-                        android:gravity="center_vertical"
-                        android:textStyle="bold"
-                        android:textSize="11dp"
-                        android:drawablePadding="5dp"
-                        android:drawableLeft="@drawable/pending2"
-                        android:textColor="@color/pink"/>
+<!--                    <TextView-->
+<!--                        android:visibility="gone"-->
+<!--                        android:id="@+id/pendingTv"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Your Request is Pending"-->
+<!--                        android:layout_gravity="start"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="11dp"-->
+<!--                        android:drawablePadding="5dp"-->
+<!--                        android:drawableLeft="@drawable/pending2"-->
+<!--                        android:textColor="@color/pink"/>-->
 
-                    <TextView
-                        android:visibility="gone"
-                        android:id="@+id/canceledTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Your Request is Canceled"
-                        android:layout_gravity="start"
-                        android:gravity="center_vertical"
-                        android:textStyle="bold"
-                        android:textSize="11dp"
-                        android:drawablePadding="5dp"
-                        android:drawableLeft="@drawable/pending2"
-                        android:textColor="@color/pink"/>
+<!--                    <TextView-->
+<!--                        android:visibility="gone"-->
+<!--                        android:id="@+id/canceledTv"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Your Request is Canceled"-->
+<!--                        android:layout_gravity="start"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="11dp"-->
+<!--                        android:drawablePadding="5dp"-->
+<!--                        android:drawableLeft="@drawable/pending2"-->
+<!--                        android:textColor="@color/pink"/>-->
 
-                    <TextView
-                        android:visibility="gone"
-                        android:id="@+id/completedTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Your Request is Completed"
-                        android:layout_gravity="start"
-                        android:gravity="center_vertical"
-                        android:textStyle="bold"
-                        android:textSize="11dp"
-                        android:drawablePadding="5dp"
-                        android:drawableLeft="@drawable/round_right_mark2"
-                        android:textColor="@color/green"/>
+<!--                    <TextView-->
+<!--                        android:visibility="gone"-->
+<!--                        android:id="@+id/completedTv"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Your Request is Completed"-->
+<!--                        android:layout_gravity="start"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="11dp"-->
+<!--                        android:drawablePadding="5dp"-->
+<!--                        android:drawableLeft="@drawable/round_right_mark2"-->
+<!--                        android:textColor="@color/green"/>-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
 
             </LinearLayout>
@@ -274,7 +274,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
 
     <RatingBar
         android:id="@+id/table_review_rating"
-        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginTop="@dimen/margin_5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
@@ -286,7 +286,7 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
             style="@style/LoginFragmentButtonStyle"
             layout="@layout/custom_button"
             android:layout_marginStart="@dimen/margin_10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="@dimen/margin_10dp"
             android:backgroundTint="@color/blue"
             android:textColor="@color/white"
@@ -299,42 +299,42 @@ tools:context=".ui.fragment.dashboard.BookingDetailsFragment">
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rate Vendor"
-        android:fontFamily="@font/poppins_light"
-        android:layout_margin="@dimen/margin_10dp"
-        android:layout_marginTop="@dimen/margin_20dp"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_15sp"/>
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Rate Vendor"-->
+<!--        android:fontFamily="@font/poppins_light"-->
+<!--        android:layout_margin="@dimen/margin_10dp"-->
+<!--        android:layout_marginTop="@dimen/margin_20dp"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="@dimen/text_size_15sp"/>-->
 
-        <RatingBar
-            android:id="@+id/vendor_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_10dp" />
+<!--        <RatingBar-->
+<!--            android:id="@+id/vendor_rating"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="@dimen/margin_10dp" />-->
 
-        <include
-            android:id="@+id/vendor_rating_btn"
-            style="@style/LoginFragmentButtonStyle"
-            layout="@layout/custom_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="@dimen/margin_10dp"
-            android:backgroundTint="@color/blue"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_16sp"
-            app:cornerRadius="@dimen/margin_5dp"
-            app:iconGravity="textStart"
-            app:iconSize="@dimen/padding_24dp"
-            app:iconTintMode="multiply"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />
+<!--        <include-->
+<!--            android:id="@+id/vendor_rating_btn"-->
+<!--            style="@style/LoginFragmentButtonStyle"-->
+<!--            layout="@layout/custom_button"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="@dimen/margin_5dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="@dimen/margin_10dp"-->
+<!--            android:backgroundTint="@color/blue"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="@dimen/text_size_16sp"-->
+<!--            app:cornerRadius="@dimen/margin_5dp"-->
+<!--            app:iconGravity="textStart"-->
+<!--            app:iconSize="@dimen/padding_24dp"-->
+<!--            app:iconTintMode="multiply"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/login_screen_fragment_password_and_divider_top_level_container_linear_layout" />-->
 
 </LinearLayout>
 </androidx.core.widget.NestedScrollView>

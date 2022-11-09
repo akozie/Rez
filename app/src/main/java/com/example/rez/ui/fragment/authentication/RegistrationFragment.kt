@@ -109,7 +109,7 @@ class RegistrationFragment : Fragment() {
             signIn()
         }
 
-        facebookSignInButton.setPermissions(Arrays.asList("email"))
+        facebookSignInButton.setReadPermissions(Arrays.asList("email"))
         facebookSignInButton.setFragment(this)
         callbackManager = CallbackManager.Factory.create()
 
@@ -510,4 +510,11 @@ class RegistrationFragment : Fragment() {
             }
         }
     }
+
+
+
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 }

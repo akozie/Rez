@@ -245,4 +245,11 @@ class ResetPasswordFragment : Fragment() {
         }
         return isValidated
     }
+
+
+
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 }

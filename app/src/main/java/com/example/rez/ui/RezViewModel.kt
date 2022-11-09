@@ -161,6 +161,11 @@ class RezViewModel(
     val fcmTokenResponse: LiveData<Resource<GeneralResponse>>
         get() = _fcmTokenResponse
 
+    private val _pendingReviewsResponse: MutableLiveData<Resource<PendingReviewResponse>> = MutableLiveData()
+    val pendingReviewsResponse: LiveData<Resource<PendingReviewResponse>>
+        get() = _pendingReviewsResponse
+
+
     private val _notificationCountResponse: MutableLiveData<Resource<NotificationCountResonse>> = MutableLiveData()
     val notificationCountResponse: LiveData<Resource<NotificationCountResonse>>
         get() = _notificationCountResponse
@@ -193,19 +198,25 @@ class RezViewModel(
         _getDirectionResponse.postValue(rezRepository.getDirection(mode,origin, destination, key))
     }
 
-    fun addVendorRating(token: String,
-                        rating: RateVendorRequest,
-                       vendorID: String
-    ) = viewModelScope.launch(Dispatchers.IO) {
-        _addVendorReviewResponse.postValue( Resource.Loading)
-        _addVendorReviewResponse.postValue( rezRepository.addVendorRating(token, rating, vendorID))
-    }
+//    fun addVendorRating(token: String,
+//                        rating: RateVendorRequest,
+//                       vendorID: String
+//    ) = viewModelScope.launch(Dispatchers.IO) {
+//        _addVendorReviewResponse.postValue( Resource.Loading)
+//        _addVendorReviewResponse.postValue( rezRepository.addVendorRating(token, rating, vendorID))
+//    }
 
 //    fun getVendorStates(
 //    ) = viewModelScope.launch(Dispatchers.IO) {
 //        _getVendorStateResponse.postValue( Resource.Loading)
 //        _getVendorStateResponse.postValue( rezRepository.getVendorStates())
 //    }
+
+    fun pendingReviews( token: String,
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _pendingReviewsResponse.postValue( Resource.Loading)
+        _pendingReviewsResponse.postValue( rezRepository.pendingReviews(token))
+    }
 
     fun countNotification( token: String,
     ) = viewModelScope.launch(Dispatchers.IO) {
@@ -255,11 +266,10 @@ class RezViewModel(
 
     fun addTableReview(token: String,
                        tableReviewRequest: TableReviewRequest,
-                       vendorID: String,
-                       tableID: String
+                       id: String,
     ) = viewModelScope.launch(Dispatchers.IO) {
         _addTableReviewResponse.postValue( Resource.Loading)
-        _addTableReviewResponse.postValue( rezRepository.addTableReview(token, tableReviewRequest, vendorID, tableID))
+        _addTableReviewResponse.postValue( rezRepository.addTableReview(token, tableReviewRequest, id))
     }
 
     fun bookTable(token: String,
@@ -441,6 +451,9 @@ class RezViewModel(
     }
     fun cleanProfileTableResponse(){
         _getProfileTableResponse.value = null
+    }
+    fun cleanMapResponse(){
+        _getPlacesResponse.value = null
     }
 
     fun store(){

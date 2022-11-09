@@ -7,35 +7,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rez.R
 import com.example.rez.RezApp
-import com.example.rez.adapter.OnTopItemClickListener
-import com.example.rez.adapter.TopRecommendedAdapter
+import com.example.rez.adapter.PendingReviewsAdapter
 import com.example.rez.api.Resource
-import com.example.rez.databinding.FragmentTopRecommendedBinding
-import com.example.rez.model.dashboard.RecommendedVendor
+import com.example.rez.databinding.FragmentNotificationBinding
+import com.example.rez.databinding.FragmentPendingReviewsBinding
+import com.example.rez.model.authentication.response.Booking
+import com.example.rez.model.dashboard.Image
 import com.example.rez.ui.RezViewModel
-import com.example.rez.util.handleApiError
 import com.example.rez.util.showToast
 import com.example.rez.util.visible
-import com.google.android.gms.location.*
-import com.google.gson.Gson
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-class TopRecommended : Fragment(), OnTopItemClickListener {
-    private var _binding : FragmentTopRecommendedBinding? = null
+class PendingReviewsFragment : Fragment(), PendingReviewsAdapter.OnEachPendingReviewsBooking {
+    private var _binding: FragmentPendingReviewsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var topRecommendedAdapter: TopRecommendedAdapter
-    private lateinit var topList:List<RecommendedVendor>
-    private lateinit var topRecyclerView: RecyclerView
     private val rezViewModel: RezViewModel by activityViewModels()
+    private lateinit var pendingReviewsAdapter: PendingReviewsAdapter
+    private lateinit var pendingReviewsList: List<Booking>
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -50,28 +49,28 @@ class TopRecommended : Fragment(), OnTopItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentTopRecommendedBinding.inflate(inflater, container, false)
-        // topList()
+        _binding = FragmentPendingReviewsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        getVendors()
+        setList()
     }
 
-    private fun getVendors() {
-        rezViewModel.getHome(Double.fromBits(sharedPreferences.getLong("lat", 1)), Double.fromBits(sharedPreferences.getLong("long", 1)), token = "Bearer ${sharedPreferences.getString("token", "token")}")
-        rezViewModel.getHomeResponse.observe(
+    private fun setList() {
+        rezViewModel.pendingReviews("Bearer ${sharedPreferences.getString("token", "token")}")
+        rezViewModel.pendingReviewsResponse.observe(
             viewLifecycleOwner, Observer {
-               // binding.progressBar.visible(it is Resource.Loading)
+                binding.progressBar.visible(it is Resource.Loading)
                 when(it) {
                     is Resource.Success -> {
                         if (it.value.status){
-                            lifecycleScope.launch {
-                                topList = it.value.data[0].recommended_vendors
-                                topRestaurants()
+                            pendingReviewsList = it.value.data.bookings
+                            if (pendingReviewsList.isEmpty()){
+                                binding.noPendingReviews.visible(true)
+                            }else{
+                                setPendingReviewAdapter()
                             }
                         } else {
                             it.value.message.let { it1 ->
@@ -80,22 +79,22 @@ class TopRecommended : Fragment(), OnTopItemClickListener {
                     }
                     is Resource.Error<*> -> {
                         showToast(it.data.toString())
-                        rezViewModel.getHomeResponse.removeObservers(viewLifecycleOwner)                    }
+                        rezViewModel.pendingReviewsResponse.removeObservers(viewLifecycleOwner)
+                    }
                 }
             }
         )
     }
 
-    private fun topRestaurants() {
-        topRecyclerView = binding.topRecomendRecycler
-        topRecommendedAdapter = TopRecommendedAdapter(topList, this)
-        topRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        topRecyclerView.adapter = topRecommendedAdapter
-        //binding.progressBar.visibility = View.GONE
+    private fun setPendingReviewAdapter() {
+        pendingReviewsAdapter = PendingReviewsAdapter(pendingReviewsList, this)
+        binding.pendingRecyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.pendingRecyclerview.adapter = pendingReviewsAdapter
     }
 
-    override fun onTopItemClick(topModel: RecommendedVendor) {
-        val action = TopRecommendedDirections.actionTopRecommendedToTopFragment(topModel)
+
+    override fun onPendingReviewsItemClick(booking: Booking) {
+        val action = PendingReviewsFragmentDirections.actionPendingReviewsFragmentToBookingDetailsFragment(booking)
         findNavController().navigate(action)
     }
 
@@ -104,3 +103,4 @@ class TopRecommended : Fragment(), OnTopItemClickListener {
         _binding = null
     }
 }
+

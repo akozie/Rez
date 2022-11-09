@@ -28,7 +28,7 @@ class TopRecommendedHomeAdapter( private var topRecommendedList:List<Recommended
             with(holder){
                 with(topRecommendedList[position]){
                     hotelName.text = company_name
-                    hotelRatingBar.rating = average_rating
+                    hotelRatingBar.rating = average_rating.toFloat()
                     if (avatar == null){
                         Glide.with(context).load(R.drawable.table_image).into(hotelImage)
                     } else {

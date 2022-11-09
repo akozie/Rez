@@ -13,6 +13,11 @@ import retrofit2.http.*
 interface AuthApi {
 
 
+    @GET("user/pending-reviews")
+    suspend fun pendingReviews(
+        @Header("Authorization") token: String,
+        ): PendingReviewResponse
+
     @GET("user/notifications/count")
     suspend fun countNotification(
         @Header("Authorization") token: String,
@@ -45,12 +50,12 @@ interface AuthApi {
     suspend fun getVendorCategories(
     ): GetVendorCategoryResponse
 
-    @PUT("user/vendorProfile/{vendorProfileID}/rate")
-    suspend fun addVendorRating(
-        @Header("Authorization") token: String,
-        @Body rating: RateVendorRequest,
-        @Path("vendorProfileID") vendorProfileID: String,
-    ): GeneralResponse
+//    @PUT("user/vendorProfile/{vendorProfileID}/rate")
+//    suspend fun addVendorRating(
+//        @Header("Authorization") token: String,
+//        @Body rating: RateVendorRequest,
+//        @Path("vendorProfileID") vendorProfileID: String,
+//    ): GeneralResponse
 
     @DELETE("user/reviews/{reviewID}")
     suspend fun deleteTableReview(
@@ -58,12 +63,11 @@ interface AuthApi {
         @Path("reviewID") reviewID: String
     ): GeneralResponse
 
-    @POST("user/vendorProfile/{vendorProfileID}/table/{tableID}/reviews")
+    @POST("user/bookings/{id}/review")
     suspend fun addTableReview(
         @Header("Authorization") token: String,
         @Body tableReviewRequest: TableReviewRequest,
-        @Path("vendorProfileID") vendorProfileID: String,
-        @Path("tableID") tableID: String
+        @Path("id") id: String,
     ): GeneralResponse
 
     @POST("user/book/table")

@@ -47,5 +47,6 @@ interface LocalComponent {
     fun inject(fragment : NotificationFragment)
     fun inject(fragment : ComplaintsFragment)
     fun inject(fragment : OpeningHoursFragment)
+    fun inject(fragment : PendingReviewsFragment)
     fun inject(rezApplication: RezApp)
 }

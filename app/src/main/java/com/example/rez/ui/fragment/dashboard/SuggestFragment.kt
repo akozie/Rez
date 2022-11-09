@@ -121,7 +121,7 @@ class SuggestFragment : Fragment(), OnTableClickListener {
     private fun setSuggestionData() {
             binding.hotelNameTv.text = args?.company_name
             binding.categoryTv.text = args?.category_name
-        binding.ratingBar.rating = args?.average_rating!!
+        binding.ratingBar.rating = args?.average_rating!!.toFloat()
 
         if (args?.total_tables.toString().isEmpty()){
             binding.tableQtyTv.text = "0 Table"

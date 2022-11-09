@@ -267,6 +267,7 @@ class FavoriteDetailsFragment : Fragment(), OnTableClickListener {
         rezViewModel.addOrRemoveFavoritesResponse.removeObservers(viewLifecycleOwner)
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         rezViewModel.clean()

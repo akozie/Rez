@@ -135,7 +135,7 @@ class NearRestFragment : Fragment(), OnTableClickListener {
 
     private fun setNearData() {
             binding.hotelNameTv.text = args?.company_name
-        binding.ratingBar.rating = args?.average_rating!!
+        binding.ratingBar.rating = args?.average_rating!!.toFloat()
 
         binding.categoryTv.text = args?.category_name
             binding.addressTv.text = "%.5f".format(args?.distance) +"km"
@@ -225,7 +225,6 @@ class NearRestFragment : Fragment(), OnTableClickListener {
         tableAdapter = TableAdapter(tableList, this)
         binding.tableListRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.tableListRecycler.adapter = tableAdapter
-
     }
 
     private fun registerObservers() {

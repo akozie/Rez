@@ -60,7 +60,7 @@ class BookingPagingAdapter(private val onBookingClickListener: OnBookingClickLis
                             restaurentNameTv.text = current?.vendor?.name
                             dateTv.text = current?.booked_for?.substring(0, 10)
                             completedTv.text = current?.confirmed_payment?.toString()
-                            timeTv.text = current?.booked_for?.substring(10,15)
+                            timeTv.text = current?.booked_for?.substring(10,16)
                             if (current?.status == "pending"){
                                 holder.pendingTv.visible(true)
                                 holder.acceptedTv.visible(false)

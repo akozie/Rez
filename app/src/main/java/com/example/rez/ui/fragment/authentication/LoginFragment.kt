@@ -89,7 +89,7 @@ class LoginFragment : Fragment() {
         googleSignInClient()
 
         //facebookSignInButton.setLoginBehavior(SessionLo.SUPPRESS_SSO);
-        facebookSignInButton.setPermissions(Arrays.asList("email"))
+        facebookSignInButton.setReadPermissions(Arrays.asList("email"))
         facebookSignInButton.setFragment(this)
         callbackManager = CallbackManager.Factory.create()
 
@@ -378,4 +378,11 @@ class LoginFragment : Fragment() {
             })
         }
     }
+
+
+
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 }

@@ -173,6 +173,7 @@ class ChangePassword : Fragment() {
         return isValidated
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

@@ -56,6 +56,7 @@ class ErrorFragment : DialogFragment() {
             }
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

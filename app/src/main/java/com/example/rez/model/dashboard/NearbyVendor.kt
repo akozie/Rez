@@ -12,7 +12,7 @@ data class NearbyVendor(
     val lat: Double,
     val lng: Double,
     val category_name: String,
-    val average_rating: Float,
+    val average_rating: String,
     val total_tables: Int,
     val liked_by_user : Boolean
 ) : Parcelable

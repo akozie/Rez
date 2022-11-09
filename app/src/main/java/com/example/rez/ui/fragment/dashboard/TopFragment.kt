@@ -142,7 +142,7 @@ class TopFragment : Fragment(), OnTableClickListener {
 private fun setTopData() {
         binding.hotelNameTv.text = args?.company_name
         binding.categoryTv.text = args?.category_name
-    binding.ratingBar.rating = args?.average_rating!!
+    binding.ratingBar.rating = args?.average_rating!!.toFloat()
     if (args?.total_tables == 0){
         binding.tableQtyTv.text =  "0 Table"
     } else if (args?.total_tables == 1){

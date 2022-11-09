@@ -91,5 +91,8 @@ class FavoritesCover : Fragment(), FavoritesCoverAdapter.OnClickFavoritesCoverIt
         findNavController().navigate(action)
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

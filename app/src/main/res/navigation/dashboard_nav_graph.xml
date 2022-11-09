@@ -362,4 +362,13 @@
             app:argType="com.example.rez.model.dashboard.DataXXXXXXX"
             app:nullable="true" />
     </dialog>
+    <fragment
+        android:id="@+id/pendingReviewsFragment"
+        android:name="com.example.rez.ui.fragment.dashboard.PendingReviewsFragment"
+        android:label="Pending reviews"
+        tools:layout="@layout/fragment_pending_reviews" >
+        <action
+            android:id="@+id/action_pendingReviewsFragment_to_bookingDetailsFragment"
+            app:destination="@id/bookingDetailsFragment" />
+    </fragment>
 </navigation>

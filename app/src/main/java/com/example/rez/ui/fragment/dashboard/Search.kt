@@ -135,7 +135,7 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
     private fun getLocations() {
             val geoCoder = Geocoder(requireContext())
         if (args != null){
-            searchRestaurants = args!!.searchText.toString()
+            searchRestaurants = args!!.searchText.toString().trim()
             if (searchRestaurants!!.isNullOrEmpty()){
                 val address = binding.showAddress.text.toString().trim()
                 val addressList: List<Address> = geoCoder.getFromLocationName(address, 1)
@@ -145,7 +145,7 @@ class Search : Fragment(), SearchPagingAdapter.OnSearchClickListener, Recyclervi
                 lng = long.toString().toDouble()
                 loadData(lat, lng)
             }else{
-                val addressList: List<Address> = geoCoder.getFromLocationName(searchRestaurants, 1)
+                val addressList = geoCoder.getFromLocationName(searchRestaurants, 1)
                 val latt = addressList[0].latitude
                 val long = addressList[0].longitude
                 Log.d("LATLNG", latt.toString())

@@ -40,7 +40,7 @@ class SuggestionRestaurantAdapter(private var suggestionRestaurantList: List<Sug
                     }
                     hotelName.text = company_name
                     category.text = category_name
-                    topRating.rating = average_rating
+                    topRating.rating = average_rating.toFloat()
                     if (total_tables == 1 || total_tables == 0){
                         tableQty.text = total_tables.toString() + " Table"
                     }else{

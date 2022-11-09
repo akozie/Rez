@@ -136,6 +136,13 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
                     drawerLayout.closeDrawer(GravityCompat.START)
                     return@setNavigationItemSelectedListener true
                 }
+                R.id.pendingReviewsFragment -> {
+                    findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
+                        R.id.pendingReviewsFragment
+                    )
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    return@setNavigationItemSelectedListener true
+                }
                 R.id.notificationFragment -> {
                     findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
                         R.id.notificationFragment
@@ -205,6 +212,7 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
+                                else -> {}
                             }
                         }
                     }
@@ -245,6 +253,7 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                else -> {}
             }
         }
     }
@@ -415,6 +424,13 @@ class DashboardActivity : AppCompatActivity(), NameInterface {
                     notification.visibility = View.GONE
                 }
                 R.id.notificationFragment -> {
+                    hiText.visibility = View.GONE
+                    toolbarFragmentName.visibility = View.VISIBLE
+                    bottomNavigationView.visibility = View.GONE
+                    searchview.visibility = View.INVISIBLE
+                    notification.visibility = View.GONE
+                }
+                R.id.pendingReviewsFragment -> {
                     hiText.visibility = View.GONE
                     toolbarFragmentName.visibility = View.VISIBLE
                     bottomNavigationView.visibility = View.GONE

@@ -1,25 +1,21 @@
 package com.example.rez.ui.fragment.dashboard
 
-import android.Manifest
+import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -35,11 +31,12 @@ import com.example.rez.ui.GlideApp
 import com.example.rez.ui.RezViewModel
 import com.example.rez.ui.activity.DashboardActivity
 import com.example.rez.ui.fragment.ProfileManagementDialogFragments.Companion.createProfileDialogFragment
-import com.example.rez.util.*
+import com.example.rez.util.enable
+import com.example.rez.util.showToast
+import com.example.rez.util.visible
 import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImage.getPickImageChooserIntent
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
@@ -51,31 +48,12 @@ class MyProfile : Fragment() {
     private lateinit var rezViewModel: RezViewModel
     private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
     lateinit var dataPasser: NameInterface
-
+    private val GALLERY_REQUEST_CODE = 1234
 
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    /*function to crop picture*/
-    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
-        override fun createIntent(context: Context, input: Any?): Intent {
-            return CropImage.activity()
-                .setCropMenuCropButtonTitle("Done")
-                .setAspectRatio(1, 1)
-                .getIntent(this@MyProfile.context!!)
-        }
-
-        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-            var imageUri: Uri? = null
-            try {
-                imageUri = CropImage.getActivityResult(intent).uri
-            } catch (e: Exception) {
-                Timber.d(e.localizedMessage)
-            }
-            return imageUri
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +67,7 @@ class MyProfile : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentMyProfileBinding.inflate(inflater, container, false)
         rezViewModel = (activity as DashboardActivity).rezViewModel
-          binding.saveBtn.progressBar.visibility = View.VISIBLE
+        binding.saveBtn.progressBar.visibility = View.VISIBLE
 
         //GET USER PROFILE
 
@@ -107,17 +85,10 @@ class MyProfile : Fragment() {
 
         getProfile()
 
-        /*Initialize Image Cropper*/
-        cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract) {
-            it?.let { uri ->
-                binding.customerImageIv.imageAlpha = 140
-                uploadImageToServer(uri)
-            }
-        }
+
         /*Select profile image*/
         binding.imageSelectIv.setOnClickListener {
-//            startActivityForResult(getPickImageChooserIntent(requireContext()), 200)
-            Manifest.permission.READ_EXTERNAL_STORAGE.checkForPermission(NAME, READ_IMAGE_STORAGE)
+            pickFromGallery()
         }
 
         binding.saveBtn.progressBar.visible(false)
@@ -132,13 +103,16 @@ class MyProfile : Fragment() {
             }
         }
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         dataPasser = context as NameInterface
     }
-    fun passData(data: String){
+
+    fun passData(data: String) {
         dataPasser.onDataPass(data)
     }
+
     private fun updateProfile() {
         val firstName = binding.firstNameEt.text.toString().trim()
         val lastName = binding.lastNameEt.text.toString().trim()
@@ -147,37 +121,45 @@ class MyProfile : Fragment() {
 
         when {
             email.isEmpty() -> {
-                Toast.makeText(requireContext(), R.string.all_email_cant_be_empty, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    R.string.all_email_cant_be_empty,
+                    Toast.LENGTH_SHORT
+                ).show()
 
             }
             firstName.isEmpty() -> {
                 Toast.makeText(requireContext(), "Name cannot be empty", Toast.LENGTH_SHORT).show()
             }
             else -> {
-                    val newUser = UpdateProfileRequest(
-                        email = email,
-                        first_name = firstName,
-                        last_name = lastName,
-                        phone = phoneNumber
-                    )
-                rezViewModel.updateProfile(newUser, token = "Bearer ${sharedPreferences.getString("token", "token")}")
+                val newUser = UpdateProfileRequest(
+                    email = email,
+                    first_name = firstName,
+                    last_name = lastName,
+                    phone = phoneNumber
+                )
+                rezViewModel.updateProfile(
+                    newUser,
+                    token = "Bearer ${sharedPreferences.getString("token", "token")}"
+                )
                 rezViewModel.updateProfileResponse.observe(viewLifecycleOwner, Observer {
                     binding.saveBtn.progressBar.visible(it is Resource.Loading)
-                    binding.saveBtn.button.text =  "Please wait.."
-                    when(it) {
+                    binding.saveBtn.button.text = "Please wait.."
+                    when (it) {
                         is Resource.Success -> {
                             binding.saveBtn.button.text = "Update Profile"
-                            if (it.value.status){
-                                    val message = it.value.message
-                                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                            if (it.value.status) {
+                                val message = it.value.message
+                                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                                 val newName = binding.firstNameEt.text.toString()
                                 sharedPreferences.edit().putString("name", newName).apply()
                                 passData(newName)
-                                    val action = MyProfileDirections.actionMyProfileToSuccessFragment()
-                                    findNavController().navigate(action)
+                                val action = MyProfileDirections.actionMyProfileToSuccessFragment()
+                                findNavController().navigate(action)
                             } else {
                                 it.value.message.let { it1 ->
-                                    Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
+                                    Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show()
+                                }
                             }
                             //rezViewModel.cleanProfileResponse()
                         }
@@ -198,118 +180,127 @@ class MyProfile : Fragment() {
         rezViewModel.getProfileResponse.observe(viewLifecycleOwner, Observer {
             binding.saveBtn.progressBar.visible(it is Resource.Loading)
             binding.saveBtn.button.text = "Please wait..."
-                when(it) {
+            when (it) {
                 is Resource.Success -> {
                     binding.saveBtn.button.text = "Update Profile"
-                    if (it.value.status){
+                    if (it.value.status) {
                         lifecycleScope.launch {
                             binding.firstNameEt.text = it.value.data.first_name
                             binding.lastNameEt.text = it.value.data.last_name
                             binding.userEmailEt.text = sharedPreferences.getString("email", "email")
                             //binding.mobileNoEt.text = it.value.data.phone?.substring(4)
-                            if (it.value.data.phone.isNullOrEmpty()){
+                            if (it.value.data.phone.isNullOrEmpty()) {
                                 binding.mobileNoEt.text = "+234"
-                            }else{
+                            } else {
                                 binding.mobileNoEt.text = it.value.data.phone
                             }
-                            if (it.value.data.avatar == null){
-                                GlideApp.with(requireContext()).load(R.drawable.chairman_image).into(binding.customerImageIv)
-                            }else {
-                                GlideApp.with(requireContext()).load(it.value.data.avatar).into(binding.customerImageIv)
+                            if (it.value.data.avatar == null) {
+                                GlideApp.with(requireContext()).load(R.drawable.chairman_image)
+                                    .into(binding.customerImageIv)
+                            } else {
+                                GlideApp.with(requireContext()).load(it.value.data.avatar)
+                                    .into(binding.customerImageIv)
                             }
                         }
                     } else {
                         it.value.message.let { it1 ->
-                            Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
+                            Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
                 is Resource.Error<*> -> {
                     binding.saveBtn.button.text = "Update Profile"
                     showToast(it.data.toString())
-                    rezViewModel.getProfileResponse.removeObservers(viewLifecycleOwner)                }
+                    rezViewModel.getProfileResponse.removeObservers(viewLifecycleOwner)
+                }
             }
         })
 
     }
 
-    /*Check for Gallery Permission*/
-    private fun String.checkForPermission(name: String, requestCode: Int) {
 
-        val cameraPermission =
-            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            when {
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    this
-                ) == PackageManager.PERMISSION_GRANTED || cameraPermission == PackageManager.PERMISSION_DENIED -> {
-                    ActivityCompat.requestPermissions(
-                        requireActivity(),
-                        arrayOf(Manifest.permission.CAMERA),
-                        requestCode
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+
+            GALLERY_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    data?.data?.let { uri ->
+                        launchImageCrop(uri)
+                    }
+                } else {
+                    Log.e(
+                        ContentValues.TAG,
+                        "Image selection error: Couldn't select that image from memory."
                     )
-                    cropActivityResultLauncher.launch(null)
                 }
-                shouldShowRequestPermissionRationale(this) -> showDialog(this, name, requestCode);
+            }
 
-                else -> ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(this),
-                    requestCode
-                )
+            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == Activity.RESULT_OK) {
+                    uploadImageToServer(result.uri)
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Log.e(ContentValues.TAG, "Crop error: ${result.error}")
+                }
             }
         }
     }
 
-    // Show dialog for permission dialog
-    private fun showDialog(permission: String, name: String, requestCode: Int) {
-        // Alert dialog box
-        val builder = AlertDialog.Builder(requireContext())
-        builder.apply {
-            // setting alert properties
-            setMessage(getString(R.string.permision_to_access) + name + getString(R.string.is_required_to_use_this_app))
-            setTitle("Permission required")
-            setPositiveButton("Ok") { _, _ ->
-                ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(permission),
-                    requestCode
-                )
-            }
+
+    private fun launchImageCrop(uri: Uri) {
+        context?.let {
+            CropImage.activity(uri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setAspectRatio(1, 1)
+                .setCropShape(CropImageView.CropShape.RECTANGLE) // default is rectangle
+                .start(it, this)
         }
-        val dialog = builder.create()
-        dialog.show()
     }
 
+    private fun pickFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        val mimeTypes = arrayOf("image/jpeg", "image/png", "image/jpg")
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+    }
 
 
     /*Upload Profile Picture*/
     private fun uploadImageToServer(uri: Uri) {
-        val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
+        val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream)
         val bbb = outputStream.toByteArray()
         val b = Base64.encodeToString(bbb, Base64.DEFAULT).replace("\n", "")
 
-        rezViewModel.uploadImage(b, token = "Bearer ${sharedPreferences.getString("token", "token")}")
+        rezViewModel.uploadImage(
+            b,
+            token = "Bearer ${sharedPreferences.getString("token", "token")}"
+        )
 
         /*Handling the response from the retrofit*/
         rezViewModel.uploadImageResponse.observe(
             viewLifecycleOwner, Observer {
                 binding.saveBtn.progressBar.visible(it is Resource.Loading)
                 binding.saveBtn.button.text = "Please wait..."
-                    when(it) {
+                when (it) {
                     is Resource.Success -> {
                         binding.saveBtn.button.text = "Update Profile"
-                        if (it.value.status){
+                        if (it.value.status) {
                             lifecycleScope.launch {
                                 val message = it.value.message
                                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                                GlideApp.with(requireContext()).load(uri).into(binding.customerImageIv)
+                                GlideApp.with(requireContext()).load(uri)
+                                    .into(binding.customerImageIv)
                             }
                         } else {
                             it.value.message.let { it1 ->
-                                Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show() }
+                                Toast.makeText(requireContext(), it1, Toast.LENGTH_SHORT).show()
+                            }
                         }
                         //rezViewModel.cleanImageProfile()
                     }
@@ -399,13 +390,13 @@ class MyProfile : Fragment() {
     }
 
 
-
     override fun onDestroy() {
         super.onDestroy()
         rezViewModel.cleanImageProfile()
         rezViewModel.cleanProfileResponse()
         _binding = null
     }
+
 
     companion object {
         const val ACCOUNT_FIRST_NAME_REQUEST_KEY = "ACCOUNT FIRST NAME REQUEST KEY"

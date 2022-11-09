@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class RecommendedVendor(
     val avatar: String,
-    val average_rating: Float,
+    val average_rating: String,
     val company_name: String,
     val id: String,
     val category_name: String,
